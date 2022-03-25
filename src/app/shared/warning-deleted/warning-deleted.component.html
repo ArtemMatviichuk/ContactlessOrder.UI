@@ -1,0 +1,9 @@
+<mat-dialog-content>
+  <p class="warning-label">{{ message }}</p>
+</mat-dialog-content>
+<mat-dialog-actions class="warning-actions">
+  <button mat-raised-button class="mat-warn" (click)="success()">
+    Yes
+  </button>
+  <button mat-raised-button (click)="close()">No</button>
+</mat-dialog-actions>

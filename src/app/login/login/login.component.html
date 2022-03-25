@@ -1,0 +1,48 @@
+<div class="login-main" style="position: relative">
+  <img class="bg-image" src="/assets/images/bg.png" />
+  <div class="login-container">
+    <div class="form" style="margin-top: 100px">
+      <form [formGroup]="loginForm">
+        <h2 style="text-align: center">Увійти в аккаунт</h2>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Електронна пошта"
+            formControlName="email"
+          />
+
+          <mat-error *ngIf="loginForm.controls.email.hasError('notUnique')">
+            {{ loginForm.controls.email.errors.notUnique }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Пароль" formControlName="password" />
+
+          <mat-error *ngIf="loginForm.controls.password.hasError('tooWeak')">
+            {{ loginForm.controls.password.errors.tooWeak }}
+          </mat-error>
+        </mat-form-field>
+
+        <button
+          [disabled]="loginForm.invalid"
+          class="form__btn form__btn_login"
+          (click)="login()"
+        >
+          Увійти
+        </button>
+
+        <button
+          class="form__btn form__btn_login register"
+          [routerLink]="'/auth/register'"
+        >
+          Реєстрація
+        </button>
+
+        <button class="form__btn form__btn_login register-google">
+          <i class="fa fa-google"></i>&emsp;Увійти за допомогою Google
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

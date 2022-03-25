@@ -1,0 +1,44 @@
+<nav class="sidebar-nav">
+  <ul>
+    <li
+      class="sidebar-item"
+      *ngFor="let sidebarNavItem of sidebarNavItems; let i = index; trackBy: trackByFn"
+      [ngClass]="{ 'margin-bottom--18': i === 0 }"
+    >
+      <a
+        class="sidebar-link waves-effect waves-dark"
+        [routerLink]="sidebarNavItem.submenu.length === 0 ? sidebarNavItem.path : null"
+        [ngClass]="sidebarNavItem.class"
+        (click)="onSidebarItemClick(sidebarNavItem)"
+        [routerLinkActive]="sidebarNavItem.submenu.length === 0 ? 'active' : ''"
+      >
+        <i ngClass="mdi mdi-view-dashboard"></i>
+        <span class="hide-menu">{{ sidebarNavItem.title }}</span>
+      </a>
+      <ul
+        aria-expanded="false"
+        class="collapse first-level"
+        *ngIf="sidebarNavItem && sidebarNavItem.submenu.length > 0"
+        [ngClass]="{ in: showMenu === sidebarNavItem.title }"
+      >
+        <li
+          class="sidebar-item"
+          *ngFor="let sidebarNavSubItem of sidebarNavItem.submenu; trackBy: trackByFn"
+        >
+          <a
+            class="sidebar-link"
+            [routerLink]="
+              sidebarNavSubItem.submenu.length === 0 ? sidebarNavSubItem.path : null
+            "
+            [routerLinkActive]="sidebarNavSubItem.submenu.length === 0 ? 'active' : ''"
+            [ngClass]="sidebarNavSubItem.class"
+            (click)="onSidebarItemClick(sidebarNavSubItem)"
+          >
+            <i ngClass="mdi mdi-view-dashboard"></i>
+            <span class="hide-menu">{{ sidebarNavSubItem.title }}</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
