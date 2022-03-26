@@ -1,24 +1,36 @@
-import { CommonModule } from "@angular/common";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { NgModule } from "@angular/core";
-import { MatDialogModule } from "@angular/material/dialog";
-import { BrowserModule } from "@angular/platform-browser";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { RouterModule } from "@angular/router";
-import { JwtModule, JWT_OPTIONS } from "@auth0/angular-jwt";
-import { BlockUIModule } from "ng-block-ui";
-import { ToastrModule } from "ngx-toastr";
-import { AppRoutes } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-import { AppHttpInterceptor } from "./shared/services/app-http-interceptor";
-import { AuthService } from "./shared/services/auth.service";
+import { CommonModule } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import {
+  MatDialogModule,
+  MAT_DIALOG_DEFAULT_OPTIONS,
+} from '@angular/material/dialog';
+import { BrowserModule } from '@angular/platform-browser';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { BlockUIModule } from 'ng-block-ui';
+import { ToastrModule } from 'ngx-toastr';
+import { AppRoutes } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { AppHttpInterceptor } from './shared/services/app-http-interceptor';
+import { AuthService } from './shared/services/auth.service';
+import {
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+  SocialLoginModule,
+} from 'angularx-social-login';
+import { environment } from 'src/environments/environment';
 
 export function jwtOptionsFactory(authservice) {
   return {
     tokenGetter: () => {
       return authservice.tokenGetter();
     },
-    whitelistedDomains: ["localhost:5001"],
+    whitelistedDomains: [environment.apiURL],
   };
 }
 
@@ -27,9 +39,11 @@ export function jwtOptionsFactory(authservice) {
   imports: [
     CommonModule,
     BrowserModule,
+    BrowserAnimationsModule,
     NoopAnimationsModule,
     HttpClientModule,
     MatDialogModule,
+    SocialLoginModule,
     RouterModule.forRoot(AppRoutes, { relativeLinkResolution: 'legacy' }),
     ToastrModule.forRoot(),
     BlockUIModule.forRoot(),
@@ -42,10 +56,26 @@ export function jwtOptionsFactory(authservice) {
     }),
   ],
   providers: [
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppHttpInterceptor,
       multi: true,
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.googleOauthClientId),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
     },
   ],
   bootstrap: [AppComponent],

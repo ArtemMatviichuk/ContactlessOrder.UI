@@ -32,7 +32,8 @@ export class AppHttpInterceptor implements HttpInterceptor {
 
       if (
         url.indexOf('/auth/login') === -1 &&
-        url.indexOf('/auth/register') === -1
+        url.indexOf('/auth/register') === -1 &&
+        url.indexOf('/auth/confirm-email') === -1
       ) {
         setTimeout(() => {
           this.dialog.closeAll();

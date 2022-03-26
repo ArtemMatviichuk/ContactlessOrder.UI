@@ -1,89 +1,106 @@
-<div class="login-main" style="position: relative">
+<div class="full-screen-container">
   <img class="bg-image" src="/assets/images/bg.png" />
-  <div class="login-container">
-    <div class="form" style="margin-top: 100px">
-      <form [formGroup]="loginForm">
-        <h2 style="text-align: center">Реєстрація</h2>
+  <div #container class="form" style="margin-top: 100px">
+    <form [formGroup]="registerForm">
+      <h2 style="text-align: center">Реєстрація</h2>
 
-        <mat-form-field>
-          <input matInput placeholder="I'мя" formControlName="firstName" />
-        </mat-form-field>
+      <mat-form-field *ngIf="!isOauthLogin">
+        <input matInput placeholder="I'мя" formControlName="firstName" />
+      </mat-form-field>
 
-        <mat-form-field>
-          <input matInput placeholder="Прiзвище" formControlName="lastName" />
-        </mat-form-field>
+      <mat-form-field *ngIf="!isOauthLogin">
+        <input matInput placeholder="Прiзвище" formControlName="lastName" />
+      </mat-form-field>
 
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Електронна пошта"
-            formControlName="email"
-          />
+      <mat-form-field *ngIf="!isOauthLogin">
+        <input
+          matInput
+          placeholder="Електронна пошта"
+          formControlName="email"
+        />
 
-          <mat-error *ngIf="loginForm.controls.email.hasError('notUnique')">
-            Електронна пошта вже зареєстрована
-          </mat-error>
+        <mat-error *ngIf="registerForm.controls.email.hasError('notUnique')">
+          Електронна пошта вже зареєстрована
+        </mat-error>
 
-          <mat-error *ngIf="loginForm.controls.email.hasError('email')">
-            Невірна електронна пошта
-          </mat-error>
-        </mat-form-field>
+        <mat-error *ngIf="registerForm.controls.email.hasError('email')">
+          Невірна електронна пошта
+        </mat-error>
+      </mat-form-field>
 
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Номер телефону"
-            formControlName="phoneNumber"
-          />
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Номер телефону"
+          formControlName="phoneNumber"
+        />
 
-          <mat-error
-            *ngIf="loginForm.controls.phoneNumber.hasError('notUnique')"
-          >
-            Номер телефону вже зареєстрований
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput placeholder="Пароль" formControlName="password" />
-
-          <mat-error *ngIf="loginForm.controls.password.hasError('tooWeak')">
-            Слабкий пароль
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Повторіть пароль"
-            formControlName="repeatPassword"
-          />
-
-          <mat-error
-            *ngIf="loginForm.controls.repeatPassword.hasError('notEquel')"
-          >
-            Паролі не співпадають
-          </mat-error>
-        </mat-form-field>
-
-        <button
-          [disabled]="loginForm.invalid"
-          class="form__btn form__btn_login"
-          (click)="login()"
+        <mat-error
+          *ngIf="registerForm.controls.phoneNumber.hasError('notUnique')"
         >
-          Зареєструватися
-        </button>
+          Номер телефону вже зареєстрований
+        </mat-error>
 
-        <button
-          class="form__btn form__btn_login register"
-          [routerLink]="'/auth/login'"
+        <mat-error
+          *ngIf="
+            registerForm.controls.phoneNumber.hasError('pattern') &&
+            registerForm.controls.phoneNumber.dirty
+          "
         >
-          Увійти
-        </button>
+          Невірний номер телефону
+        </mat-error>
+      </mat-form-field>
 
-        <button class="form__btn form__btn_login register-google">
-          <i class="fa fa-google"></i>&emsp;Увійти за допомогою Google
-        </button>
-      </form>
-    </div>
+      <mat-form-field *ngIf="!isOauthLogin">
+        <input
+          matInput
+          type="password"
+          placeholder="Пароль"
+          formControlName="password"
+        />
+
+        <mat-error *ngIf="registerForm.controls.password.hasError('minLength')">
+          Мінімальна кількість символів - 8
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="!isOauthLogin">
+        <input
+          matInput
+          type="password"
+          placeholder="Повторіть пароль"
+          formControlName="repeatPassword"
+        />
+
+        <mat-error
+          *ngIf="registerForm.controls.repeatPassword.hasError('notEquel')"
+        >
+          Паролі не співпадають
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        [disabled]="registerForm.invalid"
+        [class.disabled]="registerForm.invalid"
+        class="form__btn form__btn_login"
+        (click)="register()"
+      >
+        Зареєструватися
+      </button>
+
+      <button
+        class="form__btn form__btn_login register"
+        [routerLink]="'/auth/login'"
+      >
+        Увійти
+      </button>
+
+      <button
+        class="form__btn form__btn_login register-google"
+        (click)="signInWithGoogle()"
+      >
+        <i class="fa fa-google"></i>&emsp;Увійти за допомогою Google
+      </button>
+    </form>
   </div>
 </div>

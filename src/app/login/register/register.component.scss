@@ -116,3 +116,7 @@
     background: rgb(219, 219, 219);
   }
 }
+
+.form__btn.form__btn_login.disabled {
+  background: #d4d4d4 !important;
+}

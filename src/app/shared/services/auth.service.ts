@@ -1,11 +1,12 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { JwtHelperService } from "@auth0/angular-jwt";
-import { environment } from "src/environments/environment";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AuthService {
   public url = environment.apiURL;
@@ -17,10 +18,37 @@ export class AuthService {
 
   public async login(email, password): Promise<any> {
     return this._httpClient
-      .post(this.url + "/api/Auth", {
+      .post<any>(this.url + '/api/Auth', {
         email,
         password,
       })
+      .toPromise();
+  }
+
+  public googleLogin(sendData: any) {
+    return this._httpClient
+      .post<any>(this.url + '/api/Auth/GoogleLogin', sendData)
+      .toPromise();
+  }
+
+  public register(formValue: any) {
+    return this._httpClient
+      .post<any>(this.url + '/api/Auth/Register', formValue)
+      .toPromise();
+  }
+
+  public confirmEmail(token: string) {
+    return this._httpClient
+      .post<any>(
+        this.url + '/api/Auth/ConfirmEmail',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .toPromise();
   }
 
@@ -29,21 +57,21 @@ export class AuthService {
    * @returns {{ headers: HttpHeaders }}
    */
   public createAuthorizationHeader(): any {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       return {
         headers: new HttpHeaders({
-          Authorization: "Bearer " + token,
+          Authorization: 'Bearer ' + token,
         }),
       };
     } else {
-      this._router.navigate(["/auth/login"]);
+      this._router.navigate(['/auth/login']);
     }
   }
 
   public isLoggedIn(): boolean {
     const jwtHelper = new JwtHelperService();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (!token) {
       return false;
@@ -55,17 +83,17 @@ export class AuthService {
   }
 
   public logout(returnUrl?: string) {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
 
-    this._router.navigate(["auth/login"], { queryParams: { returnUrl } });
+    this._router.navigate(['auth/login'], { queryParams: { returnUrl } });
   }
 
   public getEmail() {
-    return localStorage.getItem("email");
+    return localStorage.getItem('email');
   }
 
   public getFullName() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const user = new JwtHelperService().decodeToken(token);
 
@@ -73,10 +101,27 @@ export class AuthService {
   }
 
   public tokenGetter() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
-      this._router.navigate(["/auth/login"]);
+      this._router.navigate(['/auth/login']);
     }
     return token;
+  }
+
+  public validateEmail(id: number, email: string): Observable<any> {
+    return this._httpClient.post<any>(`${this.url}/api/Auth/ValidateEmail`, {
+      id,
+      value: email,
+    });
+  }
+
+  public validatePhoneNumber(id: number, phoneNumber: string): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this.url}/api/Auth/ValidatePhoneNumber`,
+      {
+        id,
+        value: phoneNumber,
+      }
+    );
   }
 }
