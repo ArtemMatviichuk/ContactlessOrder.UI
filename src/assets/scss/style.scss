@@ -17,3 +17,21 @@
   justify-content: center;
   align-items: center;
 }
+
+.mat-dialog-actions {
+  justify-content: center;
+}
+
+.register-company-btn {
+  padding: 20px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 20px;
+  transition: 0.5s;
+
+  &:hover {
+    background: #ffffff8c;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.514);
+  }
+}

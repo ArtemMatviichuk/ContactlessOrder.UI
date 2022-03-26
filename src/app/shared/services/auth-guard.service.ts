@@ -18,11 +18,9 @@ export class AuthGuardService implements CanActivate {
       return true;
     }
 
-    if (window.location.pathname !== '/auth/register') {
-      this.router.navigate(['/auth/login'], {
-        queryParams: { returnUrl: state.url },
-      });
-    }
+    this.router.navigate(['/auth/login'], {
+      queryParams: { returnUrl: state.url },
+    });
 
     return false;
   }

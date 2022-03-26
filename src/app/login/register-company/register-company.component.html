@@ -2,17 +2,13 @@
   <img class="bg-image" src="/assets/images/bg.png" />
   <div #container class="form" style="margin-top: 100px">
     <form [formGroup]="registerForm">
-      <h2 style="text-align: center">Реєстрація</h2>
+      <h2 style="text-align: center">Реєстрація компанії</h2>
 
-      <mat-form-field *ngIf="!isOauthLogin">
-        <input matInput placeholder="I'мя" formControlName="firstName" />
+      <mat-form-field>
+        <input matInput placeholder="Назва компанії" formControlName="name" />
       </mat-form-field>
 
-      <mat-form-field *ngIf="!isOauthLogin">
-        <input matInput placeholder="Прiзвище" formControlName="lastName" />
-      </mat-form-field>
-
-      <mat-form-field *ngIf="!isOauthLogin">
+      <mat-form-field>
         <input
           matInput
           placeholder="Електронна пошта"
@@ -51,7 +47,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="!isOauthLogin">
+      <mat-form-field>
         <input
           matInput
           type="password"
@@ -64,7 +60,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="!isOauthLogin">
+      <mat-form-field>
         <input
           matInput
           type="password"
@@ -94,17 +90,10 @@
       >
         Увійти
       </button>
-
-      <button
-        class="form__btn form__btn_login register-google"
-        (click)="signInWithGoogle()"
-      >
-        <i class="fa fa-google"></i>&emsp;Увійти за допомогою Google
-      </button>
     </form>
   </div>
 
-  <a [routerLink]="'/auth/register-company'"
-    ><div class="register-company-btn">Зареєструвати компанію</div></a
+  <a [routerLink]="'/auth/register'"
+    ><div class="register-company-btn">Зареєструвати користувача</div></a
   >
 </div>

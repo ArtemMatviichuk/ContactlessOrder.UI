@@ -6,9 +6,15 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginSharedService } from './login-shared.service';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { RegisterCompanyComponent } from './register-company/register-company.component';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, ConfirmEmailComponent],
+  declarations: [
+    LoginComponent,
+    RegisterComponent,
+    ConfirmEmailComponent,
+    RegisterCompanyComponent,
+  ],
   imports: [CommonModule, LoginRoutingModule, SharedModule],
   providers: [LoginSharedService],
 })

@@ -36,6 +36,12 @@ export class AuthService {
       .post<any>(this.url + '/api/Auth/Register', formValue)
       .toPromise();
   }
+  
+  public registerCompany(formValue: any) {
+    return this._httpClient
+      .post<any>(this.url + '/api/Auth/RegisterCompany', formValue)
+      .toPromise();
+  }
 
   public confirmEmail(token: string) {
     return this._httpClient
