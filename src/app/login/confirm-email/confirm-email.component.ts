@@ -26,7 +26,7 @@ export class ConfirmEmailComponent implements OnInit {
     if (token) {
       try {
         await this.authService.confirmEmail(token);
-        this.loginSharedService.handleToken(token, '/dashboard');
+        this.loginSharedService.handleToken(token, null);
       } catch (error) {
         this.showError = true;
         this.sharedService.showRequestError(error);
@@ -35,6 +35,6 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public toDashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([this.authService.isCompany() ? '/business' : '/dashboard']);
   }
 }

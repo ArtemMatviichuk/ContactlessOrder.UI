@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { ChangeDetectorRef, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonModule } from "@angular/material/button";
@@ -28,7 +28,6 @@ import { RouterModule } from "@angular/router";
 import { ModalConfirmComponent } from "./modal-confirm/modal-confirm.component";
 import { ModalTemplateComponent } from "./modal-template/modal-template.component";
 import { ModalWarningComponent } from "./modal-warning/modal-warning.component";
-import { NavbarComponent } from "./navbar/navbar.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { WarningDeletedComponent } from "./warning-deleted/warning-deleted.component";
@@ -41,7 +40,6 @@ import { WarningDeletedComponent } from "./warning-deleted/warning-deleted.compo
     PageNotFoundComponent,
     ModalConfirmComponent,
     SidebarComponent,
-    NavbarComponent,
   ],
   imports: [
     CommonModule,
@@ -107,7 +105,6 @@ import { WarningDeletedComponent } from "./warning-deleted/warning-deleted.compo
     MatRadioModule,
     MatSlideToggleModule,
     SidebarComponent,
-    NavbarComponent,
   ],
 })
 export class SharedModule {}

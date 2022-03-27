@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
-import { AuthGuardService } from './shared/services/auth-guard.service';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { ClientGuardService } from './shared/services/client-guard.service';
+import { CompanyGuardService } from './shared/services/company-guard.service';
 
 export const AppRoutes: Routes = [
   {
@@ -8,9 +10,19 @@ export const AppRoutes: Routes = [
       import('./login/login.module').then((m) => m.LoginModule),
   },
   {
+    path: 'business',
+    loadChildren: () =>
+      import('./company/routing/full.module').then((m) => m.FullModule),
+    canActivate: [CompanyGuardService],
+  },
+  {
     path: '',
     loadChildren: () =>
-      import('./layouts/full/full.module').then((m) => m.FullModule),
-    canActivate: [AuthGuardService],
+      import('./client/routing/full.module').then((m) => m.FullModule),
+    canActivate: [ClientGuardService],
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
   },
 ];

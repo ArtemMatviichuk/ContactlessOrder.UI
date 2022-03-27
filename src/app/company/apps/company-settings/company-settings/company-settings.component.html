@@ -1,0 +1,116 @@
+<div class="full-company-container">
+  <form [formGroup]="form" style="max-width: 900px">
+    <div class="main-company-info">
+      <div class="logo-container">
+        <img [src]="logo" class="company-logo" />
+
+        <div *ngIf="editMode" class="edit-logo-container">
+          <button class="btn btn-primary" (click)="fileDialog.click()">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+
+            <input
+              #fileDialog
+              style="display: none"
+              type="file"
+              accept="image/*"
+              (change)="changeLogo($event)"
+            />
+          </button>
+
+          <button
+            *ngIf="logo !== defaultLogo"
+            class="btn btn-danger"
+            style="margin-left: 10px;"
+            (click)="removeLogo()"
+          >
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Назва компанії"
+            formControlName="name"
+            [readonly]="!editMode"
+          />
+
+          <mat-error *ngIf="form.controls.name.hasError('notUnique')">
+            {{ form.controls.name.errors.notUnique }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Адреса"
+            formControlName="address"
+            [readonly]="!editMode"
+          />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Електронна пошта"
+            formControlName="email"
+            [readonly]="!editMode"
+          />
+
+          <mat-error *ngIf="form.controls.email.hasError('notUnique')">
+            {{ form.controls.email.errors.notUnique }}
+          </mat-error>
+
+          <mat-error *ngIf="form.controls.email.hasError('email')">
+            Невірна електронна пошта
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Номер телефону"
+            formControlName="phoneNumber"
+            [readonly]="!editMode"
+          />
+
+          <mat-error *ngIf="form.controls.phoneNumber.hasError('notUnique')">
+            {{ form.controls.phoneNumber.errors.notUnique }}
+          </mat-error>
+
+          <mat-error *ngIf="form.controls.phoneNumber.hasError('pattern')">
+            Невірний номер телефону
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Опис"
+        formControlName="description"
+        rows="25"
+        style="resize: none"
+        [readonly]="!editMode"
+      ></textarea>
+    </mat-form-field>
+  </form>
+
+  <div>
+    <button *ngIf="!editMode" class="btn btn-primary" (click)="startEdit()">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button>
+
+    <button
+      *ngIf="editMode"
+      class="btn btn-primary"
+      (click)="saveChanges()"
+      [disabled]="!form.valid"
+    >
+      Зберегти
+    </button>
+  </div>
+</div>

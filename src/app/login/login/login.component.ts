@@ -7,21 +7,20 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { ActivatedRoute } from '@angular/router';
 import {
   GoogleLoginProvider,
   SocialAuthService,
   SocialUser,
 } from 'angularx-social-login';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { StorageService } from 'src/app/shared/services/storage.service';
 import { LoginSharedService } from '../login-shared.service';
 
 @Component({
@@ -38,6 +37,7 @@ export class LoginComponent implements OnInit {
 
   private returnUrl: string;
   private externalUser: SocialUser;
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     private sharedService: SharedService,
     private socialAuthService: SocialAuthService,
     private loginSharedService: LoginSharedService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     this.loginForm = fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -58,10 +58,12 @@ export class LoginComponent implements OnInit {
     this.sharedService.validateFormFields(this.loginForm);
 
     this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+      this.route.snapshot.queryParams['returnUrl'];
   }
 
   async login() {
+    this.sharedService.startBlockUI();
+
     try {
       var data = null;
 
@@ -85,15 +87,17 @@ export class LoginComponent implements OnInit {
     } catch (err) {
       this.sharedService.showRequestError(err);
     }
+    
+    this.sharedService.stopBlockUI();
   }
 
   async signInWithGoogle() {
+    this.sharedService.startBlockUI();
+
     try {
       this.externalUser = await this.socialAuthService.signIn(
         GoogleLoginProvider.PROVIDER_ID
       );
-
-      this.isOauthLogin = true;
 
       const response = await this.authService
         .validateEmail(null, this.externalUser.email)
@@ -109,16 +113,46 @@ export class LoginComponent implements OnInit {
 
         this.loginSharedService.handleToken(data.token, this.returnUrl);
       } else {
-        this.loginForm = this.fb.group({
-          phoneNumber: ['', Validators.required],
-        });
-
-        this.container.nativeElement.style.height = '300px';
+        this.isOauthLogin = true;
+        this.initializeNumberForm();
       }
     } catch (error) {
       this.sharedService.showRequestError(error);
     }
 
     this.cdr.markForCheck();
+    this.sharedService.stopBlockUI();
   }
+
+  private initializeNumberForm() {
+    this.loginForm = this.fb.group({
+      phoneNumber: [
+        '+380',
+        [Validators.required, Validators.pattern(/\+380\d{9}/)],
+        this.uniqueValidator((value) =>
+          this.authService.validatePhoneNumber(null, value)
+        ),
+      ],
+    });
+
+    this.loginForm.controls.phoneNumber.valueChanges
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((value) => {
+        if (!value.startsWith('+380')) {
+          this.loginForm.controls.phoneNumber.patchValue('+380');
+        }
+      });
+
+    this.container.nativeElement.style.height = '300px';
+    this.cdr.markForCheck();
+  }
+
+  private uniqueValidator =
+    (validate: (value) => Observable<any>) => (control: AbstractControl) =>
+      validate(control.value).pipe(
+        map((result) =>
+          result?.message ? { notUnique: result.message } : null
+        ),
+        tap(() => this.cdr.markForCheck())
+      );
 }

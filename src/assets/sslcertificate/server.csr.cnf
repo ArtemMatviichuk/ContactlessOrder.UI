@@ -1,0 +1,14 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+
+[dn]
+C=UA
+ST=Zhytomyrs'Ka
+L=Kykova
+O=Contactless Order
+OU=Development
+emailAddress=contactless.order@gmail.com
+CN = localhost

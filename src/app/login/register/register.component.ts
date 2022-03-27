@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.sharedService.validateFormFields(this.registerForm);
 
     this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+      this.route.snapshot.queryParams['returnUrl'];
 
     this.subscribeToChanges();
   }
@@ -90,6 +90,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   async register() {
+    this.sharedService.startBlockUI();
+    
     try {
       if (this.isOauthLogin) {
         const sendData = {
@@ -110,9 +112,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.sharedService.showRequestError(err);
     }
+    
+    this.sharedService.stopBlockUI();
   }
 
   async signInWithGoogle() {
+    this.sharedService.startBlockUI();
+
     try {
       this.externalUser = await this.socialAuthService.signIn(
         GoogleLoginProvider.PROVIDER_ID
@@ -139,6 +145,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.sharedService.showRequestError(error);
     }
+    
+    this.sharedService.stopBlockUI();
   }
 
   private initializeNumberForm() {

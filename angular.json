@@ -28,11 +28,13 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/assets/images"
             ],
             "styles": [
               "src/styles.scss",
-              "src/assets/scss/style.scss"
+              "src/assets/scss/style.scss",
+              "node_modules/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": []
           },
@@ -76,7 +78,10 @@
               "browserTarget": "contactless-order-ui:build:production"
             },
             "development": {
-              "browserTarget": "contactless-order-ui:build:development"
+              "browserTarget": "contactless-order-ui:build:development",
+              "ssl": true,
+              "sslKey": "src/assets/sslcertificate/server.key",
+              "sslCert": "src/assets/sslcertificate/server.crt"
             }
           },
           "defaultConfiguration": "development"
@@ -95,12 +100,10 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.scss"
+              "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
             ],
             "scripts": []
           }

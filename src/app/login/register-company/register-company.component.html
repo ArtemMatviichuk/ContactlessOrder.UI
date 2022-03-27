@@ -6,6 +6,10 @@
 
       <mat-form-field>
         <input matInput placeholder="Назва компанії" formControlName="name" />
+
+        <mat-error *ngIf="registerForm.controls.name.hasError('notUnique')">
+          {{ registerForm.controls.name.errors.notUnique }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>

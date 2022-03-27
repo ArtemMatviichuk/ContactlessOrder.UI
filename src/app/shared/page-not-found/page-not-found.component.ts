@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
 @Component({
   selector: "app-page-not-found",
@@ -7,12 +8,12 @@ import { Router } from "@angular/router";
   styleUrls: ["./page-not-found.component.scss"],
 })
 export class PageNotFoundComponent {
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router, private authService: AuthService) {}
 
   /**
    * Back to dashboard
    */
   public navigateToDashboard() {
-    this.router.navigate([""]);
+    this.router.navigate([this.authService.isCompany() ? '/business' : '/dashboard']);
   }
 }

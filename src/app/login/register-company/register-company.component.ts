@@ -49,7 +49,13 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {
     this.registerForm = fb.group({
-      name: ['', Validators.required],
+      name: [
+        '',
+        Validators.required,
+        this.uniqueValidator((value) =>
+          this.authService.validateCompanyName(null, value)
+        ),
+      ],
       email: [
         '',
         [Validators.required, Validators.email],

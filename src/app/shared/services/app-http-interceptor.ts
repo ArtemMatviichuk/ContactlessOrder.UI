@@ -27,24 +27,31 @@ export class AppHttpInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (!this.authService.isLoggedIn()) {
-      const url = this.router.url;
+    const url = this.router.url;
 
-      if (
-        url.indexOf('/auth/login') === -1 &&
-        url.indexOf('/auth/register') === -1 &&
-        url.indexOf('/auth/register-company') === -1 &&
-        url.indexOf('/auth/confirm-email') === -1
-      ) {
-        setTimeout(() => {
-          this.dialog.closeAll();
-          this.sharedService.stopBlockUI();
-        });
+    if (
+      !this.authService.isLoggedIn() &&
+      url.indexOf('/auth/login') === -1 &&
+      url.indexOf('/auth/register') === -1 &&
+      url.indexOf('/auth/register-company') === -1 &&
+      url.indexOf('/auth/confirm-email') === -1
+    ) {
+      setTimeout(() => {
+        this.dialog.closeAll();
+        this.sharedService.stopBlockUI();
+      });
 
-        this.authService.logout(url);
+      this.authService.logout(url);
 
-        return throwError(null);
-      }
+      return throwError(null);
+    }
+
+    if (url.indexOf('/auth/confirm-email') === -1) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.authService.tokenGetter()}`,
+        },
+      });
     }
 
     return next

@@ -14,15 +14,15 @@ export class LoginSharedService {
 
   public handleToken(token, returnUrl) {
     if (token) {
+      const user = new JwtHelperService().decodeToken(token);
       this.storageService.setString('token', token);
-      this.storageService.setString(
-        'email',
-        new JwtHelperService().decodeToken(token).Email
-      );
+      this.storageService.setString('email', user.Email);
 
-      this.router.navigateByUrl(returnUrl);
+      this.router.navigateByUrl(
+        returnUrl ?? user.CompanyId === '' ? '/dashboard' : '/business'
+      );
     } else {
-      this.sharedService.showRequestError("Not valid token");
+      this.sharedService.showRequestError('Not valid token');
     }
   }
 }

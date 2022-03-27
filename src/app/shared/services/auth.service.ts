@@ -88,6 +88,19 @@ export class AuthService {
     return !isExpired;
   }
 
+  public isCompany(): boolean {
+    const jwtHelper = new JwtHelperService();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return false;
+    }
+
+    const user = jwtHelper.decodeToken(token);
+
+    return user.CompanyId !== "";
+  }
+
   public logout(returnUrl?: string) {
     localStorage.removeItem('token');
 
@@ -127,6 +140,16 @@ export class AuthService {
       {
         id,
         value: phoneNumber,
+      }
+    );
+  }
+  
+  public validateCompanyName(id: null, name: any): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this.url}/api/Auth/ValidateCompanyName`,
+      {
+        id,
+        value: name,
       }
     );
   }
