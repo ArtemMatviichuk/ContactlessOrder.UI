@@ -1,0 +1,27 @@
+<h4>Додати точку громадського харчування</h4>
+
+<form [formGroup]="form">
+  <mat-form-field>
+    <input matInput placeholder="Назва" formControlName="name" />
+  </mat-form-field>
+
+  <!-- Somehow select -->
+
+  <mat-slide-toggle formControlName="fullDay"> Цілодобово </mat-slide-toggle>
+
+  <div class="d-flex justify-content-between" style="line-height: 110px">
+    <label>Відкриття</label>
+    <ngb-timepicker formControlName="openTime"></ngb-timepicker>
+
+    <label>Закриття</label>
+    <ngb-timepicker formControlName="closeTime"></ngb-timepicker>
+  </div>
+</form>
+
+<div
+  class="d-flex justify-content-center"
+  style="column-gap: 20px; margin-top: 10px"
+>
+  <button mat-raised-button [disabled]="!form.valid" (click)="save()">Save</button>
+  <button mat-raised-button (click)="close()">Close</button>
+</div>

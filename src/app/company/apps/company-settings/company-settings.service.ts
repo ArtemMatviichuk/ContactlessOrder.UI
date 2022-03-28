@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { serialize } from "object-to-formdata";
+import { serialize } from 'object-to-formdata';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
@@ -26,14 +26,35 @@ export class CompanySettingsService extends AuthService {
   }
 
   public updateCompanyData(data) {
-    const formData = serialize(data, { nullsAsUndefineds: true, indices: true });
+    const formData = serialize(data, {
+      nullsAsUndefineds: true,
+      indices: true,
+    });
 
     if (data.logo) {
-      formData.append("logo", data.logo, data.logo.name)
+      formData.append('logo', data.logo, data.logo.name);
     }
 
     return this._http
       .put<void>(`${this.url}/api/Companies/Update`, formData)
+      .toPromise();
+  }
+
+  public getCatering(): Promise<any[]> {
+    return this._http
+      .get<any[]>(`${this.url}/api/Companies/Caterings`)
+      .toPromise();
+  }
+
+  public createCatering(data: any) {
+    return this._http
+      .post<void>(`${this.url}/api/Companies/Caterings`, data)
+      .toPromise();
+  }
+
+  public updateCatering(id: any, data: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Companies/Caterings/${id}`, data)
       .toPromise();
   }
 }

@@ -25,6 +25,8 @@ import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { RouterModule } from "@angular/router";
+import { AgGridModule } from "ag-grid-angular";
+import { AppModule } from "../app.module";
 import { ModalConfirmComponent } from "./modal-confirm/modal-confirm.component";
 import { ModalTemplateComponent } from "./modal-template/modal-template.component";
 import { ModalWarningComponent } from "./modal-warning/modal-warning.component";

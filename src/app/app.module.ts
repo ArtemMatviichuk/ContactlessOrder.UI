@@ -24,6 +24,8 @@ import {
   SocialLoginModule,
 } from 'angularx-social-login';
 import { environment } from 'src/environments/environment';
+import { AgGridModule } from 'ag-grid-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function jwtOptionsFactory(authservice) {
   return {
@@ -39,6 +41,7 @@ export function jwtOptionsFactory(authservice) {
   imports: [
     CommonModule,
     BrowserModule,
+    AgGridModule.withComponents([]),
     BrowserAnimationsModule,
     NoopAnimationsModule,
     HttpClientModule,
@@ -54,6 +57,7 @@ export function jwtOptionsFactory(authservice) {
         deps: [AuthService],
       },
     }),
+    NgbModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
