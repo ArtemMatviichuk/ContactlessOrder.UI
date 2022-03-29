@@ -1,0 +1,13 @@
+.mat-checkbox {
+  cursor: default;
+
+  ::ng-deep {
+    .mat-checkbox-layout {
+      margin-bottom: 0;
+    }
+
+    .mat-checkbox-ripple {
+      display: none;
+    }
+  }
+}

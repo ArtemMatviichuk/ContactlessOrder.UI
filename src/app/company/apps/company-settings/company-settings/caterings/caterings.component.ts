@@ -7,8 +7,10 @@ import {
   GridOptions,
   RowSelectedEvent,
 } from 'ag-grid-community';
+import { CheckboxCellRendererComponent } from 'src/app/shared/checkbox-cell-renderer/checkbox-cell-renderer.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../company-settings.service';
+import { ManageCateringComponent } from './manage-catering/manage-catering.component';
 import { NewCateringComponent } from './new-catering/new-catering.component';
 
 @Component({
@@ -29,32 +31,43 @@ export class CateringsComponent implements OnInit, OnDestroy {
       {
         headerName: 'Координати',
         field: 'coordinates',
+        headerClass: 'grid-header-centered',
+        cellClass: 'grid-cell-centered',
       },
       {
         headerName: 'Цілодобово',
         field: 'fullDay',
+        cellRenderer: 'checkboxRenderer',
+        headerClass: 'grid-header-centered',
+        cellClass: 'grid-cell-centered',
       },
       {
         headerName: 'Час відкриття',
         field: 'openTime',
+        headerClass: 'grid-header-centered',
+        cellClass: 'grid-cell-centered',
+        valueGetter: (params) => this.getTimeString(params.data.openTime),
       },
       {
         headerName: 'Час закриття',
         field: 'closeTime',
+        headerClass: 'grid-header-centered',
+        cellClass: 'grid-cell-centered',
+        valueGetter: (params) => this.getTimeString(params.data.closeTime),
       },
       {
         headerName: '',
         flex: 0,
         width: 50,
-        cellClass: 'fa fa-pencil',
-        onCellClicked: (params) => this.editCatering(params.data.id),
+        cellRenderer: () => `<i class="fa fa-pencil"></i>`,
+        onCellClicked: (params) => this.editCatering(),
       },
       {
         headerName: '',
         flex: 0,
         width: 50,
-        cellClass: 'fa-solid fa-gear',
-        onCellClicked: (params) => this.openManageCatering(params.data.id),
+        cellRenderer: () => `<i class="fa-solid fa-gear"></i>`,
+        onCellClicked: (params) => this.openManageCatering(),
       },
     ],
 
@@ -78,9 +91,11 @@ export class CateringsComponent implements OnInit, OnDestroy {
       this.cateringColumnApi = event.columnApi;
     },
 
-    onRowSelected: (event) => this.selectCatering(event),
+    frameworkComponents: {
+      checkboxRenderer: CheckboxCellRendererComponent,
+    },
 
-    onCellDoubleClicked: (event) => this.onCellDoubleClick(event),
+    onRowSelected: (event) => this.selectCatering(event),
 
     onCellFocused: (event) =>
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
@@ -118,17 +133,43 @@ export class CateringsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public editCatering(id) {
-    console.log(id);
+  public editCatering() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px';
+    dialogConfig.data = { ...this.selectedCatering, edit: true };
+
+    return this.dialog
+      .open(NewCateringComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.success) {
+          this.getCaterings();
+        }
+      });
   }
 
-  public openManageCatering(id) {
-    console.log(id);
+  public openManageCatering() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px';
+    dialogConfig.data = { ...this.selectedCatering };
+
+    return this.dialog
+      .open(ManageCateringComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.success) {
+          this.getCaterings();
+        }
+      });
   }
 
   private async getCaterings() {
     try {
       this.caterings = await this.companySettingsService.getCatering();
+
+      this.cdr.markForCheck();
     } catch (error) {
       this.sharedService.showRequestError(error);
     }
@@ -144,5 +185,12 @@ export class CateringsComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private onCellDoubleClick(event: CellDoubleClickedEvent) {}
+  private getTimeString(time) {
+    console.log(time);
+    return time
+      ? `${time.hour.toString().padStart(2, '0')}:${time.minute
+          .toString()
+          .padStart(2, '0')}`
+      : '-';
+  }
 }

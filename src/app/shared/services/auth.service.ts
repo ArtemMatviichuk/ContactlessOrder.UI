@@ -25,6 +25,15 @@ export class AuthService {
       .toPromise();
   }
 
+  public loginCatering(login: any, password: any): any {
+    return this._httpClient
+      .post<any>(this.url + '/api/Auth/Catering', {
+        email: login,
+        password,
+      })
+      .toPromise();
+  }
+
   public googleLogin(sendData: any) {
     return this._httpClient
       .post<any>(this.url + '/api/Auth/GoogleLogin', sendData)
@@ -36,7 +45,7 @@ export class AuthService {
       .post<any>(this.url + '/api/Auth/Register', formValue)
       .toPromise();
   }
-  
+
   public registerCompany(formValue: any) {
     return this._httpClient
       .post<any>(this.url + '/api/Auth/RegisterCompany', formValue)
@@ -98,7 +107,20 @@ export class AuthService {
 
     const user = jwtHelper.decodeToken(token);
 
-    return user.CompanyId !== "";
+    return user.CompanyId !== '';
+  }
+
+  public isCatering(): boolean {
+    const jwtHelper = new JwtHelperService();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return false;
+    }
+
+    const user = jwtHelper.decodeToken(token);
+
+    return user.Catering;
   }
 
   public logout(returnUrl?: string) {
@@ -143,7 +165,7 @@ export class AuthService {
       }
     );
   }
-  
+
   public validateCompanyName(id: null, name: any): Observable<any> {
     return this._httpClient.post<any>(
       `${this.url}/api/Auth/ValidateCompanyName`,

@@ -1,0 +1,33 @@
+<div class="full-screen-container">
+  <img class="bg-image" src="/assets/images/bg.png" />
+  <div class="form" style="margin-top: 100px">
+    <form [formGroup]="loginForm">
+      <h2 style="text-align: center">Увійти в аккаунт</h2>
+      <mat-form-field>
+        <input matInput placeholder="Логін" formControlName="login" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          placeholder="Пароль"
+          formControlName="password"
+        />
+      </mat-form-field>
+
+      <button
+        [disabled]="loginForm.invalid"
+        [class.disabled]="loginForm.invalid"
+        class="form__btn form__btn_login"
+        (click)="login()"
+      >
+        Увійти
+      </button>
+    </form>
+  </div>
+
+  <a [routerLink]="'/auth/register-company'"
+    ><div class="register-company-btn">Зареєструвати компанію</div></a
+  >
+</div>

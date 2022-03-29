@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class CompanySettingsService extends AuthService {
+export class CateringService extends AuthService {
   constructor(
     protected readonly _router: Router,
     private readonly _http: HttpClient
@@ -48,28 +48,13 @@ export class CompanySettingsService extends AuthService {
 
   public createCatering(data: any) {
     return this._http
-      .post<any>(`${this.url}/api/Companies/Caterings`, data)
+      .post<void>(`${this.url}/api/Companies/Caterings`, data)
       .toPromise();
   }
 
   public updateCatering(id: any, data: any) {
     return this._http
       .put<void>(`${this.url}/api/Companies/Caterings/${id}`, data)
-      .toPromise();
-  }
-
-  public deleteCatering(id: any) {
-    return this._http
-      .delete<void>(`${this.url}/api/Companies/Caterings/${id}`)
-      .toPromise();
-  }
-
-  public generateCateringPassword(id: any) {
-    return this._http
-      .put<any>(
-        `${this.url}/api/Companies/Caterings/${id}/RegeneratePassword`,
-        {}
-      )
       .toPromise();
   }
 }

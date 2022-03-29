@@ -1,0 +1,17 @@
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background: #fff;
+  bottom: 18px;
+  right: 20px;
+  z-index: 999;
+
+  > .close-icon {
+    margin-left: auto;
+    padding: 5px;
+    margin: 5px 5px 0 auto;
+    cursor: pointer;
+    color: black;
+  }
+}

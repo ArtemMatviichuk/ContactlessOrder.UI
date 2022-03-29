@@ -1,6 +1,10 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../../company-settings.service';
@@ -17,6 +21,7 @@ export class NewCateringComponent implements OnInit, OnDestroy {
 
   constructor(
     fb: FormBuilder,
+    private dialog: MatDialog,
     private dialogRef: MatDialogRef<NewCateringComponent>,
     private companySettingsService: CompanySettingsService,
     private sharedService: SharedService,
@@ -24,7 +29,7 @@ export class NewCateringComponent implements OnInit, OnDestroy {
   ) {
     this.form = fb.group({
       name: [null, Validators.required],
-      coordinates: [null],
+      coordinates: [''],
       fullDay: [false],
       openTime: [{ hour: 9, minute: 0 }, Validators.required],
       closeTime: [{ hour: 18, minute: 0 }, Validators.required],
@@ -47,12 +52,15 @@ export class NewCateringComponent implements OnInit, OnDestroy {
 
   public async save() {
     //const coordinates = ...
-
-    const data = { ...this.form.getRawValue() };
-
+    const formValue = this.form.value;
+    const data = {
+      ...formValue,
+    };
+    
     try {
       if (this.dialogData.add) {
-        await this.companySettingsService.createCatering(data);
+        var loginData = await this.companySettingsService.createCatering(data);
+        this.sharedService.showTemplate(this.getPasswordTemplate(loginData), "450px");
       } else {
         await this.companySettingsService.updateCatering(
           this.dialogData.id,
@@ -81,7 +89,20 @@ export class NewCateringComponent implements OnInit, OnDestroy {
   private setData() {
     if (!this.dialogData.add) {
       this.form.patchValue(this.dialogData);
+
+      if (this.dialogData.fullDay) {
+        this.form.controls.openTime.disable();
+        this.form.controls.closeTime.disable();
+      }
     }
+  }
+
+  private getPasswordTemplate(loginData) {
+    return `<p>ЗАПИШІТЬ ЦЮ ІНФОРМАЦІЮ</p>
+    <p>Для входу під аккаунтом цієї точки:</p>
+    <p>Логін: ${loginData.email}</p>
+    <p>Пароль: ${loginData.password}</p>
+    `;
   }
 
   private subscribeToChanges() {

@@ -107,3 +107,11 @@
     color: var(--color-text-disabled);
   }
 }
+
+.grid-cell-centered {
+  text-align: center;
+}
+
+.grid-header-centered .ag-header-cell-label {
+  justify-content: center;
+}

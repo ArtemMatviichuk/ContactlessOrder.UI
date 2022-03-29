@@ -1,0 +1,31 @@
+<div>
+  <div class="d-flex justify-content-between" style="column-gap: 20px">
+    <div class="d-flex justify-content-between w-100" style="line-height: 40px">
+      <div>Логін для входу:</div>
+      <strong>{{ dialogData.login }}</strong>
+    </div>
+
+    <button mat-raised-button class="btn" (click)="copyLogin()">
+      <i class="fas fa-copy"></i>
+    </button>
+  </div>
+</div>
+
+<div
+  class="d-flex justify-content-center"
+  style="column-gap: 20px; margin-top: 20px"
+>
+  <button
+    mat-raised-button
+    class="btn btn-warning"
+    (click)="generatePassword()"
+  >
+    Згенерувати новий пароль
+  </button>
+
+  <button mat-raised-button (click)="close()">Закрити</button>
+
+  <button mat-raised-button class="btn btn-danger" (click)="delete()">
+    Видалити
+  </button>
+</div>
