@@ -1,4 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
@@ -14,8 +21,12 @@ import { CompanySettingsService } from '../../../company-settings.service';
   templateUrl: './new-catering.component.html',
   styleUrls: ['./new-catering.component.scss'],
 })
-export class NewCateringComponent implements OnInit, OnDestroy {
+export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('map') mapElement: any;
+  map: google.maps.Map;
+
   public form: FormGroup;
+  public point: google.maps.Marker;
 
   private onDestroy$ = new Subject<void>();
 
@@ -27,9 +38,10 @@ export class NewCateringComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public dialogData: any
   ) {
+    this.selectPoint = this.selectPoint.bind(this);
     this.form = fb.group({
       name: [null, Validators.required],
-      coordinates: [''],
+      services: [null, Validators.required],
       fullDay: [false],
       openTime: [{ hour: 9, minute: 0 }, Validators.required],
       closeTime: [{ hour: 18, minute: 0 }, Validators.required],
@@ -39,10 +51,15 @@ export class NewCateringComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe(() => this.close());
+    this.sharedService.validateFormFields(this.form);
 
     this.setData();
 
     this.subscribeToChanges();
+  }
+
+  public ngAfterViewInit(): void {
+    this.setMap();
   }
 
   public ngOnDestroy() {
@@ -50,17 +67,33 @@ export class NewCateringComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
+  public getTitle() {
+    if (this.dialogData.add) {
+      return "Додати точку громадського харчування";
+    } else {
+      return "Змінити точку громадського харчування";
+    }
+  }
+
   public async save() {
-    //const coordinates = ...
+    if (!this.point) {
+      this.sharedService.showTemplate('<p>Виберіть місце на карті</p>');
+      return;
+    }
+
     const formValue = this.form.value;
     const data = {
       ...formValue,
+      coordinates: this.point.getPosition().toJSON(),
     };
-    
+
     try {
       if (this.dialogData.add) {
         var loginData = await this.companySettingsService.createCatering(data);
-        this.sharedService.showTemplate(this.getPasswordTemplate(loginData), "450px");
+        this.sharedService.showTemplate(
+          this.getPasswordTemplate(loginData),
+          '450px'
+        );
       } else {
         await this.companySettingsService.updateCatering(
           this.dialogData.id,
@@ -94,6 +127,83 @@ export class NewCateringComponent implements OnInit, OnDestroy {
         this.form.controls.openTime.disable();
         this.form.controls.closeTime.disable();
       }
+    }
+  }
+
+  private setMap() {
+    const mapProperties: any = {
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    };
+
+    if (!this.dialogData.add) {
+      mapProperties.center = new google.maps.LatLng(
+        this.dialogData.coordinates
+      );
+
+      this.map = new google.maps.Map(
+        this.mapElement.nativeElement,
+        mapProperties
+      );
+
+      this.point = new google.maps.Marker({
+        position: this.dialogData.coordinates,
+        map: this.map,
+        title: 'Місцезнаходження вашого бізнесу',
+      });
+
+      this.map.addListener('click', this.selectPoint);
+    } else {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            mapProperties.center = new google.maps.LatLng(
+              position.coords.latitude,
+              position.coords.longitude
+            );
+
+            this.map = new google.maps.Map(
+              this.mapElement.nativeElement,
+              mapProperties
+            );
+
+            this.map.addListener('click', this.selectPoint);
+          },
+          () => this.setDefaultMap(mapProperties),
+          { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+        );
+      } else {
+        this.setDefaultMap(mapProperties);
+      }
+    }
+  }
+
+  private setDefaultMap(mapProperties) {
+    mapProperties.center = new google.maps.LatLng(
+      50.449914706977005,
+      30.5250084400177
+    );
+    this.map = new google.maps.Map(
+      this.mapElement.nativeElement,
+      mapProperties
+    );
+
+    this.map.addListener('click', this.selectPoint);
+  }
+
+  private selectPoint(event: google.maps.MapMouseEvent) {
+    const myLatLng = event.latLng;
+
+    this.map.setCenter(myLatLng);
+
+    if (!this.point) {
+      this.point = new google.maps.Marker({
+        position: myLatLng,
+        map: this.map,
+        title: 'Місцезнаходження вашого бізнесу',
+      });
+    } else {
+      this.point.setPosition(myLatLng);
     }
   }
 

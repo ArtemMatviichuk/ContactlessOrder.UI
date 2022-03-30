@@ -1,0 +1,22 @@
+<h2
+  mat-dialog-title
+  cdkDrag
+  cdkDragHandle
+  cdkDragRootElement=".cdk-overlay-pane"
+>
+  Pictures
+</h2>
+
+<div class="m-b-10" style="height: 600px">
+  <ngx-gallery
+    style="height: 100%"
+    [options]="galleryOptions"
+    [images]="galleryImages"
+    class="ngx-gallery"
+    (change)="selectImage($event)"
+  ></ngx-gallery>
+</div>
+
+<div class="d-flex justify-content-center" style="margin-top: 20px">
+  <button class="btn add" mat-flat-button (click)="close()">Закрити</button>
+</div>

@@ -33,6 +33,8 @@ export class CateringsComponent implements OnInit, OnDestroy {
         field: 'coordinates',
         headerClass: 'grid-header-centered',
         cellClass: 'grid-cell-centered',
+        valueGetter: (params) =>
+          `${params.data.coordinates.lat} | ${params.data.coordinates.lng}`,
       },
       {
         headerName: 'Цілодобово',
@@ -186,7 +188,6 @@ export class CateringsComponent implements OnInit, OnDestroy {
   }
 
   private getTimeString(time) {
-    console.log(time);
     return time
       ? `${time.hour.toString().padStart(2, '0')}:${time.minute
           .toString()

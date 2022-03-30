@@ -1,0 +1,15 @@
+.ngx-gallery {
+  ::ng-deep {
+    .ngx-gallery-thumbnails-wrapper .ngx-gallery-thumbnails > .ngx-gallery-thumbnail {
+      border: none;
+
+      &.ngx-gallery-active {
+        border: none;
+      }
+    }
+
+    .ngx-gallery-arrow {
+      color: #606060;
+    }
+  }
+}

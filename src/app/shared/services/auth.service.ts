@@ -120,7 +120,7 @@ export class AuthService {
 
     const user = jwtHelper.decodeToken(token);
 
-    return user.Catering;
+    return user.CateringId;
   }
 
   public logout(returnUrl?: string) {

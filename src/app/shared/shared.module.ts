@@ -25,13 +25,17 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { AgGridModule } from 'ag-grid-angular';
 import { AppModule } from '../app.module';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer/checkbox-cell-renderer.component';
+import { ImageCellRendererComponent } from './image-cell-renderer/image-cell-renderer.component';
+import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 import { ModalTemplateComponent } from './modal-template/modal-template.component';
 import { ModalWarningComponent } from './modal-warning/modal-warning.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PicturesSelectorComponent } from './pictures/pictures.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { WarningDeletedComponent } from './warning-deleted/warning-deleted.component';
 
@@ -44,6 +48,9 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     ModalConfirmComponent,
     SidebarComponent,
     CheckboxCellRendererComponent,
+    ImageCellRendererComponent,
+    ImageGalleryComponent,
+    PicturesSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +81,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     MatExpansionModule,
     MatRadioModule,
     MatSlideToggleModule,
+    NgxGalleryModule,
   ],
   exports: [
     MatTabsModule,
@@ -110,6 +118,9 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     MatSlideToggleModule,
     SidebarComponent,
     CheckboxCellRendererComponent,
+    ImageCellRendererComponent,
+    ImageGalleryComponent,
+    PicturesSelectorComponent,
   ],
 })
 export class SharedModule {}

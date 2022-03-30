@@ -26,6 +26,10 @@ export class ClientGuardService implements CanActivate {
       this.router.navigate(['/business']);
 
       return false;
+    } else if (this.authService.isCatering()) {
+      this.router.navigate(['/catering']);
+
+      return false;
     }
 
     return true;

@@ -9,9 +9,8 @@ const routes: Routes = [
     path: '',
     component: FullComponent,
     children: [
-      { path: '', redirectTo: '/catering/' + APP_ROUTES.DASHBOARD, pathMatch: 'full' },
       {
-        path: APP_ROUTES.DASHBOARD,
+        path: '',
         loadChildren: () =>
           import('../apps/catering/catering.module').then(
             (m) => m.CateringModule

@@ -25,6 +25,13 @@
   margin-bottom: 50px;
 }
 
+.company-grids-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 600px) {
   .main-company-info {
     display: block;

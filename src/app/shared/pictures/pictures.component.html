@@ -1,0 +1,43 @@
+<div *ngIf="!data?.preview" class="buttons-flex" style="margin-bottom: 10px;">
+  <button class="btn btn-primary" mat-flat-button (click)="fileDialog.click()">
+    <span><i class="fas fa-images"></i> Завантажити фото</span>
+
+    <input
+      #fileDialog
+      style="display: none"
+      type="file"
+      multiple
+      accept="image/*"
+      (change)="addPictures($event)"
+    />
+  </button>
+
+  <button
+    class="btn btn-danger"
+    style="margin-left: 20px;"
+    (click)="deletePicture()"
+    [disabled]="!selectedPicture || selectedPicture?.borrowed"
+    [title]="selectedPicture?.borrowed ? data?.borrowedPictureText : ''"
+  >
+    <span><i class="fas fa-times"></i> Видалити</span>
+  </button>
+</div>
+
+<div class="flex m-b-10" (dblclick)="openGallery()">
+  <div
+    *ngFor="let picture of pictures"
+    style="position: relative; display: inline-block;"
+    [style.width]="data?.pictureSize"
+    [style.height]="data?.pictureSize"
+  >
+    <img
+      class="te-item-picture"
+      style="right: auto"
+      [style.width]="data?.pictureSize"
+      [class.image-preview]="data?.enlargeable"
+      [ngClass]="{ selected: selectedPicture === picture }"
+      [src]="picture.url"
+      (click)="selectedPicture = picture"
+    />
+  </div>
+</div>

@@ -10,6 +10,8 @@ import { NewCateringComponent } from './company-settings/caterings/new-catering/
 import { CompanySettingsComponent } from './company-settings/company-settings.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ManageCateringComponent } from './company-settings/caterings/manage-catering/manage-catering.component';
+import { MenuComponent } from './company-settings/menu/menu.component';
+import { NewMenuItemComponent } from './company-settings/menu/new-menu-item/new-menu-item.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { ManageCateringComponent } from './company-settings/caterings/manage-cat
     CateringsComponent,
     NewCateringComponent,
     ManageCateringComponent,
+    MenuComponent,
+    NewMenuItemComponent,
   ],
   imports: [
     CommonModule,

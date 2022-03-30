@@ -72,4 +72,52 @@ export class CompanySettingsService extends AuthService {
       )
       .toPromise();
   }
+
+  public getMenu(): Promise<any[]> {
+    return this._http.get<any[]>(`${this.url}/api/Companies/Menu`).toPromise();
+  }
+
+  public createMenuItem(data: any) {
+    const formData = serialize(data, {
+      nullsAsUndefineds: true,
+      indices: true,
+    });
+
+    if (data.pictures?.length > 0) {
+      data.pictures.forEach((p) => formData.append('pictures', p, p.name));
+    }
+
+    return this._http
+      .post<void>(`${this.url}/api/Companies/Menu`, formData)
+      .toPromise();
+  }
+
+  public updateMenuItem(id: any, data: any) {
+    const formData = serialize(data, {
+      nullsAsUndefineds: true,
+      indices: true,
+    });
+
+    if (data.pictures?.length > 0) {
+      data.pictures.forEach((p) => formData.append('pictures', p, p.name));
+    }
+
+    return this._http
+      .put<void>(`${this.url}/api/Companies/Menu/${id}`, formData)
+      .toPromise();
+  }
+
+  public deleteMenuItem(id: any) {
+    return this._http
+      .delete<void>(`${this.url}/api/Companies/Menu/${id}`)
+      .toPromise();
+  }
+
+  public getMenuItemPictures(id: any) {
+    return this._http.get<any[]>(`${this.url}/api/Companies/Menu/${id}/Pictures`).toPromise();
+  }
+
+  public getMenuItemPictureUrl(id: any) {
+    return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
+  }
 }

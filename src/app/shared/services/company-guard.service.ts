@@ -23,9 +23,15 @@ export class CompanyGuardService implements CanActivate {
     }
 
     if (!this.authService.isCompany()) {
-      this.router.navigate(['/dashboard']);
+      if (this.authService.isCatering) {
+        this.router.navigate(['/catering']);
 
-      return false;
+        return false;
+      } else {
+        this.router.navigate(['/dashboard']);
+
+        return false;
+      }
     }
 
     return true;

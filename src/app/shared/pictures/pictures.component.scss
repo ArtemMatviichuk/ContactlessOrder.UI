@@ -1,0 +1,10 @@
+.te-item-picture {
+  width: 32px;
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+  object-fit: cover;
+
+  &.selected {
+    border: 2px solid #63b1ff;
+  }
+}

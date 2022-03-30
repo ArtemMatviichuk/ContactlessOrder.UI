@@ -1,0 +1,7 @@
+<img
+  #imageElement
+  [ngClass]="params.className"
+  [ngStyle]="params.style"
+  [src]="imageUrl"
+  (dblclick)="params.onDoubleClick && params.onDoubleClick(params.data)"
+/>

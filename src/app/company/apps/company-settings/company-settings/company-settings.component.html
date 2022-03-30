@@ -1,6 +1,6 @@
 <block-ui>
   <div class="full-company-container">
-    <form [formGroup]="form" style="max-width: 900px">
+    <form [formGroup]="form" style="flex: 1;">
       <div class="main-company-info">
         <div class="logo-container">
           <img [src]="logo" class="company-logo" />
@@ -119,8 +119,9 @@
       </mat-form-field>
     </form>
 
-    <div style="width: -webkit-fill-available; max-width: calc(100% - 900px);">
+    <div class="company-grids-container">
       <app-caterings></app-caterings>
+      <app-menu></app-menu>
     </div>
   </div>
 </block-ui>
