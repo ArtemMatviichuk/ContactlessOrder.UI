@@ -164,7 +164,7 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
   public async close() {
     if (this.form.dirty) {
       const result = await this.sharedService.openConfirmActionDialog(
-        'Discard changes'
+        'Відмінити зміни?'
       );
 
       if (result !== 'ok') return;

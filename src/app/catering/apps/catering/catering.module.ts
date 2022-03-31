@@ -7,10 +7,16 @@ import { CateringService } from './catering.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CateringComponent } from './catering/catering.component';
 import { CateringRoutingModule } from './catering-routing.module';
+import { ManageMenuItemComponent } from './catering/manage-menu-item/manage-menu-item.component';
+import { PreviewOrderComponent } from './catering/orders/preview-order/preview-order.component';
+import { OrdersComponent } from './catering/orders/orders.component';
 
 @NgModule({
   declarations: [
     CateringComponent,
+    ManageMenuItemComponent,
+    OrdersComponent,
+    PreviewOrderComponent
   ],
   imports: [
     CommonModule,

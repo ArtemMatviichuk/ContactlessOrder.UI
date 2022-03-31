@@ -27,6 +27,8 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public form: FormGroup;
   public point: google.maps.Marker;
+  public menuItems = [];
+  public allMenuItems = false;
 
   private onDestroy$ = new Subject<void>();
 
@@ -43,6 +45,7 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
       name: [null, Validators.required],
       services: [null, Validators.required],
       fullDay: [false],
+      menuIds: [null],
       openTime: [{ hour: 9, minute: 0 }, Validators.required],
       closeTime: [{ hour: 18, minute: 0 }, Validators.required],
     });
@@ -53,6 +56,7 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.backdropClick().subscribe(() => this.close());
     this.sharedService.validateFormFields(this.form);
 
+    this.getMenuItems();
     this.setData();
 
     this.subscribeToChanges();
@@ -69,9 +73,9 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public getTitle() {
     if (this.dialogData.add) {
-      return "Додати точку громадського харчування";
+      return 'Додати точку громадського харчування';
     } else {
-      return "Змінити точку громадського харчування";
+      return 'Змінити точку громадського харчування';
     }
   }
 
@@ -110,13 +114,29 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
   public async close() {
     if (this.form.dirty) {
       const result = await this.sharedService.openConfirmActionDialog(
-        'Discard changes'
+        'Відмінити зміни?'
       );
 
       if (result !== 'ok') return;
     }
 
     this.dialogRef.close({ success: false });
+  }
+
+  public allItemsChange() {
+    if (this.allMenuItems) {
+      this.form.controls.menuIds.patchValue(this.menuItems.map(e => e.id));
+    } else {
+      this.form.controls.menuIds.patchValue([]);
+    }
+  }
+
+  private async getMenuItems() {
+    try {
+      this.menuItems = await this.companySettingsService.getMenuOptions();
+    } catch (error) {
+      this.sharedService.showRequestError(error);
+    }
   }
 
   private setData() {

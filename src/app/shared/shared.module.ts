@@ -26,8 +26,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
-import { AgGridModule } from 'ag-grid-angular';
-import { AppModule } from '../app.module';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer/checkbox-cell-renderer.component';
 import { ImageCellRendererComponent } from './image-cell-renderer/image-cell-renderer.component';
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';

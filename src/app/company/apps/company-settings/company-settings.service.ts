@@ -77,6 +77,12 @@ export class CompanySettingsService extends AuthService {
     return this._http.get<any[]>(`${this.url}/api/Companies/Menu`).toPromise();
   }
 
+  public getMenuOptions(): Promise<any[]> {
+    return this._http
+      .get<any[]>(`${this.url}/api/Companies/MenuOptions`)
+      .toPromise();
+  }
+
   public createMenuItem(data: any) {
     const formData = serialize(data, {
       nullsAsUndefineds: true,
@@ -114,7 +120,9 @@ export class CompanySettingsService extends AuthService {
   }
 
   public getMenuItemPictures(id: any) {
-    return this._http.get<any[]>(`${this.url}/api/Companies/Menu/${id}/Pictures`).toPromise();
+    return this._http
+      .get<any[]>(`${this.url}/api/Companies/Menu/${id}/Pictures`)
+      .toPromise();
   }
 
   public getMenuItemPictureUrl(id: any) {

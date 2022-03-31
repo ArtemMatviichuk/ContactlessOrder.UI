@@ -15,46 +15,17 @@ export class CateringService extends AuthService {
     super(_router, _http);
   }
 
-  public getCompany() {
-    return this._http.get<any>(`${this.url}/api/Companies`).toPromise();
+  public getMenu(): Promise<any[]> {
+    return this._http.get<any[]>(`${this.url}/api/Caterings/Menu`).toPromise();
   }
 
-  public getCompanyLogo() {
+  public updateMenuOption(id: any, formValue: any) {
     return this._http
-      .get(`${this.url}/api/Companies/Logo`, { responseType: 'blob' })
+      .put<void>(`${this.url}/api/Caterings/Menu/${id}`, formValue)
       .toPromise();
   }
 
-  public updateCompanyData(data) {
-    const formData = serialize(data, {
-      nullsAsUndefineds: true,
-      indices: true,
-    });
-
-    if (data.logo) {
-      formData.append('logo', data.logo, data.logo.name);
-    }
-
-    return this._http
-      .put<void>(`${this.url}/api/Companies/Update`, formData)
-      .toPromise();
-  }
-
-  public getCatering(): Promise<any[]> {
-    return this._http
-      .get<any[]>(`${this.url}/api/Companies/Caterings`)
-      .toPromise();
-  }
-
-  public createCatering(data: any) {
-    return this._http
-      .post<void>(`${this.url}/api/Companies/Caterings`, data)
-      .toPromise();
-  }
-
-  public updateCatering(id: any, data: any) {
-    return this._http
-      .put<void>(`${this.url}/api/Companies/Caterings/${id}`, data)
-      .toPromise();
+  public getOrders(): Promise<any[]> {
+    return this._http.get<any[]>(`${this.url}/api/Caterings/Orders`).toPromise();
   }
 }

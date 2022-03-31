@@ -46,7 +46,7 @@ export class CateringLoginComponent implements OnInit {
       const formValue = this.loginForm.value;
       data = await this.authService.loginCatering(formValue.login, formValue.password);
 
-      this.loginSharedService.handleToken(data.token, null);
+      this.loginSharedService.handleToken(data.token, "/catering");
     } catch (err) {
       this.sharedService.showRequestError(err);
     }

@@ -5,44 +5,39 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import { Subject } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { CateringService } from '../catering.service';
-import { ManageMenuItemComponent } from './manage-menu-item/manage-menu-item.component';
+import { CateringService } from '../../catering.service';
+import { PreviewOrderComponent } from './preview-order/preview-order.component';
 
 @Component({
-  selector: 'app-catering',
-  templateUrl: './catering.component.html',
-  styleUrls: ['./catering.component.scss'],
+  selector: 'app-orders',
+  templateUrl: './orders.component.html',
+  styleUrls: ['./orders.component.scss'],
 })
-export class CateringComponent implements OnInit, OnDestroy {
-  public menu = [];
-  public selectedMenuItem = null;
+export class OrdersComponent implements OnInit, OnDestroy {
+  public orders = [];
+  public selectedOrder = null;
 
-  public menuGridOptions: GridOptions = {
+  public ordersGridOptions: GridOptions = {
     columnDefs: [
       {
-        headerName: 'Опції меню',
-        field: 'name',
+        headerName: '№ Замовлення',
+        field: 'number',
       },
       {
-        headerName: 'Опис',
-        field: 'description',
+        headerName: 'Загальна вартість',
+        field: 'totalCost',
       },
       {
-        headerName: 'Цiнa',
-        field: 'price',
+        headerName: 'Статус',
+        field: 'statusName',
         valueGetter: (params) => params.data.price + 'грн.',
       },
       {
-        headerName: 'Доступно для замовлення',
-        field: 'available',
-        valueGetter: (params) => (params.data.available ? 'Так' : 'Ні'),
-      },
-      {
-        headerName: '',
-        flex: 0,
-        width: 50,
-        cellRenderer: () => `<i class="fa fa-pencil"></i>`,
-        onCellClicked: (params) => this.editMenuItem(),
+        headerName: 'Деталі замовлення',
+        headerClass: 'grid-header-centered',
+        cellClass: 'grid-cell-centered',
+        cellRenderer: () => `<i class="fa fa-print"></i>`,
+        onCellClicked: (params) => this.previewOrder(),
       },
     ],
 
@@ -69,7 +64,7 @@ export class CateringComponent implements OnInit, OnDestroy {
     stopEditingWhenCellsLoseFocus: true,
     suppressRowTransform: true,
 
-    onRowSelected: (event) => this.selectMenuItem(event),
+    onRowSelected: (event) => this.selectOrder(event),
 
     onCellFocused: (event) =>
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
@@ -97,11 +92,11 @@ export class CateringComponent implements OnInit, OnDestroy {
 
   private async getMenu() {
     try {
-      this.menu = await this.cateringService.getMenu();
+      this.orders = await this.cateringService.getOrders();
 
-      if (this.selectedMenuItem) {
-        this.selectedMenuItem = this.menu.find(
-          (e) => e.id === this.selectedMenuItem.id
+      if (this.selectedOrder) {
+        this.selectedOrder = this.orders.find(
+          (e) => e.id === this.selectedOrder.id
         );
       }
 
@@ -111,24 +106,24 @@ export class CateringComponent implements OnInit, OnDestroy {
     }
   }
 
-  private selectMenuItem(event: RowSelectedEvent) {
+  private selectOrder(event: RowSelectedEvent) {
     if (!event.node.isSelected()) {
       return;
     }
 
-    this.selectedMenuItem = event.data;
+    this.selectedOrder = event.data;
 
     this.cdr.markForCheck();
   }
 
-  public editMenuItem() {
+  public previewOrder() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '600px';
-    dialogConfig.data = { ...this.selectedMenuItem, edit: true };
+    dialogConfig.data = { ...this.selectedOrder };
 
     return this.dialog
-      .open(ManageMenuItemComponent, dialogConfig)
+      .open(PreviewOrderComponent, dialogConfig)
       .afterClosed()
       .subscribe((result) => {
         if (result?.success) {

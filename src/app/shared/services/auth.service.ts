@@ -107,7 +107,7 @@ export class AuthService {
 
     const user = jwtHelper.decodeToken(token);
 
-    return user.CompanyId !== '';
+    return user.CompanyId && user.CompanyId !== '';
   }
 
   public isCatering(): boolean {

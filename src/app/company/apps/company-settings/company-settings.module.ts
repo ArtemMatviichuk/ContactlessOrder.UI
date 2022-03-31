@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ManageCateringComponent } from './company-settings/caterings/manage-catering/manage-catering.component';
 import { MenuComponent } from './company-settings/menu/menu.component';
 import { NewMenuItemComponent } from './company-settings/menu/new-menu-item/new-menu-item.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { NewMenuItemComponent } from './company-settings/menu/new-menu-item/new-
     AgGridModule,
     BlockUIModule,
     NgbModule,
+    NgSelectModule,
   ],
   providers: [CompanySettingsService],
 })

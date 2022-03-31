@@ -15,7 +15,26 @@
     ></textarea>
   </mat-form-field>
 
-  <mat-slide-toggle formControlName="fullDay"> Цілодобово </mat-slide-toggle>
+  <div class="d-flex" style="column-gap: 20px;">
+    <mat-slide-toggle formControlName="fullDay" style="margin-top: 5px;"> Цілодобово </mat-slide-toggle>
+
+    <ng-select
+      style="width: 100%; margin-top: -15px;"
+      bindValue="id"
+      bindLabel="name"
+      placeholder="Позиції меню"
+      appendTo="body"
+      [items]="menuItems"
+      [virtualScroll]="true"
+      [notFoundText]="'Пусто'"
+      [multiple]="true"
+      [closeOnSelect]="false"
+      formControlName="menuIds"
+    >
+    </ng-select>
+
+    <mat-checkbox [(ngModel)]="allMenuItems" (change)="allItemsChange">Всі</mat-checkbox>
+  </div>
 
   <div class="d-flex justify-content-between" style="line-height: 110px">
     <label>Відкриття</label>

@@ -171,6 +171,12 @@ export class CateringsComponent implements OnInit, OnDestroy {
     try {
       this.caterings = await this.companySettingsService.getCatering();
 
+      if (this.selectedCatering) {
+        this.selectedCatering = this.caterings.find(
+          (e) => e.id === this.selectedCatering.id
+        );
+      }
+
       this.cdr.markForCheck();
     } catch (error) {
       this.sharedService.showRequestError(error);
