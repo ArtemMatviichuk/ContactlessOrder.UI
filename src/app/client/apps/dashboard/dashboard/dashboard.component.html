@@ -1,2 +1,8 @@
-<h1>It fucking works!</h1>
-<div #map style="width:100%;height:400px"></div>
+<div #map style="width: 100%; height: 400px"></div>
+
+<div
+  *ngIf="selectedPoint"
+  style="height: -webkit-fill-available; margin-top: 20px"
+>
+  <app-preview-catering [catering]="selectedPoint"></app-preview-catering>
+</div>
