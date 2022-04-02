@@ -9,12 +9,11 @@ const routes: Routes = [
     path: '',
     component: FullComponent,
     children: [
-      { path: '', redirectTo: '/' + APP_ROUTES.DASHBOARD, pathMatch: 'full' },
       {
-        path: APP_ROUTES.DASHBOARD,
+        path: '',
         loadChildren: () =>
-          import('../apps/dashboard/dashboard.module').then(
-            (m) => m.DashboardModule
+          import('../client/client.module').then(
+            (m) => m.ClientModule
           ),
       },
       {

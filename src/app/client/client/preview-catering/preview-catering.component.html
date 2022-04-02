@@ -1,0 +1,90 @@
+<h3>{{ catering.label }}</h3>
+
+<div style="position: relative">
+  <p>{{ catering.services }}</p>
+  <span style="position: absolute; right: 0; top: -35px">{{
+    catering.fullDay ? "Цілодобово" : getTime()
+  }}</span>
+</div>
+
+<div class="options">
+  <div *ngFor="let item of menu; let i = index" class="option-container">
+    <div class="option-image-container">
+      <img class="option-image" [src]="item.firstPictureUrl" />
+    </div>
+    <div class="option-data-container">
+      <div class="option-text-container">
+        <h5 class="option-name">{{ item.name }}</h5>
+        <p class="option-description">{{ item.description }}</p>
+      </div>
+
+      <div class="full-selectable-container">
+        <div class="option-selectable-container">
+          <div class="change-qty-btn">
+            <button
+              class="btn btn-primary"
+              [disabled]="item.disableSelectSmallerOption"
+              (click)="smallerOption(i)"
+            >
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          </div>
+
+          <ng-container *ngFor="let option of item.options">
+            <div
+              *ngIf="option.id === item.selectedOptionId"
+              class="option-item"
+            >
+              <div>{{ option.name }}</div>
+              <div style="height: 20px; font-size: 12px; color: red">
+                {{ option.available ? "" : "Недоступно" }}
+              </div>
+              <div>{{ option.price }} грн.</div>
+            </div>
+          </ng-container>
+
+          <div class="change-qty-btn">
+            <button
+              class="btn btn-primary"
+              [disabled]="item.disableSelectBiggerOption"
+              (click)="biggerOption(i)"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="select-qty-container">
+          <div>
+            <button
+              class="btn btn-primary"
+              [disabled]="item.qty === 1"
+              (click)="subtractQty(i)"
+            >
+              -
+            </button>
+          </div>
+
+          <div class="qty-price-container">
+            <div>Кількість</div>
+
+            <div style="margin-bottom: 45px; margin-top: 20px">
+              {{ item.qty }}
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn-primary" (click)="addQty(i)">+</button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <div style="line-height: 38px;">Загальна ціна: {{ item.totalPrice }} грн.</div>
+          <button class="btn btn-primary" [disabled]="item.disabled" (click)="addToCart(item)">
+            Додати до кошику
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

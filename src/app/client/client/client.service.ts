@@ -30,4 +30,24 @@ export class ClientService extends AuthService {
       .get<any[]>(`${this.url}/api/Client/Caterings/${id}/Menu`)
       .toPromise();
   }
+
+  public getMenuItemPictureUrl(id: any) {
+    return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
+  }
+
+  public getOptions(cartItems: any[]) {
+    var params = new HttpParams();
+
+    cartItems.forEach((item, i) => {
+      for (const key in item) {
+        if (Object.prototype.hasOwnProperty.call(item, key)) {
+          params = params.append(`value[${i}].${key}`, item[key]);
+        }
+      }
+    });
+
+    return this._http
+      .get<any[]>(`${this.url}/api/Client/Cart`, { params })
+      .toPromise();
+  }
 }

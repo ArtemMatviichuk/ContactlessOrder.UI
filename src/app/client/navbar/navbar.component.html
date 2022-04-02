@@ -1,8 +1,24 @@
-<nav class="navbar navbar-light bg-dark" style="padding: 10px 20px">
-  <a class="navbar-brand" [routerLink]="'/dashboard'" style="color: white;">
-    <img [src]="logoPath" width="30" height="30" class="d-inline-block align-top" alt="">
+<nav class="navbar navbar-expand-lg navbar-light bg-dark" style="padding: 10px 20px">
+  <a class="navbar-brand" [routerLink]="'/dashboard'" style="color: white">
+    <img
+      [src]="logoPath"
+      width="30"
+      height="30"
+      class="d-inline-block align-top"
+      alt=""
+    />
     CONTACTLESS ORDER
   </a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="'/cart'"
+          ><i class="fa-solid fa-cart-shopping" style="color: white;font-size: 20px;"></i
+        ></a>
+      </li>
+    </ul>
+  </div>
 
   <button class="btn btn-danger" (click)="logout()">Вийти</button>
 </nav>
