@@ -31,19 +31,21 @@ export class ClientService extends AuthService {
       .toPromise();
   }
 
+  public getOptionPictures(id: any) {
+    return this._http
+      .get<any[]>(`${this.url}/api/Client/Menu/${id}/Pictures`)
+      .toPromise();
+  }
+
   public getMenuItemPictureUrl(id: any) {
     return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
   }
 
-  public getOptions(cartItems: any[]) {
-    var params = new HttpParams();
+  public getOptions(optionIds: any[]) {
+    let params = new HttpParams();
 
-    cartItems.forEach((item, i) => {
-      for (const key in item) {
-        if (Object.prototype.hasOwnProperty.call(item, key)) {
-          params = params.append(`value[${i}].${key}`, item[key]);
-        }
-      }
+    optionIds.forEach((e) => {
+      params = params.append('value', e);
     });
 
     return this._http

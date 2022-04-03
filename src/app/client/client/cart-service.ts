@@ -24,6 +24,26 @@ export class CartService {
     localStorage.setItem(this.cartName, JSON.stringify(cart));
   }
 
+  public setItem(id: any, qty: any) {
+    let cartString = localStorage.getItem(this.cartName);
+    let cart = null;
+
+    if (cartString) {
+      cart = JSON.parse(cartString);
+      const index = cart.findIndex((e) => e.id === id);
+
+      if (index !== -1) {
+        cart[index].qty = qty;
+      } else {
+        cart.push({ id, qty });
+      }
+    } else {
+      cart = [{ id, qty }];
+    }
+
+    localStorage.setItem(this.cartName, JSON.stringify(cart));
+  }
+
   public removeItem(id) {
     let cartString = localStorage.getItem(this.cartName);
 
@@ -34,7 +54,7 @@ export class CartService {
       localStorage.setItem(this.cartName, JSON.stringify(cart));
     }
   }
-  
+
   public getCart(): any[] {
     let cartString = localStorage.getItem(this.cartName);
 

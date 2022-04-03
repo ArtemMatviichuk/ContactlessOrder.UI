@@ -1,0 +1,83 @@
+<ng-container *ngIf="options.length > 0"
+  ><h4 style="margin-bottom: 20px">{{ options[0]?.companyName }}</h4>
+
+  <div *ngFor="let item of options" class="option-item row">
+    <div
+      class="col-lg-2 col-md-2 col-sm-12"
+      style="cursor: pointer"
+      (dblclick)="openPictureGallery(item.id)"
+    >
+      <img
+        style="max-width: 100%; max-height: 100%"
+        [src]="item.firstPictureUrl"
+      />
+    </div>
+
+    <div
+      class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center align-items-center"
+      style="margin: 10px auto"
+    >
+      <div>
+        {{ item.name }}
+      </div>
+    </div>
+
+    <div
+      class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center align-items-center"
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <button
+          class="btn btn-primary"
+          [disabled]="item.qty === 1"
+          (click)="changeQty(item.id, -1)"
+        >
+          <i class="fa fa-minus" aria-hidden="true"></i>
+        </button>
+
+        <div style="line-height: 38px">{{ item.qty }}</div>
+
+        <button class="btn btn-primary" (click)="changeQty(item.id, 1)">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="col-lg-3 col-md-3 col-sm-12 d-flex justify-content-center align-items-center"
+      style="margin: 10px auto"
+    >
+      <div>
+        Ціна:
+        {{
+          item.qty + " x " + item.price + " = " + item.qty * item.price + "грн."
+        }}
+      </div>
+    </div>
+
+    <div
+      class="col-lg-1 col-md-1 col-sm-12 d-flex justify-content-center align-items-center"
+      style="margin: 10px auto"
+    >
+      <button class="btn btn-danger" (click)="removeCartItem(item.id)">
+        <i class="fa fa-trash"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row justify-content-end">
+    <div
+      class="col-lg-9 col-md-7 col-sm-12 total-price"
+      style="line-height: 38px; text-align: right"
+    >
+      Разом до сплати: {{ getTotalPrice() + "грн." }}
+    </div>
+
+    <div
+      class="col-lg-3 col-md-4 col-sm-12 d-flex justify-content-center align-items-center"
+    >
+      <button class="btn btn-warning" (click)="toPayment()">
+        Перейти до оплати
+      </button>
+    </div>
+  </div>
+</ng-container>

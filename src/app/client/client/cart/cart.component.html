@@ -1,6 +1,15 @@
 <div class="container">
-    <h4>Кошик</h4>
-    <div *ngFor="let item of cartItems">
-        
+  <h3 style="margin-bottom: 20px">Кошик</h3>
+  <div class="cart-items-container">
+    <div
+      *ngFor="let item of cartItems; let i = index"
+      class="cart-item-container"
+    >
+      <app-cart-catering
+        [options]="item"
+        (onAllDeleted)="removeitems(i)"
+        (onPaymentDone)="removeitems(i)"
+      ></app-cart-catering>
     </div>
+  </div>
 </div>
