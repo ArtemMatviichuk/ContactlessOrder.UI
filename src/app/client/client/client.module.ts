@@ -10,7 +10,9 @@ import { PreviewCateringComponent } from './preview-catering/preview-catering.co
 import { CartCateringComponent } from './cart/cart-catering/cart-catering.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { GooglePayButtonModule } from '@google-pay/button-angular';
-import { PaymentComponent } from './cart/payment/payment.component';
+import { PaymentComponent } from './payment/payment.component';
+import { OrdersComponent } from './orders/orders.component';
+import { ClientSharedService } from './client-shared.service';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { PaymentComponent } from './cart/payment/payment.component';
     CartComponent,
     CartCateringComponent,
     PaymentComponent,
+    OrdersComponent,
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,6 @@ import { PaymentComponent } from './cart/payment/payment.component';
     AgGridModule,
     GooglePayButtonModule,
   ],
-  providers: [ClientService, CartService],
+  providers: [ClientService, CartService, ClientSharedService],
 })
 export class ClientModule {}

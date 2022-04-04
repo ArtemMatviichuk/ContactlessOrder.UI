@@ -1,4 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-dark" style="padding: 10px 20px">
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-dark"
+  style="padding: 10px 20px"
+>
   <a class="navbar-brand" [routerLink]="'/dashboard'" style="color: white">
     <img
       [src]="logoPath"
@@ -14,11 +17,19 @@
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" [routerLink]="'/cart'"
-          ><i class="fa-solid fa-cart-shopping" style="color: white;font-size: 20px;"></i
+          ><i
+            class="fa-solid fa-cart-shopping"
+            style="color: white; font-size: 20px"
+          ></i
+        ></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="'/orders'"
+          ><i class="fa-solid fa-box" style="color: white; font-size: 20px"></i
         ></a>
       </li>
     </ul>
   </div>
-
   <button class="btn btn-danger" (click)="logout()">Вийти</button>
 </nav>

@@ -1,0 +1,16 @@
+<h3>Додати коментар до замовлення</h3>
+
+<mat-form-field>
+  <textarea
+    matInput
+    [formControl]="commentCtrl"
+    placeholder="Коментар"
+    rows="4"
+    style="resize: none"
+  ></textarea>
+</mat-form-field>
+
+<div class="d-flex flex-row-reverse" style="column-gap: 20px;">
+  <button class="btn btn-primary" (click)="save()">Створити замовлення</button>
+  <button class="btn btn-danger" (click)="close()">Відміна</button>
+</div>

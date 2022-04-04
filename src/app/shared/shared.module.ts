@@ -27,6 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer/checkbox-cell-renderer.component';
+import { DialogTextComponent } from './dialog-text/dialog-text.component';
 import { ImageCellRendererComponent } from './image-cell-renderer/image-cell-renderer.component';
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
@@ -49,6 +50,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     ImageCellRendererComponent,
     ImageGalleryComponent,
     PicturesSelectorComponent,
+    DialogTextComponent,
   ],
   imports: [
     CommonModule,
@@ -119,6 +121,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     ImageCellRendererComponent,
     ImageGalleryComponent,
     PicturesSelectorComponent,
+    DialogTextComponent,
   ],
 })
 export class SharedModule {}

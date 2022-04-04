@@ -7,11 +7,13 @@ import {
   Output,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DialogTextComponent } from 'src/app/shared/dialog-text/dialog-text.component';
 import { ImageGalleryComponent } from 'src/app/shared/image-gallery/image-gallery.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CartService } from '../../cart-service';
+import { ClientSharedService } from '../../client-shared.service';
 import { ClientService } from '../../client.service';
-import { PaymentComponent } from '../payment/payment.component';
+import { PaymentComponent } from '../../payment/payment.component';
 
 @Component({
   selector: 'app-cart-catering',
@@ -28,6 +30,7 @@ export class CartCateringComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private clientService: ClientService,
+    private clientSharedService: ClientSharedService,
     private cartService: CartService,
     private sharedService: SharedService,
     private cdr: ChangeDetectorRef
@@ -69,15 +72,29 @@ export class CartCateringComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '600px';
-    dialogConfig.data = { totalPrice: this.getTotalPrice() };
 
     this.dialog
-      .open(PaymentComponent, dialogConfig)
+      .open(DialogTextComponent, dialogConfig)
       .afterClosed()
-      .subscribe((result) => {
+      .subscribe(async (result) => {
         if (result?.success) {
-          this.options.forEach((e) => this.cartService.removeItem(e.id));
-          this.onPaymentDone.next();
+          try {
+            const orderId = await this.clientService.createOrder({
+              comment: result.value,
+              positions: this.options.map((e) => ({
+                optionId: e.cateringOptionId,
+                quantity: e.qty,
+              })),
+            });
+
+            this.options.forEach(e => this.cartService.removeItem(e.id));
+            this.onAllDeleted.emit();
+
+            this.clientSharedService.openPaymentComponent(orderId);
+          } catch (error) {
+            this.sharedService.showRequestError(error);
+            return;
+          }
         }
       });
   }
