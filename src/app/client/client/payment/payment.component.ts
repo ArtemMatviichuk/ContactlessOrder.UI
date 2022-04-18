@@ -39,7 +39,7 @@ export class PaymentComponent implements OnInit {
     transactionInfo: {
       totalPriceStatus: 'FINAL',
       totalPriceLabel: 'Total',
-      totalPrice: '100',
+      totalPrice: '0',
       currencyCode: 'UAH',
       countryCode: 'UA',
     },

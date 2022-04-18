@@ -93,7 +93,7 @@ export class SharedService {
       return null;
     }
 
-    return formatDate(value, 'MM/dd/yyyy h:mm a', 'en-US');
+    return formatDate(value, 'dd/MM/yyyy HH:mm ', 'en-US');
   }
 
   public showTemplate(htmlTemplate: string, width?: string) {

@@ -1,0 +1,17 @@
+.image-container {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 20px;
+  }
+}
+
+.position-container {
+  flex-direction: row;
+}

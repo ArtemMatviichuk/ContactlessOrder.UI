@@ -26,6 +26,12 @@ export class CateringService extends AuthService {
   }
 
   public getOrders(): Promise<any[]> {
-    return this._http.get<any[]>(`${this.url}/api/Caterings/Orders`).toPromise();
+    return this._http
+      .get<any[]>(`${this.url}/api/Caterings/Orders`)
+      .toPromise();
+  }
+
+  public getMenuItemPictureUrl(id: any) {
+    return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
   }
 }

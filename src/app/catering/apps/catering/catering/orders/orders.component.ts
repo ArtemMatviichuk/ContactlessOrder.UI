@@ -25,12 +25,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Загальна вартість',
-        field: 'totalCost',
+        field: 'totalPrice',
+        valueGetter: (params) => params.data.totalPrice + 'грн.',
       },
       {
         headerName: 'Статус',
         field: 'statusName',
-        valueGetter: (params) => params.data.price + 'грн.',
       },
       {
         headerName: 'Деталі замовлення',
