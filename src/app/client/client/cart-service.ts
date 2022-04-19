@@ -10,7 +10,9 @@ export class CartService {
 
     if (cartString) {
       cart = JSON.parse(cartString);
-      const index = cart.findIndex((e) => e.id === item.id);
+      const index = cart.findIndex(
+        (e) => e.id === item.id && e.cateringId == item.cateringId
+      );
 
       if (index !== -1) {
         cart[index].qty += item.qty;
@@ -24,32 +26,35 @@ export class CartService {
     localStorage.setItem(this.cartName, JSON.stringify(cart));
   }
 
-  public setItem(id: any, qty: any) {
+  public setItem(id: any, cateringId: number, qty: any) {
     let cartString = localStorage.getItem(this.cartName);
     let cart = null;
 
     if (cartString) {
       cart = JSON.parse(cartString);
-      const index = cart.findIndex((e) => e.id === id);
+      const index = cart.findIndex(
+        (e) => e.id === id && e.cateringId === cateringId
+      );
 
       if (index !== -1) {
         cart[index].qty = qty;
       } else {
-        cart.push({ id, qty });
+        cart.push({ id, cateringId, qty });
       }
     } else {
-      cart = [{ id, qty }];
+      cart = [{ id, cateringId, qty }];
     }
 
     localStorage.setItem(this.cartName, JSON.stringify(cart));
   }
 
-  public removeItem(id) {
+  public removeItem(id, cateringId) {
     let cartString = localStorage.getItem(this.cartName);
 
     if (cartString) {
       let cart = JSON.parse(cartString);
-      cart = cart.filter((e) => e.id !== id);
+
+      cart = cart.filter((e) => e.id !== id || e.cateringId !== cateringId);
 
       localStorage.setItem(this.cartName, JSON.stringify(cart));
     }

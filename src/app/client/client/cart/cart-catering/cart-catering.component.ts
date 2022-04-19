@@ -44,7 +44,7 @@ export class CartCateringComponent implements OnInit {
     if (value > 0 || this.options[index].qty > 1) {
       this.options[index].qty += value;
 
-      this.cartService.setItem(id, this.options[index].qty);
+      this.cartService.setItem(id, this.options[index].cateringId, this.options[index].qty);
     }
   }
 
@@ -52,6 +52,8 @@ export class CartCateringComponent implements OnInit {
     const result = await this.sharedService.openConfirmDeleteDialog();
 
     if (result === 'delete') {
+      const cateringId = this.options[0].cateringId;
+
       if (this.options.length > 1) {
         this.options = this.options.filter((e) => e.id !== id);
       } else {
@@ -59,7 +61,7 @@ export class CartCateringComponent implements OnInit {
         this.onAllDeleted.next();
       }
 
-      this.cartService.removeItem(id);
+      this.cartService.removeItem(id, cateringId);
       this.cdr.markForCheck();
     }
   }
@@ -87,7 +89,7 @@ export class CartCateringComponent implements OnInit {
               })),
             });
 
-            this.options.forEach(e => this.cartService.removeItem(e.id));
+            this.options.forEach(e => this.cartService.removeItem(e.id, e.cateringId));
             this.onAllDeleted.emit();
 
             this.clientSharedService.openPaymentComponent(orderId);

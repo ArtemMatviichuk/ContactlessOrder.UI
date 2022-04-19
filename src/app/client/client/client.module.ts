@@ -13,6 +13,7 @@ import { GooglePayButtonModule } from '@google-pay/button-angular';
 import { PaymentComponent } from './payment/payment.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ClientSharedService } from './client-shared.service';
+import { ClientOrderNotificationService } from './client-order-notification.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,10 @@ import { ClientSharedService } from './client-shared.service';
     AgGridModule,
     GooglePayButtonModule,
   ],
-  providers: [ClientService, CartService, ClientSharedService],
+  providers: [
+    ClientService,
+    CartService,
+    ClientSharedService,
+  ],
 })
 export class ClientModule {}

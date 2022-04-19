@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LOGO_IMAGE } from 'src/app/shared/constants/images';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ClientOrderNotificationService } from '../client/client-order-notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,12 +11,19 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class ClientNavbarComponent implements OnInit, OnDestroy {
   public logoPath = LOGO_IMAGE;
-  
-  constructor(private authService: AuthService) {}
 
-  public ngOnInit() {}
+  constructor(
+    private authService: AuthService,
+    private notificationService: ClientOrderNotificationService
+  ) {}
 
-  public ngOnDestroy() {}
+  public async ngOnInit() {
+    await this.notificationService.connect();
+  }
+
+  public async ngOnDestroy() {
+    await this.notificationService.disconnect();
+  }
 
   public logout() {
     this.authService.logout();

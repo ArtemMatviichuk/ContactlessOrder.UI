@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subject, takeUntil } from 'rxjs';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
 import { DialogTextComponent } from 'src/app/shared/dialog-text/dialog-text.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { ClientOrderNotificationService } from '../client-order-notification.service';
 import { ClientSharedService } from '../client-shared.service';
 import { ClientService } from '../client.service';
 
@@ -12,14 +14,17 @@ import { ClientService } from '../client.service';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss'],
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
   public orders = [];
   public orderStatusValues = ORDER_STATUS_VALUES;
+
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private dialog: MatDialog,
     private clientService: ClientService,
     private clientSharedService: ClientSharedService,
+    private notificationService: ClientOrderNotificationService,
     private sharedService: SharedService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -27,7 +32,14 @@ export class OrdersComponent implements OnInit {
   public async ngOnInit() {
     await this.getOrders();
 
+    this.subscribeToChanges();
+
     this.cdr.markForCheck();
+  }
+
+  public ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   public getPositionImage(id) {
@@ -50,5 +62,18 @@ export class OrdersComponent implements OnInit {
     } catch (error) {
       this.sharedService.showRequestError(error);
     }
+  }
+
+  private subscribeToChanges() {
+    this.notificationService
+      .onOrderUpdated()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((value) => {
+        console.log(value)
+        const index = this.orders.findIndex(e => e.id === value.id);
+        this.orders.splice(index, 1, value);
+
+        this.cdr.detectChanges();
+      });
   }
 }

@@ -29,7 +29,7 @@ export class CartComponent implements OnInit {
   private async getData() {
     const cartItems = this.cartService.getCart();
     const orderItems = await this.clientService.getOptions(
-      cartItems.map((e) => e.id)
+      cartItems.map((e) => ({ id: e.cateringId, value: e.id }))
     );
 
     orderItems.forEach((e) => {

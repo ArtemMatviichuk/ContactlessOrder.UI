@@ -44,10 +44,11 @@ export class ClientService extends AuthService {
   public getOptions(optionIds: any[]) {
     let params = new HttpParams();
 
-    optionIds.forEach((e) => {
-      params = params.append('value', e);
+    optionIds.forEach((e, i) => {
+      params = params.append(`value[${i}].id`, e.id);
+      params = params.append(`value[${i}].value`, e.value);
     });
-
+    
     return this._http
       .get<any[]>(`${this.url}/api/Client/Cart`, { params })
       .toPromise();

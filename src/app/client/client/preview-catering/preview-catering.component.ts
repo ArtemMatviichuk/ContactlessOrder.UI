@@ -75,6 +75,7 @@ export class PreviewCateringComponent implements OnChanges {
     this.cartService.addItem({
       id: item.selectedOptionId,
       qty: item.qty,
+      cateringId: this.catering.id,
     });
 
     this.setMenuItemDefaultState(item);
