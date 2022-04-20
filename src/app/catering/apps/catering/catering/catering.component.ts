@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CateringService } from '../catering.service';
 import { ManageMenuItemComponent } from './manage-menu-item/manage-menu-item.component';
+import { ManageModificationsComponent } from './manage-modifications/manage-modifications.component';
 
 @Component({
   selector: 'app-catering',
@@ -15,7 +16,9 @@ import { ManageMenuItemComponent } from './manage-menu-item/manage-menu-item.com
 })
 export class CateringComponent implements OnInit, OnDestroy {
   public menu = [];
+  public menuModifications = [];
   public selectedMenuItem = null;
+  public selectedMenuModification = null;
 
   public menuGridOptions: GridOptions = {
     columnDefs: [
@@ -75,6 +78,36 @@ export class CateringComponent implements OnInit, OnDestroy {
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
   };
 
+  public modificationsGridOptions: GridOptions = {
+    columnDefs: [
+      {
+        headerName: 'Добавки до:',
+        field: 'name',
+        flex:1,
+      },
+      {
+        headerName: '',
+        width: 50,
+        cellRenderer: () => `<i class="fa fa-pencil"></i>`,
+        onCellClicked: (params) => this.editModifications(),
+      },
+    ],
+
+    rowSelection: 'single',
+    enableBrowserTooltips: true,
+
+    getRowId: (data) => data.data.id,
+
+    singleClickEdit: true,
+    stopEditingWhenCellsLoseFocus: true,
+    suppressRowTransform: true,
+
+    onRowSelected: (event) => this.selectModification(event),
+
+    onCellFocused: (event) =>
+      event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
+  };
+
   private onDestroy$ = new Subject<void>();
 
   constructor(
@@ -88,6 +121,7 @@ export class CateringComponent implements OnInit, OnDestroy {
 
   public async ngOnInit() {
     this.getMenu();
+    this.getModifications();
   }
 
   public ngOnDestroy() {
@@ -111,12 +145,38 @@ export class CateringComponent implements OnInit, OnDestroy {
     }
   }
 
+  private async getModifications() {
+    try {
+      this.menuModifications = await this.cateringService.getModifications();
+
+      if (this.selectedMenuModification) {
+        this.selectedMenuModification = this.menuModifications.find(
+          (e) => e.id === this.selectedMenuModification.id
+        );
+      }
+
+      this.cdr.markForCheck();
+    } catch (error) {
+      this.sharedService.showRequestError(error);
+    }
+  }
+
   private selectMenuItem(event: RowSelectedEvent) {
     if (!event.node.isSelected()) {
       return;
     }
 
     this.selectedMenuItem = event.data;
+
+    this.cdr.markForCheck();
+  }
+
+  private selectModification(event: RowSelectedEvent) {
+    if (!event.node.isSelected()) {
+      return;
+    }
+
+    this.selectedMenuModification = event.data;
 
     this.cdr.markForCheck();
   }
@@ -129,6 +189,22 @@ export class CateringComponent implements OnInit, OnDestroy {
 
     return this.dialog
       .open(ManageMenuItemComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.success) {
+          this.getMenu();
+        }
+      });
+  }
+
+  public editModifications() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px';
+    dialogConfig.data = { ...this.selectedMenuModification, edit: true };
+
+    return this.dialog
+      .open(ManageModificationsComponent, dialogConfig)
       .afterClosed()
       .subscribe((result) => {
         if (result?.success) {

@@ -26,6 +26,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer/checkbox-cell-renderer.component';
 import { DialogTextComponent } from './dialog-text/dialog-text.component';
 import { ImageCellRendererComponent } from './image-cell-renderer/image-cell-renderer.component';
@@ -35,6 +36,7 @@ import { ModalTemplateComponent } from './modal-template/modal-template.componen
 import { ModalWarningComponent } from './modal-warning/modal-warning.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PicturesSelectorComponent } from './pictures/pictures.component';
+import { SelectItemsComponent } from './select-items/select-items.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { WarningDeletedComponent } from './warning-deleted/warning-deleted.component';
 
@@ -51,6 +53,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     ImageGalleryComponent,
     PicturesSelectorComponent,
     DialogTextComponent,
+    SelectItemsComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +85,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     MatRadioModule,
     MatSlideToggleModule,
     NgxGalleryModule,
+    NgSelectModule,
   ],
   exports: [
     MatTabsModule,
@@ -122,6 +126,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     ImageGalleryComponent,
     PicturesSelectorComponent,
     DialogTextComponent,
+    SelectItemsComponent,
   ],
 })
 export class SharedModule {}

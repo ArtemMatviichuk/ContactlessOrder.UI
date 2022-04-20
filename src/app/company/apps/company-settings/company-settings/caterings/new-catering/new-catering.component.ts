@@ -9,10 +9,12 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
+  MatDialogConfig,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
+import { SelectItemsComponent } from 'src/app/shared/select-items/select-items.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../../company-settings.service';
 
@@ -28,7 +30,6 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
   public form: FormGroup;
   public point: google.maps.Marker;
   public menuItems = [];
-  public allMenuItems = false;
 
   private onDestroy$ = new Subject<void>();
 
@@ -63,7 +64,7 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
-    this.setMap();
+    setTimeout(() => this.setMap());
   }
 
   public ngOnDestroy() {
@@ -123,12 +124,29 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogRef.close({ success: false });
   }
 
-  public allItemsChange() {
-    if (this.allMenuItems) {
-      this.form.controls.menuIds.patchValue(this.menuItems.map(e => e.id));
-    } else {
-      this.form.controls.menuIds.patchValue([]);
-    }
+  public selectMenu() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px';
+    dialogConfig.data = {
+      label: 'Оберіть меню',
+      placeholder: 'Позиції',
+      items: this.menuItems,
+      value: this.form.controls.menuIds.value,
+      multiple: true,
+      required: true,
+    };
+
+    return this.dialog
+      .open(SelectItemsComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.success) {
+          this.form.controls.menuIds.patchValue(result.value, {
+            emitEvent: false,
+          });
+        }
+      });
   }
 
   private async getMenuItems() {
