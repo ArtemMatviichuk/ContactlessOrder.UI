@@ -10,15 +10,13 @@ import { CateringRoutingModule } from './catering-routing.module';
 import { ManageMenuItemComponent } from './catering/manage-menu-item/manage-menu-item.component';
 import { PreviewOrderComponent } from './catering/orders/preview-order/preview-order.component';
 import { OrdersComponent } from './catering/orders/orders.component';
-import { ManageModificationsComponent } from './catering/manage-modifications/manage-modifications.component';
 
 @NgModule({
   declarations: [
     CateringComponent,
     ManageMenuItemComponent,
     OrdersComponent,
-    PreviewOrderComponent,
-    ManageModificationsComponent,
+    PreviewOrderComponent
   ],
   imports: [
     CommonModule,

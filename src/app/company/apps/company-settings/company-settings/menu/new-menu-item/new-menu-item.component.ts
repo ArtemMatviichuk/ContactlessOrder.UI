@@ -40,9 +40,7 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
   };
 
   public options = [];
-  public modifications = [];
   public selectedOption = null;
-  public selectedModification = null;
 
   public optionsGridOptions: GridOptions = {
     columnDefs: [
@@ -89,53 +87,7 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
   };
 
-  public modificationsGridOptions: GridOptions = {
-    columnDefs: [
-      {
-        headerName: 'Добавки',
-        field: 'name',
-        editable: true,
-      },
-      {
-        headerName: 'Ціна (грн.)',
-        field: 'price',
-        headerClass: 'grid-header-centered',
-        cellClass: 'grid-cell-centered',
-        editable: true,
-        type: 'numericColumn',
-      },
-      {
-        headerName: '',
-        flex: 0,
-        width: 50,
-        cellRenderer: () => `<i class="fa fa-trash"></i>`,
-        onCellClicked: (params) => this.deleteModification(),
-      },
-    ],
-
-    defaultColDef: {
-      flex: 1,
-
-      tooltipValueGetter: (params) => params.value,
-    },
-
-    rowSelection: 'single',
-    enableBrowserTooltips: true,
-
-    getRowId: (data) => data.data.id,
-
-    singleClickEdit: true,
-    stopEditingWhenCellsLoseFocus: true,
-    suppressRowTransform: true,
-
-    onRowSelected: (event) => this.selectModification(event),
-
-    onCellFocused: (event) =>
-      event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
-  };
-
   private nextOptionId = -1;
-  private nextModificationId = -1;
   private onDestroy$ = new Subject<void>();
 
   constructor(
@@ -183,21 +135,11 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  public addModification() {
-    const lastItem = this.modifications[this.options.length - 1];
-    if (!lastItem || (lastItem.name && lastItem.price)) {
-      this.modifications = [...this.modifications, { id: this.nextModificationId }];
-      this.nextModificationId--;
-      this.cdr.markForCheck();
-    }
-  }
-
   public async save() {
     const formValue = this.form.value;
     const data = {
       ...formValue,
       options: this.options.map((e) => (e.id > 0 ? e : { ...e, id: null })),
-      modifications: this.modifications.map((e) => (e.id > 0 ? e : { ...e, id: null })),
       pictures: this.picturesSelector.getUploadedPictureFiles(),
     };
 
@@ -236,7 +178,6 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
       this.form.patchValue(this.dialogData);
 
       this.options = this.dialogData.options;
-      this.modifications = this.dialogData.modifications;
     }
   }
 
@@ -266,16 +207,6 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private selectModification(event: RowSelectedEvent) {
-    if (!event.node.isSelected()) {
-      return;
-    }
-
-    this.selectModification = event.data;
-
-    this.cdr.markForCheck();
-  }
-
   private async deleteOption() {
     const result = await this.sharedService.openConfirmDeleteDialog(
       'Ви впевнені, що хочете ВИДАЛИТИ цей запис?'
@@ -286,15 +217,5 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
     }
 
     this.options = this.options.filter((e) => e.id !== this.selectedOption.id);
-  }
-
-  private async deleteModification() {
-    const result = await this.sharedService.openConfirmDeleteDialog();
-
-    if (result !== 'delete') {
-      return;
-    }
-
-    this.modifications = this.modifications.filter((e) => e.id !== this.selectedModification.id);
   }
 }

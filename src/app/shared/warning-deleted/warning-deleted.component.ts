@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
   styleUrls: ["./warning-deleted.component.scss"],
 })
 export class WarningDeletedComponent implements OnInit {
-  message = 'Ви впевнені, що хочете ВИДАЛИТИ цей запис?';
+  message = "Are you sure you want to DELETE selected record?";
   constructor(
     private dialogRef: MatDialogRef<WarningDeletedComponent>,
     @Inject(MAT_DIALOG_DATA) public requestData

@@ -18,10 +18,6 @@ export class CateringService extends AuthService {
   public getMenu(): Promise<any[]> {
     return this._http.get<any[]>(`${this.url}/api/Caterings/Menu`).toPromise();
   }
-  
-  public getModifications(): Promise<any[]> {
-    return this._http.get<any[]>(`${this.url}/api/Caterings/Modifications`).toPromise();
-  }
 
   public updateMenuOption(id: any, formValue: any) {
     return this._http
