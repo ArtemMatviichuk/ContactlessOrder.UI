@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
+  MatDialogConfig,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
@@ -19,6 +20,7 @@ import {
   PicturesSelectorComponent,
   PicturesSelectorOptions,
 } from 'src/app/shared/pictures/pictures.component';
+import { SelectItemsComponent } from 'src/app/shared/select-items/select-items.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../../company-settings.service';
 
@@ -40,6 +42,7 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
   };
 
   public options = [];
+  public modifications = [];
   public selectedOption = null;
 
   public optionsGridOptions: GridOptions = {
@@ -102,14 +105,16 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
     this.form = fb.group({
       name: [null, Validators.required],
       description: [null],
+      modifications: [null],
     });
   }
 
-  public ngOnInit() {
+  public async ngOnInit() {
     this.dialogRef.disableClose = true;
     this.dialogRef.backdropClick().subscribe(() => this.close());
     this.sharedService.validateFormFields(this.form);
 
+    await this.getModifications();
     this.setData();
   }
 
@@ -173,11 +178,44 @@ export class NewMenuItemComponent implements OnInit, OnDestroy {
     this.dialogRef.close({ success: false });
   }
 
+  public selectModifications() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '600px';
+    dialogConfig.data = {
+      label: 'Оберіть добавки',
+      placeholder: 'Добавки',
+      items: this.modifications,
+      value: this.form.controls.modifications.value,
+      multiple: true,
+      required: true,
+    };
+
+    return this.dialog
+      .open(SelectItemsComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.success) {
+          this.form.controls.modifications.patchValue(result.value, {
+            emitEvent: false,
+          });
+        }
+      });
+  }
+
   private setData() {
     if (!this.dialogData.add) {
       this.form.patchValue(this.dialogData);
 
       this.options = this.dialogData.options;
+    }
+  }
+
+  private async getModifications() {
+    try {
+      this.modifications = await this.companySettingsService.getModifications();
+    } catch (error) {
+      this.sharedService.showRequestError(error);
     }
   }
 

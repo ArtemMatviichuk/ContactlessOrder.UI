@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ dialogData.label }}</h2>
+
+<mat-dialog-content>
+  <mat-checkbox
+    *ngIf="dialogData.multiple"
+    [(ngModel)]="allItems"
+    (change)="onAllItems()"
+    >Всі</mat-checkbox
+  >
+
+  <ng-select
+    style="width: 100%"
+    [bindValue]="dialogData.bindValue ?? 'id'"
+    [bindLabel]="dialogData.bindLabel ?? 'name'"
+    [placeholder]="dialogData.placeholder"
+    appendTo="body"
+    [items]="dialogData.items"
+    [virtualScroll]="true"
+    [notFoundText]="'Пусто'"
+    [multiple]="dialogData.multiple"
+    [closeOnSelect]="!dialogData.multiple"
+    [formControl]="valueCtrl"
+  >
+  </ng-select>
+</mat-dialog-content>
+
+<mat-dialog-actions class="d-flex justify-content-center">
+  <button mat-raised-button (click)="save()">Зберегти</button>
+  <button mat-raised-button (click)="close()">Закрити</button>
+</mat-dialog-actions>

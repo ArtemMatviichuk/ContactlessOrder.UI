@@ -34,4 +34,14 @@ export class CateringService extends AuthService {
   public getMenuItemPictureUrl(id: any) {
     return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
   }
+  
+  public getModifications(): Promise<any[]> {
+    return this._http.get<any[]>(`${this.url}/api/Caterings/Modifications`).toPromise();
+  }
+
+  public updateModification(id: any, formValue: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Caterings/Modifications/${id}`, formValue)
+      .toPromise();
+  }
 }

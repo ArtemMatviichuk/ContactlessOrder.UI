@@ -13,6 +13,9 @@ import { ManageCateringComponent } from './company-settings/caterings/manage-cat
 import { MenuComponent } from './company-settings/menu/menu.component';
 import { NewMenuItemComponent } from './company-settings/menu/new-menu-item/new-menu-item.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NewModificationComponent } from './company-settings/modifications/new-modification/new-modification.component';
+import { ModificationsComponent } from './company-settings/modifications/modifications.component';
+import { ChangeModificationComponent } from './company-settings/modifications/change-modification/change-modification.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ManageCateringComponent,
     MenuComponent,
     NewMenuItemComponent,
+    ModificationsComponent,
+    NewModificationComponent,
+    ChangeModificationComponent,
   ],
   imports: [
     CommonModule,

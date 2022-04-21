@@ -1,26 +1,25 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
-import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { ImageCellRendererComponent } from 'src/app/shared/image-cell-renderer/image-cell-renderer.component';
-import { ImageGalleryComponent } from 'src/app/shared/image-gallery/image-gallery.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../company-settings.service';
-import { NewMenuItemComponent } from './new-menu-item/new-menu-item.component';
+import { ChangeModificationComponent } from './change-modification/change-modification.component';
+import { NewModificationComponent } from './new-modification/new-modification.component';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
+  selector: 'app-modifications',
+  templateUrl: './modifications.component.html',
+  styleUrls: ['./modifications.component.scss'],
 })
-export class MenuComponent implements OnInit {
-  public menuItems = [];
-  public selectedMenuItem = null;
+export class ModificationsComponent implements OnInit {
+  public modifications = [];
+  public selectedModification = null;
 
-  public menuGridOptions: GridOptions = {
+  public modificationsGridOptions: GridOptions = {
     columnDefs: [
       {
-        headerName: 'Опції меню',
+        headerName: 'Добавки',
         field: 'name',
       },
       {
@@ -28,14 +27,14 @@ export class MenuComponent implements OnInit {
         flex: 0,
         width: 50,
         cellRenderer: () => `<i class="fa fa-pencil"></i>`,
-        onCellClicked: (params) => this.editMenuItem(),
+        onCellClicked: (params) => this.editModification(),
       },
       {
         headerName: '',
         flex: 0,
         width: 50,
         cellRenderer: () => `<i class="fa fa-trash"></i>`,
-        onCellClicked: (params) => this.deleteMenuItem(),
+        onCellClicked: (params) => this.deleteModification(),
       },
     ],
 
@@ -66,7 +65,7 @@ export class MenuComponent implements OnInit {
     stopEditingWhenCellsLoseFocus: true,
     suppressRowTransform: true,
 
-    onRowSelected: (event) => this.selectMenuItem(event),
+    onRowSelected: (event) => this.selectModification(event),
 
     onCellFocused: (event) =>
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
@@ -80,42 +79,42 @@ export class MenuComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.getMenu();
+    this.getModifications();
   }
 
-  public addMenuItem() {
+  public addModification() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '600px';
     dialogConfig.data = { add: true };
 
     return this.dialog
-      .open(NewMenuItemComponent, dialogConfig)
+      .open(NewModificationComponent, dialogConfig)
       .afterClosed()
       .subscribe((result) => {
         if (result?.success) {
-          this.getMenu();
+          this.getModifications();
         }
       });
   }
 
-  public editMenuItem() {
+  public editModification() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '600px';
-    dialogConfig.data = { ...this.selectedMenuItem, edit: true };
+    dialogConfig.data = { ...this.selectedModification };
 
     return this.dialog
-      .open(NewMenuItemComponent, dialogConfig)
+      .open(ChangeModificationComponent, dialogConfig)
       .afterClosed()
       .subscribe((result) => {
         if (result?.success) {
-          this.getMenu();
+          this.getModifications();
         }
       });
   }
 
-  public async deleteMenuItem() {
+  public async deleteModification() {
     const result = await this.sharedService.openConfirmDeleteDialog(
       'Ви впевнені, що хочете ВИДАЛИТИ цю опцію з УСІХ меню?'
     );
@@ -125,29 +124,23 @@ export class MenuComponent implements OnInit {
     }
 
     try {
-      await this.companySettingsService.deleteMenuItem(
-        this.selectedMenuItem.id
+      await this.companySettingsService.deleteModification(
+        this.selectedModification.id
       );
+
+      this.getModifications();
     } catch (error) {
       this.sharedService.showRequestError(error);
     }
   }
 
-  private async getMenu() {
+  private async getModifications() {
     try {
-      const menuItems = await this.companySettingsService.getMenu();
+      this.modifications = await this.companySettingsService.getModifications();
 
-      menuItems.forEach((e) => {
-        e.firstPictureUrl = e.firstPictureId
-          ? this.companySettingsService.getMenuItemPictureUrl(e.firstPictureId)
-          : PLACEHOLDER_IMAGE;
-      });
-
-      this.menuItems = menuItems;
-
-      if (this.selectedMenuItem) {
-        this.selectedMenuItem = this.menuItems.find(
-          (e) => e.id === this.selectedMenuItem.id
+      if (this.selectedModification) {
+        this.selectedModification = this.modifications.find(
+          (e) => e.id === this.selectedModification.id
         );
       }
 
@@ -157,39 +150,13 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  private selectMenuItem(event: RowSelectedEvent) {
+  private selectModification(event: RowSelectedEvent) {
     if (!event.node.isSelected()) {
       return;
     }
 
-    this.selectedMenuItem = event.data;
+    this.selectedModification = event.data;
 
     this.cdr.markForCheck();
-  }
-
-  private async openPictureGallery() {
-    const pictures = await this.getPictures();
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = "900px";
-    dialogConfig.data = { pictures };
-
-    this.dialog.open(ImageGalleryComponent, dialogConfig);
-  }
-
-  private async getPictures() {
-    try {
-      const pictures = await this.companySettingsService.getMenuItemPictures(
-        this.selectedMenuItem.id
-      );
-
-      return pictures.map((i) => ({
-        fileName: i.fileName,
-        url: this.companySettingsService.getMenuItemPictureUrl(i.id),
-        id: i.id,
-      }));
-    } catch (error) {
-      this.sharedService.showRequestError(error);
-    }
   }
 }

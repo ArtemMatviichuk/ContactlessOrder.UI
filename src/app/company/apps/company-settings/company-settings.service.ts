@@ -128,4 +128,28 @@ export class CompanySettingsService extends AuthService {
   public getMenuItemPictureUrl(id: any) {
     return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
   }
+
+  public getModifications(): Promise<any[]> {
+    return this._http
+      .get<any[]>(`${this.url}/api/Companies/Modifications`)
+      .toPromise();
+  }
+
+  public createModifications(modifications: any[]) {
+    return this._http
+      .post<void>(`${this.url}/api/Companies/Modifications`, { value: modifications })
+      .toPromise();
+  }
+
+  public updateModification(id: any, data: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Companies/Modifications/${id}`, data)
+      .toPromise();
+  }
+
+  public deleteModification(id: any) {
+    return this._http
+      .delete<void>(`${this.url}/api/Companies/Modifications/${id}`)
+      .toPromise();
+  }
 }
