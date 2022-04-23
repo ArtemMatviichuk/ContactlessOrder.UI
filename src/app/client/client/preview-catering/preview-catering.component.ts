@@ -71,11 +71,16 @@ export class PreviewCateringComponent implements OnChanges {
     this.updateTotalPrice(index);
   }
 
+  public modificationsChange(index) {
+    this.updateTotalPrice(index);
+  }
+
   public addToCart(item) {
     this.cartService.addItem({
       id: item.selectedOptionId,
       qty: item.qty,
       cateringId: this.catering.id,
+      modificationIds: item.selectedModifications,
     });
 
     this.setMenuItemDefaultState(item);
@@ -105,6 +110,7 @@ export class PreviewCateringComponent implements OnChanges {
     item.totalPrice = item.options[0].price;
     item.disableSelectSmallerOption = true;
     item.disableSelectBiggerOption = item.options.length === 1;
+    item.selectedModifications = [];
     item.qty = 1;
   }
 
@@ -127,10 +133,16 @@ export class PreviewCateringComponent implements OnChanges {
   }
 
   private updateTotalPrice(index) {
+    const itemPrice = this.menu[index].options.find(
+      (o) => o.id === this.menu[index].selectedOptionId
+    ).price;
+
+    const modificationsPrice = this.menu[index].modifications
+      .filter((e) => this.menu[index].selectedModifications?.includes(e.id))
+      .map((e) => e.price)
+      .reduce((acc, cur) => acc + cur, 0);
+
     this.menu[index].totalPrice =
-      this.menu[index].qty *
-      this.menu[index].options.find(
-        (o) => o.id === this.menu[index].selectedOptionId
-      ).price;
+      this.menu[index].qty * (itemPrice + modificationsPrice);
   }
 }

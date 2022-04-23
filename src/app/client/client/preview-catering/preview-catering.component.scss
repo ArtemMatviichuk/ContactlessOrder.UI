@@ -75,8 +75,30 @@
         .qty-price-container {
           flex-direction: column;
           text-align: center;
+
         }
       }
+
+      .select-modifications-container {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .option-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    .option-image-container {
+      margin-right: 0;
+    }
+
+    .option-data-container {
+      width: 100%;
+      flex-direction: column;
     }
   }
 }

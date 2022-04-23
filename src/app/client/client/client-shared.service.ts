@@ -34,4 +34,11 @@ export class ClientSharedService {
         }
       });
   }
+  
+  public getModificationsPrice(item) {
+    return item.modifications
+      .filter((e) => item.selectedModificationIds?.includes(e.id))
+      .map((e) => e.price)
+      .reduce((acc, cur) => acc + cur, 0);
+  }
 }

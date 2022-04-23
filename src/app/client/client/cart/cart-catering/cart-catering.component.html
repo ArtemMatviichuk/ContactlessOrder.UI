@@ -14,11 +14,33 @@
     </div>
 
     <div
-      class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center align-items-center"
+      class="col-lg-3 col-md-3 col-sm-12 d-flex justify-content-between align-items-center flex-column"
       style="margin: 10px auto"
     >
       <div>
         {{ item.name }}
+      </div>
+
+      <div class="select-modifications-container">
+        <ng-select
+          *ngIf="item.modifications.length > 0"
+          [items]="item.modifications"
+          bindValue="id"
+          bindLabel="name"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          placeholder="Добавки"
+          appendTo="body"
+          [(ngModel)]="item.selectedModificationIds"
+          disabled="true"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="d-flex justify-content-between">
+              <div>{{ item.name }}</div>
+              <div>{{ item.price }} грн.</div>
+            </div>
+          </ng-template>
+        </ng-select>
       </div>
     </div>
 
@@ -29,36 +51,36 @@
         <button
           class="btn btn-primary"
           [disabled]="item.qty === 1"
-          (click)="changeQty(item.id, -1)"
+          (click)="changeQty(item, -1)"
         >
           <i class="fa fa-minus" aria-hidden="true"></i>
         </button>
 
         <div style="line-height: 38px">{{ item.qty }}</div>
 
-        <button class="btn btn-primary" (click)="changeQty(item.id, 1)">
+        <button class="btn btn-primary" (click)="changeQty(item, 1)">
           <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
       </div>
     </div>
 
     <div
-      class="col-lg-3 col-md-3 col-sm-12 d-flex justify-content-center align-items-center"
+      class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center align-items-center"
       style="margin: 10px auto"
     >
       <div>
         Ціна:
         {{
-          item.qty + " x " + item.price + " = " + item.qty * item.price + "грн."
+          getItemPriceString(item) + "грн."
         }}
       </div>
     </div>
 
     <div
       class="col-lg-1 col-md-1 col-sm-12 d-flex justify-content-center align-items-center"
-      style="margin: 10px auto"
+      style="margin: 10px 0"
     >
-      <button class="btn btn-danger" (click)="removeCartItem(item.id)">
+      <button class="btn btn-danger" (click)="removeCartItem(item)">
         <i class="fa fa-trash"></i>
       </button>
     </div>

@@ -12,6 +12,7 @@
     <div class="option-image-container">
       <img class="option-image" [src]="item.firstPictureUrl" />
     </div>
+
     <div class="option-data-container">
       <div class="option-text-container">
         <h5 class="option-name">{{ item.name }}</h5>
@@ -36,10 +37,10 @@
               class="option-item"
             >
               <div>{{ option.name }}</div>
+              <div>{{ option.price }} грн.</div>
               <div style="height: 20px; font-size: 12px; color: red">
                 {{ option.available ? "" : "Недоступно" }}
               </div>
-              <div>{{ option.price }} грн.</div>
             </div>
           </ng-container>
 
@@ -68,7 +69,7 @@
           <div class="qty-price-container">
             <div>Кількість</div>
 
-            <div style="margin-bottom: 45px; margin-top: 20px">
+            <div>
               {{ item.qty }}
             </div>
           </div>
@@ -78,9 +79,37 @@
           </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between;">
-          <div style="line-height: 38px;">Загальна ціна: {{ item.totalPrice }} грн.</div>
-          <button class="btn btn-primary" [disabled]="item.disabled" (click)="addToCart(item)">
+        <div class="select-modifications-container">
+          <ng-select
+            *ngIf="item.modifications.length > 0"
+            [items]="item.modifications"
+            bindValue="id"
+            bindLabel="name"
+            [multiple]="true"
+            [closeOnSelect]="false"
+            placeholder="Добавки"
+            appendTo="body"
+            [(ngModel)]="item.selectedModifications"
+            (change)="modificationsChange(i)"
+          >
+            <ng-template ng-option-tmp let-item="item">
+              <div class="d-flex justify-content-between">
+                <div>{{ item.name }}</div>
+                <div>{{ item.price }} грн.</div>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div style="display: flex; justify-content: space-between">
+          <div style="line-height: 38px">
+            Загальна ціна: {{ item.totalPrice }} грн.
+          </div>
+          <button
+            class="btn btn-primary"
+            [disabled]="item.disabled"
+            (click)="addToCart(item)"
+          >
             Додати до кошику
           </button>
         </div>

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
+import { SharedService } from 'src/app/shared/services/shared.service';
 import { CartService } from '../cart-service';
 import { ClientService } from '../client.service';
 
@@ -14,6 +15,7 @@ export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private clientService: ClientService,
+    private sharedService: SharedService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -27,25 +29,44 @@ export class CartComponent implements OnInit {
   }
 
   private async getData() {
-    const cartItems = this.cartService.getCart();
-    const orderItems = await this.clientService.getOptions(
-      cartItems.map((e) => ({ id: e.cateringId, value: e.id }))
-    );
+    try {
+      const cartItems = this.cartService.getCart();
+      const orderItems = await this.clientService.getOptions(
+        cartItems.map((e) => ({
+          id: e.id,
+          cateringId: e.cateringId,
+        }))
+      );
 
-    orderItems.forEach((e) => {
-      e.qty = cartItems.find((i) => i.id === e.id).qty;
-      e.firstPictureUrl = e.firstPictureId
-        ? this.clientService.getMenuItemPictureUrl(e.firstPictureId)
-        : PLACEHOLDER_IMAGE;
-    });
+      const resultItems = [];
 
-    this.cartItems = Object.values(
-      orderItems.reduce((rv, x) => {
-        (rv[x.cateringId] = rv[x.cateringId] || []).push(x);
-        return rv;
-      }, {})
-    );
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = orderItems.find(
+          (e) =>
+            e.id == cartItems[i].id && e.cateringId == cartItems[i].cateringId
+        );
+        if (item) {
+          resultItems.push({
+            ...item,
+            qty: cartItems[i].qty,
+            selectedModificationIds: cartItems[i].modificationIds,
+            firstPictureUrl: item.firstPictureId
+              ? this.clientService.getMenuItemPictureUrl(item.firstPictureId)
+              : PLACEHOLDER_IMAGE,
+          });
+        }
+      }
 
-    this.cdr.markForCheck();
+      this.cartItems = Object.values(
+        resultItems.reduce((rv, x) => {
+          (rv[x.cateringId] = rv[x.cateringId] || []).push(x);
+          return rv;
+        }, {})
+      );
+
+      this.cdr.markForCheck();
+    } catch (error) {
+      this.sharedService.showRequestError(error);
+    }
   }
 }

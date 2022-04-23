@@ -38,36 +38,75 @@ export class CartCateringComponent implements OnInit {
 
   public ngOnInit() {}
 
-  public changeQty(id, value) {
-    const index = this.options.findIndex((e) => e.id === id);
+  public changeQty(item, value) {
+    const index = this.options.findIndex(
+      (e) =>
+        e.id === item.id &&
+        e.cateringId == item.cateringId &&
+        e.selectedModificationIds?.toString() ===
+          item.selectedModificationIds?.toString()
+    );
 
     if (value > 0 || this.options[index].qty > 1) {
       this.options[index].qty += value;
 
-      this.cartService.setItem(id, this.options[index].cateringId, this.options[index].qty);
+      this.cartService.setItem({
+        id: item.id,
+        cateringId: this.options[index].cateringId,
+        qty: this.options[index].qty,
+        modificationIds: this.options[index].selectedModificationIds,
+      });
     }
   }
 
-  public async removeCartItem(id) {
+  public async removeCartItem(item) {
     const result = await this.sharedService.openConfirmDeleteDialog();
 
     if (result === 'delete') {
-      const cateringId = this.options[0].cateringId;
-
       if (this.options.length > 1) {
-        this.options = this.options.filter((e) => e.id !== id);
+        this.options = this.options.filter(
+          (e) =>
+            e.id !== item.id ||
+            e.selectedModificationIds !== item.selectedModificationIds
+        );
       } else {
         this.options = [];
         this.onAllDeleted.next();
       }
 
-      this.cartService.removeItem(id, cateringId);
+      this.cartService.removeItem(
+        item.id,
+        item.cateringId,
+        item.selectedModificationIds
+      );
       this.cdr.markForCheck();
     }
   }
 
   public getTotalPrice() {
-    return this.options.map((e) => e.price * e.qty).reduce((pr, c) => pr + c);
+    return this.options
+      .map((o) => {
+        const modificationsPrice =
+          this.clientSharedService.getModificationsPrice(o);
+
+        return (o.price + modificationsPrice) * o.qty;
+      })
+      .reduce((pr, c) => pr + c);
+  }
+
+  public getItemPriceString(item) {
+    if (item.selectedModificationIds?.length > 0) {
+      const modificationsPrice =
+        this.clientSharedService.getModificationsPrice(item);
+
+      return `(${item.price} + ${item.selectedModificationIds
+        .map((m) => item.modifications.find((e) => e.id == m).price)
+        .join('+ ')}) * ${item.qty} = ${
+        (item.price + modificationsPrice) * item.qty
+      }`;
+    }
+
+    return `${item.price} x ${item.qty} = ${item.price * item.qty}`;
   }
 
   public toPayment() {
@@ -86,10 +125,13 @@ export class CartCateringComponent implements OnInit {
               positions: this.options.map((e) => ({
                 optionId: e.cateringOptionId,
                 quantity: e.qty,
+                modificationIds: e.selectedModificationIds,
               })),
             });
 
-            this.options.forEach(e => this.cartService.removeItem(e.id, e.cateringId));
+            this.options.forEach((e) =>
+              this.cartService.removeItem(e.id, e.cateringId, e.selectedModificationIds)
+            );
             this.onAllDeleted.emit();
 
             this.clientSharedService.openPaymentComponent(orderId);

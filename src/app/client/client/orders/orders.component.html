@@ -33,12 +33,7 @@
             *ngFor="let position of order.positions"
             class="d-flex position-container"
           >
-            <div class="d-flex justify-content-center align-items-center">
-              <div class="image-container">
-                <img [src]="getPositionImage(position.pictureId)" />
-              </div>
-            </div>
-
+          <!-- add modifications -->
             <div class="d-flex justify-content-center align-items-center">
               <div>{{ position.optionName }} x {{ position.quantity }} шт.</div>
             </div>

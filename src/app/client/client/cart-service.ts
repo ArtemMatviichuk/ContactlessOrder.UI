@@ -10,9 +10,7 @@ export class CartService {
 
     if (cartString) {
       cart = JSON.parse(cartString);
-      const index = cart.findIndex(
-        (e) => e.id === item.id && e.cateringId == item.cateringId
-      );
+      const index = cart.findIndex((e) => this.isEqual(e, item));
 
       if (index !== -1) {
         cart[index].qty += item.qty;
@@ -26,35 +24,33 @@ export class CartService {
     localStorage.setItem(this.cartName, JSON.stringify(cart));
   }
 
-  public setItem(id: any, cateringId: number, qty: any) {
+  public setItem(item) {
     let cartString = localStorage.getItem(this.cartName);
     let cart = null;
 
     if (cartString) {
       cart = JSON.parse(cartString);
-      const index = cart.findIndex(
-        (e) => e.id === id && e.cateringId === cateringId
-      );
+      const index = cart.findIndex((e) => this.isEqual(e, item));
 
       if (index !== -1) {
-        cart[index].qty = qty;
+        cart[index].qty = item.qty;
       } else {
-        cart.push({ id, cateringId, qty });
+        cart.push(item);
       }
     } else {
-      cart = [{ id, cateringId, qty }];
+      cart = [item];
     }
 
     localStorage.setItem(this.cartName, JSON.stringify(cart));
   }
 
-  public removeItem(id, cateringId) {
+  public removeItem(id, cateringId, modificationIds) {
     let cartString = localStorage.getItem(this.cartName);
 
     if (cartString) {
       let cart = JSON.parse(cartString);
 
-      cart = cart.filter((e) => e.id !== id || e.cateringId !== cateringId);
+      cart = cart.filter((e) => !this.isEqual(e, {id, cateringId, modificationIds}));
 
       localStorage.setItem(this.cartName, JSON.stringify(cart));
     }
@@ -68,5 +64,19 @@ export class CartService {
     }
 
     return [];
+  }
+
+  private isEqual(item1, item2) {
+    item1.modificationIds = item1.modificationIds ? item1.modificationIds : [];
+    item2.modificationIds = item2.modificationIds ? item2.modificationIds : [];
+    console.log(item1.modificationIds.sort())
+    console.log(item2.modificationIds.sort())
+
+    return (
+      item1.id === item2.id &&
+      item1.cateringId === item2.cateringId &&
+      item1.modificationIds.sort().toString() ==
+        item2.modificationIds.sort().toString()
+    );
   }
 }

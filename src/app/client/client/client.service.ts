@@ -46,7 +46,7 @@ export class ClientService extends AuthService {
 
     optionIds.forEach((e, i) => {
       params = params.append(`value[${i}].id`, e.id);
-      params = params.append(`value[${i}].value`, e.value);
+      params = params.append(`value[${i}].cateringId`, e.cateringId);
     });
     
     return this._http

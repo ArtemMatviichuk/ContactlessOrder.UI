@@ -14,6 +14,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ClientSharedService } from './client-shared.service';
 import { ClientOrderNotificationService } from './client-order-notification.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ClientOrderNotificationService } from './client-order-notification.serv
     SharedModule,
     AgGridModule,
     GooglePayButtonModule,
+    NgSelectModule,
   ],
   providers: [
     ClientService,
