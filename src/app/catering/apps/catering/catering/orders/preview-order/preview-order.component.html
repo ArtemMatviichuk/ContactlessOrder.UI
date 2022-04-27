@@ -15,7 +15,10 @@
 </div>
 
 <div style="margin: 10px 0">
-  <div (click)="dialogData.showOptions = !dialogData.showOptions" style="cursor: pointer">
+  <div
+    (click)="dialogData.showOptions = !dialogData.showOptions"
+    style="cursor: pointer"
+  >
     <span style="width: 30px; display: inline-block">
       <i *ngIf="dialogData.showOptions" class="fa-solid fa-chevron-down"></i>
       <i
@@ -31,13 +34,7 @@
       class="d-flex position-container"
     >
       <div class="d-flex justify-content-center align-items-center">
-        <div class="image-container">
-          <img [src]="getPositionImage(position.pictureId)" />
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-center align-items-center">
-        <div>{{ position.optionName }} x {{ position.quantity }} шт.</div>
+        <div>{{ getPositionLabel(position) }}</div>
       </div>
     </div>
   </div>

@@ -34,14 +34,30 @@ export class CateringService extends AuthService {
   public getMenuItemPictureUrl(id: any) {
     return `${this.url}/api/Companies/Menu/Pictures/${id}/File`;
   }
-  
+
   public getModifications(): Promise<any[]> {
-    return this._http.get<any[]>(`${this.url}/api/Caterings/Modifications`).toPromise();
+    return this._http
+      .get<any[]>(`${this.url}/api/Caterings/Modifications`)
+      .toPromise();
   }
 
   public updateModification(id: any, formValue: any) {
     return this._http
       .put<void>(`${this.url}/api/Caterings/Modifications/${id}`, formValue)
+      .toPromise();
+  }
+
+  public getOrderStatuses(): Promise<any[]> {
+    return this._http
+      .get<any[]>(`${this.url}/api/Caterings/OrderStatuses`)
+      .toPromise();
+  }
+
+  public updateOrderStatus(orderId: any, statusId: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Caterings/Orders/${orderId}/Status`, {
+        value: statusId,
+      })
       .toPromise();
   }
 }

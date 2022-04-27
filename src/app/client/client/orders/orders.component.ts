@@ -42,6 +42,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
+  public getPositionLabel(position) {
+    return `${position.optionName} ${
+      position.modifications.length === 0
+        ? ''
+        : `+ ${position.modifications.map((e) => e.name).join(' + ')}`
+    } x ${position.quantity} шт.`;
+  }
+
   public getPositionImage(id) {
     return id
       ? this.clientService.getMenuItemPictureUrl(id)
@@ -69,8 +77,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
       .onOrderUpdated()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((value) => {
-        console.log(value)
-        const index = this.orders.findIndex(e => e.id === value.id);
+        console.log(value);
+        const index = this.orders.findIndex((e) => e.id === value.id);
         this.orders.splice(index, 1, value);
 
         this.cdr.detectChanges();

@@ -6,6 +6,8 @@ import { PaymentComponent } from './payment/payment.component';
 
 @Injectable()
 export class ClientSharedService {
+  public readyOrders = [];
+  
   constructor(
     private dialog: MatDialog,
     private clientService: ClientService,

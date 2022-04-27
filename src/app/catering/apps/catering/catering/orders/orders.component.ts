@@ -4,6 +4,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import { Subject } from 'rxjs';
+import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
+import { SelectCellEditorComponent } from 'src/app/shared/select-cell-editor/select-cell-editor.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CateringService } from '../../catering.service';
 import { PreviewOrderComponent } from './preview-order/preview-order.component';
@@ -30,7 +32,22 @@ export class OrdersComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Статус',
-        field: 'statusName',
+        field: 'statusId',
+        cellEditor: 'selectEditor',
+        cellEditorParams: () => ({
+          bindValue: 'id',
+          bindLabel: 'name',
+          values: this.orderStatuses,
+          onSelect: () => this.ordersGridOptions.api.stopEditing(),
+        }),
+        valueFormatter: (params) => params.data.statusName,
+        tooltipValueGetter: (params) => params.data.statusName,
+        getQuickFilterText: (params) => params.data.statusName,
+        filterValueGetter: (params) => params.data.statusName,
+        editable: (params) =>
+          params.data.statusValue !== ORDER_STATUS_VALUES.done &&
+          params.data.statusValue !== ORDER_STATUS_VALUES.ready &&
+          params.data.statusValue !== ORDER_STATUS_VALUES.rejected,
       },
       {
         headerName: 'Деталі замовлення',
@@ -55,6 +72,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
       },
     },
 
+    frameworkComponents: {
+      selectEditor: SelectCellEditorComponent,
+    },
+
     rowSelection: 'single',
     enableBrowserTooltips: true,
 
@@ -65,10 +86,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     suppressRowTransform: true,
 
     onRowSelected: (event) => this.selectOrder(event),
+    onCellEditingStopped: (event) => this.updateOrderStatus(event),
 
     onCellFocused: (event) =>
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
   };
+
+  private orderStatuses = [];
 
   private onDestroy$ = new Subject<void>();
 
@@ -82,7 +106,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   ) {}
 
   public async ngOnInit() {
-    this.getMenu();
+    await Promise.all([this.getMenu(), this.getStatuses()]);
   }
 
   public ngOnDestroy() {
@@ -106,6 +130,20 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
+  private async getStatuses() {
+    try {
+      const orderStatuses = await this.cateringService.getOrderStatuses();
+      this.orderStatuses = orderStatuses.filter(
+        (e) =>
+          e.value === ORDER_STATUS_VALUES.inProgress ||
+          e.value === ORDER_STATUS_VALUES.ready ||
+          e.value === ORDER_STATUS_VALUES.onHold
+      );
+    } catch (error) {
+      this.sharedService.showRequestError(error);
+    }
+  }
+
   private selectOrder(event: RowSelectedEvent) {
     if (!event.node.isSelected()) {
       return;
@@ -114,6 +152,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.selectedOrder = event.data;
 
     this.cdr.markForCheck();
+  }
+
+  private async updateOrderStatus(event) {
+    try {
+      await this.cateringService.updateOrderStatus(event.data.id, event.value);
+      this.getMenu();
+    } catch (error) {
+      this.sharedService.showRequestError(error);
+    }
   }
 
   public previewOrder() {

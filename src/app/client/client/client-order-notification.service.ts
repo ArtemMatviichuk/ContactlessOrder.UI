@@ -9,6 +9,9 @@ export class ClientOrderNotificationService extends SignalrService {
   private orderUpdated = new Subject<any>();
   public onOrderUpdated = (): Observable<any> => this.orderUpdated;
 
+  private orderReady = new Subject<string>();
+  public onOrderReady = (): Observable<string> => this.orderReady;
+
   constructor(
     protected readonly _router: Router,
     private readonly _http: HttpClient
@@ -18,5 +21,6 @@ export class ClientOrderNotificationService extends SignalrService {
 
   protected registerMethods(): void {
     this.connection.on('OrderUpdated', (order) => this.orderUpdated.next(order));
+    this.connection.on('OrderReady', (orderNumber) => this.orderReady.next(orderNumber));
   }
 }

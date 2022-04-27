@@ -25,4 +25,12 @@ export class PreviewOrderComponent implements OnInit, OnDestroy {
   public getDateTime(value) {
     return this.sharedService.getDateTimeString(value);
   }
+  
+  public getPositionLabel(position) {
+    return `${position.optionName} ${
+      position.modifications.length === 0
+        ? ''
+        : `+ ${position.modifications.map((e) => e.name).join(' + ')}`
+    } x ${position.quantity} шт.`;
+  }
 }

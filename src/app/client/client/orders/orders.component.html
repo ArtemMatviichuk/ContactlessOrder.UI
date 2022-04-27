@@ -17,8 +17,11 @@
         </div>
       </div>
 
-      <div style="margin: 10px 0;">
-        <div (click)="order.showOptions = !order.showOptions" style="cursor: pointer;">
+      <div style="margin: 10px 0">
+        <div
+          (click)="order.showOptions = !order.showOptions"
+          style="cursor: pointer"
+        >
           <span style="width: 30px; display: inline-block">
             <i *ngIf="order.showOptions" class="fa-solid fa-chevron-down"></i>
             <i
@@ -28,14 +31,16 @@
           >Позиції
         </div>
 
-        <div [style.display]="order.showOptions ? '' : 'none'"> 
+        <div [style.display]="order.showOptions ? '' : 'none'">
           <div
             *ngFor="let position of order.positions"
             class="d-flex position-container"
           >
-          <!-- add modifications -->
+            <!-- add modifications -->
             <div class="d-flex justify-content-center align-items-center">
-              <div>{{ position.optionName }} x {{ position.quantity }} шт.</div>
+              <div>
+                {{ getPositionLabel(position) }}
+              </div>
             </div>
           </div>
         </div>

@@ -1,0 +1,21 @@
+<ng-select
+  class="ag-cell-editor"
+  appendTo="body"
+  [bindValue]="params.bindValue"
+  [bindLabel]="params.bindLabel"
+  [items]="items"
+  [clearable]="params.clearable"
+  [virtualScroll]="params.virtualScroll"
+  [keyDownFn]="keyDownFn"
+  [(ngModel)]="selectedItem"
+  (ngModelChange)="params.onSelect && params.onSelect($event)"
+>
+  <ng-template *ngIf="params.customTemplate" ng-label-tmp let-item="item">
+    <div [innerHtml]="item[params.bindLabel]" class="select-custom-value"></div>
+  </ng-template>
+  <ng-template *ngIf="params.customTemplate" ng-option-tmp let-item="item"
+    ><div class="select-custom-cell-container">
+      <div [innerHtml]="item[params.bindLabel]" class="select-custom-cell"></div>
+    </div>
+  </ng-template>
+</ng-select>

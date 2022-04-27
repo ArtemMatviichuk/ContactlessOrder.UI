@@ -36,6 +36,7 @@ import { ModalTemplateComponent } from './modal-template/modal-template.componen
 import { ModalWarningComponent } from './modal-warning/modal-warning.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PicturesSelectorComponent } from './pictures/pictures.component';
+import { SelectCellEditorComponent } from './select-cell-editor/select-cell-editor.component';
 import { SelectItemsComponent } from './select-items/select-items.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { WarningDeletedComponent } from './warning-deleted/warning-deleted.component';
@@ -54,6 +55,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     PicturesSelectorComponent,
     DialogTextComponent,
     SelectItemsComponent,
+    SelectCellEditorComponent,
   ],
   imports: [
     CommonModule,
@@ -127,6 +129,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     PicturesSelectorComponent,
     DialogTextComponent,
     SelectItemsComponent,
+    SelectCellEditorComponent,
   ],
 })
 export class SharedModule {}
