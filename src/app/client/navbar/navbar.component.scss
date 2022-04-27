@@ -1,10 +1,8 @@
-.navbar-content-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-}
-
-.navbar-title {
-    text-decoration: none !important;
+.custom-navbar-toggler {
+  color: white;
+  transition: .1s;
+  background: transparent;
+  font-size: 20px;
+  border: none;
+  cursor: pointer
 }

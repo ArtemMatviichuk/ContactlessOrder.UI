@@ -26,7 +26,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     public sharedService: SharedService,
     private cdr: ChangeDetectorRef,
-    private clientService: ClientService
+    private clientService: ClientService,
+
   ) {
     this.loadCaterings = this.loadCaterings.bind(this);
     this.selectPoint = this.selectPoint.bind(this);

@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GlobalConfig, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { LOGO_IMAGE } from 'src/app/shared/constants/images';
-import { cloneDeep } from "lodash-es";
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { ClientOrderNotificationService } from '../client/client-order-notification.service';
-import { ClientSharedService } from '../client/client-shared.service';
-import { OrderReadyComponent } from './order-ready/order-ready.component';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { ClientNotificationService } from '../client/client-notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,11 +12,12 @@ import { OrderReadyComponent } from './order-ready/order-ready.component';
 })
 export class ClientNavbarComponent implements OnInit, OnDestroy {
   public logoPath = LOGO_IMAGE;
+  public collapsed = true;
 
   constructor(
     private authService: AuthService,
-    private clientSharedService: ClientSharedService,
-    private notificationService: ClientOrderNotificationService,
+    private sharedService: SharedService,
+    private notificationService: ClientNotificationService,
     private toastrService: ToastrService
   ) {}
 
@@ -31,26 +30,18 @@ export class ClientNavbarComponent implements OnInit, OnDestroy {
     await this.notificationService.disconnect();
   }
 
+  public toggleCollapsed(): void {
+    this.collapsed = !this.collapsed;
+  }
+
   public logout() {
     this.authService.logout();
   }
 
   private subscribeToChanges() {
-    this.notificationService
-      .onOrderReady()
-      .subscribe((number) => this.showReadyComponent(number));
-  }
-
-  private showReadyComponent(number) {
-    this.clientSharedService.readyOrders.push(number);
-
-    const opt: GlobalConfig = cloneDeep(this.toastrService.toastrConfig);
-    opt.toastComponent = OrderReadyComponent;
-    opt.timeOut = 0;
-    opt.extendedTimeOut = 0;
-    opt.toastClass = "";
-    opt.tapToDismiss = false;
-
-    this.toastrService.show(null, null, opt);
+    this.notificationService.onOrderReady().subscribe((number) => {
+      this.toastrService.success(number, 'Нове замовлення');
+      this.sharedService.playNotificationSound();
+    });
   }
 }

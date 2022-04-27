@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { SignalrService } from 'src/app/shared/services/signalr.service';
 
 @Injectable()
-export class ClientOrderNotificationService extends SignalrService {
+export class ClientNotificationService extends SignalrService {
   private orderUpdated = new Subject<any>();
   public onOrderUpdated = (): Observable<any> => this.orderUpdated;
 

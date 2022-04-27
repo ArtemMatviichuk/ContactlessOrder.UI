@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
 import { SelectCellEditorComponent } from 'src/app/shared/select-cell-editor/select-cell-editor.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { CateringNotificationService } from '../../catering-notification.service';
 import { CateringService } from '../../catering.service';
 import { PreviewOrderComponent } from './preview-order/preview-order.component';
 
@@ -97,16 +97,18 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   constructor(
-    fb: FormBuilder,
     private dialog: MatDialog,
     private cateringService: CateringService,
-    private sanitizer: DomSanitizer,
     private sharedService: SharedService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private notificationService: CateringNotificationService,
+    private toastrService: ToastrService
   ) {}
 
   public async ngOnInit() {
     await Promise.all([this.getMenu(), this.getStatuses()]);
+
+    this.subscribeToChanges();
   }
 
   public ngOnDestroy() {
@@ -177,5 +179,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
           this.getMenu();
         }
       });
+  }
+
+  private subscribeToChanges() {
+    this.notificationService.onOrderPaid().subscribe((dto) => {
+      if (!this.orders.find((e) => e.id === dto.id)) {
+        this.toastrService.success(dto.number, 'Нове замовлення');
+        this.sharedService.playNotificationSound();
+        
+        this.orders = [dto, ...this.orders.filter((e) => e.id !== dto.id)];
+        this.cdr.markForCheck();
+      }
+    });
   }
 }

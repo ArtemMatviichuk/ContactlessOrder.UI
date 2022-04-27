@@ -1,0 +1,1 @@
+export const NOTIFICATION_SOUND = "assets/sounds/notification-sound.wav";

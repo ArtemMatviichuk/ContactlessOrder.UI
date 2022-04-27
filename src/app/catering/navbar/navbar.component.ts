@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LOGO_IMAGE } from 'src/app/shared/constants/images';
-
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -8,14 +7,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class CompanyNavbarComponent implements OnInit, OnDestroy {
+export class CateringNavbarComponent implements OnInit, OnDestroy {
   public logoPath = LOGO_IMAGE;
-  
+
   constructor(private authService: AuthService) {}
 
-  public ngOnInit() {}
+  public async ngOnInit() {}
 
-  public ngOnDestroy() {}
+  public async ngOnDestroy() {}
 
   public logout() {
     this.authService.logout();

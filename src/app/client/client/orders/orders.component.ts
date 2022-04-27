@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
-import { DialogTextComponent } from 'src/app/shared/dialog-text/dialog-text.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { ClientOrderNotificationService } from '../client-order-notification.service';
+import { ClientNotificationService } from '../client-notification.service';
 import { ClientSharedService } from '../client-shared.service';
 import { ClientService } from '../client.service';
 
@@ -24,7 +23,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private clientService: ClientService,
     private clientSharedService: ClientSharedService,
-    private notificationService: ClientOrderNotificationService,
+    private notificationService: ClientNotificationService,
     private sharedService: SharedService,
     private cdr: ChangeDetectorRef
   ) {}

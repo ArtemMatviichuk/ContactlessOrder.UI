@@ -5,16 +5,20 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BlockUIService } from 'ng-block-ui';
 import { ToastrService } from 'ngx-toastr';
 import { map, Observable, tap } from 'rxjs';
+import { NOTIFICATION_SOUND } from '../constants/sounds';
 import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
 import { ModalTemplateComponent } from '../modal-template/modal-template.component';
 import { ModalWarningComponent } from '../modal-warning/modal-warning.component';
 import { WarningDeletedComponent } from '../warning-deleted/warning-deleted.component';
+import { Howl } from 'howler';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
   public appsPreload = true;
+
+  private sound = new Howl({ src: [NOTIFICATION_SOUND] });
 
   constructor(
     private toastr: ToastrService,
@@ -169,4 +173,8 @@ export class SharedService {
           result?.message ? { notUnique: result.message } : null
         )
       );
+
+  public playNotificationSound() {
+    this.sound.play();
+  }
 }
