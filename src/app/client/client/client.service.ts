@@ -12,13 +12,15 @@ export class ClientService extends AuthService {
     super(_router, _http);
   }
 
-  public getCaterings(from, to) {
+  public getCaterings(from, to, search) {
     var params = new HttpParams();
 
     params = params.append('from.lat', from.lat());
     params = params.append('from.lng', from.lng());
     params = params.append('to.lat', to.lat());
     params = params.append('to.lng', to.lng());
+
+    params = params.append('search', search);
 
     return this._http
       .get<any[]>(`${this.url}/api/Client/Caterings`, { params })
@@ -48,16 +50,14 @@ export class ClientService extends AuthService {
       params = params.append(`value[${i}].id`, e.id);
       params = params.append(`value[${i}].cateringId`, e.cateringId);
     });
-    
+
     return this._http
       .get<any[]>(`${this.url}/api/Client/Cart`, { params })
       .toPromise();
   }
-  
+
   public getOrders() {
-    return this._http
-      .get<any[]>(`${this.url}/api/Client/Order`)
-      .toPromise();
+    return this._http.get<any[]>(`${this.url}/api/Client/Order`).toPromise();
   }
 
   public createOrder(data) {
@@ -65,13 +65,13 @@ export class ClientService extends AuthService {
       .post<number>(`${this.url}/api/Client/Order`, data)
       .toPromise();
   }
-  
+
   public orderPaid(data) {
     return this._http
       .put<void>(`${this.url}/api/Client/Order`, data)
       .toPromise();
   }
-  
+
   public getTotalPrice(orderId: number): any {
     return this._http
       .get<number>(`${this.url}/api/Client/Order/${orderId}/TotalPrice`)

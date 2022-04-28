@@ -16,3 +16,21 @@
     text-transform: none;
   }
 }
+
+.x-button {
+  position: absolute;
+  right: 5px;
+  z-index: 99;
+  border: 2px transparent;
+  background: transparent;
+  transition: 0.2s;
+  color: #949494;
+
+  &:hover {
+    color:#727272;
+  }
+  
+  &:active {
+    color:#474747;
+  }
+}

@@ -1,8 +1,15 @@
 .custom-navbar-toggler {
   color: white;
-  transition: .1s;
+  transition: 0.1s;
   background: transparent;
   font-size: 20px;
   border: none;
-  cursor: pointer
+  cursor: pointer;
+}
+
+.nav-items-ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-direction: row !important;
 }
