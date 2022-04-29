@@ -71,10 +71,22 @@ export class ClientService extends AuthService {
       .put<void>(`${this.url}/api/Client/Order`, data)
       .toPromise();
   }
+  
+  public rejectOrder(id: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Client/Order/${id}/Reject`, {})
+      .toPromise();
+  }
 
   public getTotalPrice(orderId: number): any {
     return this._http
       .get<number>(`${this.url}/api/Client/Order/${orderId}/TotalPrice`)
+      .toPromise();
+  }
+
+  public getPaymentMethods(): Promise<any[]> {
+    return this._http
+      .get<any[]>(`${this.url}/api/Client/PaymentMethods`)
       .toPromise();
   }
 }

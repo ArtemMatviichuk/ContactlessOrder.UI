@@ -1,0 +1,28 @@
+<h4 mat-dialog-title>Створити замовлення</h4>
+
+<form [formGroup]="form">
+  <ng-select
+    placeholder="Метод оплати"
+    formControlName="paymentMethodValue"
+    [items]="paymentMethods"
+    bindLabel="name"
+    bindValue="value"
+    appendTo="body"
+    [clearable]="false"
+  ></ng-select>
+
+  <mat-form-field style="margin-top: 10px;">
+    <textarea
+      matInput
+      formControlName="comment"
+      placeholder="Коментар до замовлення"
+      rows="6"
+      style="resize: none"
+    ></textarea>
+  </mat-form-field>
+</form>
+
+<div class="d-flex flex-row-reverse" style="column-gap: 20px">
+  <button class="btn btn-primary" (click)="save()">Створити замовлення</button>
+  <button class="btn btn-danger" (click)="close()">Відміна</button>
+</div>

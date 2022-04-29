@@ -186,8 +186,19 @@ export class OrdersComponent implements OnInit, OnDestroy {
       if (!this.orders.find((e) => e.id === dto.id)) {
         this.toastrService.success(dto.number, 'Нове замовлення');
         this.sharedService.playNotificationSound();
-        
+
         this.orders = [dto, ...this.orders.filter((e) => e.id !== dto.id)];
+        this.cdr.markForCheck();
+      }
+    });
+
+    this.notificationService.onOrderRejected().subscribe((id) => {
+      const order = this.orders.find((e) => e.id === id);
+      if (order) {
+        this.toastrService.error(order.number, 'Замовлення відмінене');
+        this.sharedService.playNotificationSound();
+
+        this.orders = this.orders.filter((e) => e.id !== id);
         this.cdr.markForCheck();
       }
     });

@@ -63,6 +63,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.clientSharedService.openPaymentComponent(orderId);
   }
 
+  public async rejectOrder(id) {
+    const result = await this.sharedService.openConfirmActionDialog("Ви дійсно хочете ВІДМІНИТИ замовлення?");
+    if (result === "ok") {
+      try {
+        await this.clientService.rejectOrder(id);
+      } catch (error) {
+        this.sharedService.showRequestError(error);
+      }
+    }
+  }
+
   private async getOrders() {
     try {
       this.orders = await this.clientService.getOrders();
@@ -76,7 +87,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
       .onOrderUpdated()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((value) => {
-        console.log(value);
         const index = this.orders.findIndex((e) => e.id === value.id);
         this.orders.splice(index, 1, value);
 

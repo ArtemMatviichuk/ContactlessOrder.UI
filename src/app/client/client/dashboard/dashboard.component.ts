@@ -20,13 +20,13 @@ export class DashboardComponent implements OnInit {
   map: google.maps.Map;
 
   public selectedPoint = null;
-  public searchCriteria = null;
+  public searchValue = null;
 
   private points = [];
   private caterings = [];
 
   private lastId = null;
-  private includeFilter = false;
+  private searchCriteria = null;
 
   constructor(
     public sharedService: SharedService,
@@ -50,13 +50,13 @@ export class DashboardComponent implements OnInit {
   }
 
   public doFilter() {
-    this.includeFilter = true;
+    this.searchCriteria = this.searchValue;
     this.loadCaterings();
   }
 
   public clearSearch() {
+    this.searchValue = null;
     this.searchCriteria = null;
-    this.includeFilter = false;
     this.loadCaterings();
   }
 
@@ -65,15 +65,14 @@ export class DashboardComponent implements OnInit {
       const caterings = await this.clientService.getCaterings(
         this.map.getBounds().getSouthWest(),
         this.map.getBounds().getNorthEast(),
-        this.includeFilter ? this.searchCriteria : null
+        this.searchCriteria
       );
 
-      const newIds = caterings.map((c) => c.id);
-      for (let i = 0; i < this.points.length; i++) {
-        if (!newIds.includes(this.points[i].get('id'))) {
-          this.points[i].setMap(null);
-        }
-      }
+      this.points.forEach((marker) => {
+        marker.setMap(null);
+        marker = null;
+      });
+      this.points = [];
 
       this.caterings = caterings;
       this.points = caterings.map((e) => {
@@ -130,7 +129,7 @@ export class DashboardComponent implements OnInit {
 
     this.map.addListener('center_changed', () => {
       clearTimeout(this.lastId);
-      this.lastId = setTimeout(this.loadCaterings, 200);
+      this.lastId = setTimeout(() => this.loadCaterings(), 300);
     });
     setTimeout(() => this.loadCaterings(), 100);
   }

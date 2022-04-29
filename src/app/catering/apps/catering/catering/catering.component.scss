@@ -45,8 +45,9 @@
   }
 }
 
-@media screen and (min-width: 950px) {
-  .full-company-container {
-    display: flex;
+@media screen and (max-width: 768px) {
+  .full-catering-container {
+    flex-direction: column-reverse;
+    row-gap: 10px;
   }
 }

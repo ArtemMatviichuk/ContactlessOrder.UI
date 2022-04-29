@@ -1,7 +1,8 @@
 <h2>{{ dialogData.number }}</h2>
 
 <div class="d-flex justify-content-between">
-  <div>Номер замовлення:</div>
+  <strong style="cursor: pointer" (click)="copyNumber()">Зателефонувати</strong>
+
   <div>
     <strong>{{ dialogData.totalPrice }} грн.</strong>
   </div>
@@ -12,6 +13,8 @@
     Статус:
     <h5 class="d-inline">{{ dialogData.statusName }}</h5>
   </div>
+
+  <div>Метод оплати: {{ dialogData.paymentMethodName }}</div>
 </div>
 
 <div style="margin: 10px 0">
@@ -33,7 +36,7 @@
       *ngFor="let position of dialogData.positions"
       class="d-flex position-container"
     >
-      <div class="d-flex justify-content-center align-items-center">
+      <div class="d-flex align-items-center">
         <div>{{ getPositionLabel(position) }}</div>
       </div>
     </div>
@@ -46,7 +49,7 @@
     {{ getDateTime(dialogData.createdDate) }}
   </div>
 
-  <div style="width: 200px">
+  <div style="width: 100%; max-height: 500px; overflow-y: scroll">
     <p>{{ dialogData.comment }}</p>
   </div>
 </div>

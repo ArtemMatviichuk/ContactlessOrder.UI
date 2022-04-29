@@ -14,6 +14,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ClientSharedService } from './client-shared.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CreateOrderComponent } from './cart/create-order/create-order.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CartCateringComponent,
     PaymentComponent,
     OrdersComponent,
+    CreateOrderComponent,
   ],
   imports: [
     CommonModule,

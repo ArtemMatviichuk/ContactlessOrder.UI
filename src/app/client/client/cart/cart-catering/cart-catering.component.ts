@@ -7,13 +7,14 @@ import {
   Output,
 } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DialogTextComponent } from 'src/app/shared/dialog-text/dialog-text.component';
+import { Router } from '@angular/router';
 import { ImageGalleryComponent } from 'src/app/shared/image-gallery/image-gallery.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CartService } from '../../cart-service';
 import { ClientSharedService } from '../../client-shared.service';
 import { ClientService } from '../../client.service';
-import { PaymentComponent } from '../../payment/payment.component';
+import { PAYMENT_METHODS } from '../../constants';
+import { CreateOrderComponent } from '../create-order/create-order.component';
 
 @Component({
   selector: 'app-cart-catering',
@@ -29,6 +30,7 @@ export class CartCateringComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private router: Router,
     private clientService: ClientService,
     private clientSharedService: ClientSharedService,
     private cartService: CartService,
@@ -115,13 +117,13 @@ export class CartCateringComponent implements OnInit {
     dialogConfig.width = '600px';
 
     this.dialog
-      .open(DialogTextComponent, dialogConfig)
+      .open(CreateOrderComponent, dialogConfig)
       .afterClosed()
       .subscribe(async (result) => {
         if (result?.success) {
           try {
             const orderId = await this.clientService.createOrder({
-              comment: result.value,
+              ...result.value,
               positions: this.options.map((e) => ({
                 optionId: e.cateringOptionId,
                 quantity: e.qty,
@@ -134,7 +136,11 @@ export class CartCateringComponent implements OnInit {
             );
             this.onAllDeleted.emit();
 
-            this.clientSharedService.openPaymentComponent(orderId);
+            if (result.value.paymentMethodValue !== PAYMENT_METHODS.cash) {
+              this.clientSharedService.openPaymentComponent(orderId);
+            }
+
+            this.router.navigate(['/orders']);
           } catch (error) {
             this.sharedService.showRequestError(error);
             return;

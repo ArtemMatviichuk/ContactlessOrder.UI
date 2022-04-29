@@ -24,6 +24,7 @@ export class CateringComponent implements OnInit, OnDestroy {
       {
         headerName: 'Опції меню',
         field: 'name',
+        flex: 1,
       },
       {
         headerName: 'Цiнa',
@@ -31,13 +32,15 @@ export class CateringComponent implements OnInit, OnDestroy {
         headerClass: 'grid-header-centered',
         cellClass: 'grid-cell-centered',
         valueGetter: (params) => params.data.price + 'грн.',
+        width: 90,
       },
       {
-        headerName: 'Доступно для замовлення',
+        headerName: 'Доступно',
         field: 'available',
         headerClass: 'grid-header-centered',
         cellClass: 'grid-cell-centered',
         valueGetter: (params) => (params.data.available ? 'Так' : 'Ні'),
+        width: 100,
       },
       {
         headerName: '',
@@ -49,8 +52,6 @@ export class CateringComponent implements OnInit, OnDestroy {
     ],
 
     defaultColDef: {
-      flex: 1,
-
       tooltipValueGetter: (params) => params.value,
       cellStyle: (params) => {
         const style = {
@@ -90,13 +91,15 @@ export class CateringComponent implements OnInit, OnDestroy {
         headerClass: 'grid-header-centered',
         cellClass: 'grid-cell-centered',
         valueGetter: (params) => params.data.price + 'грн.',
+        width: 90,
       },
       {
-        headerName: 'Доступно для замовлення',
+        headerName: 'Доступно',
         field: 'available',
         headerClass: 'grid-header-centered',
         cellClass: 'grid-cell-centered',
         valueGetter: (params) => (params.data.available ? 'Так' : 'Ні'),
+        width: 100,
       },
       {
         headerName: '',

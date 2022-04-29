@@ -4,8 +4,8 @@
   <div>
     <div *ngFor="let order of orders" class="order-container">
       <div class="d-flex justify-content-between">
-        <div>Номер замовлення: {{ order.number }}</div>
-        <div>
+        <div style="flex: 1">Номер замовлення: {{ order.number }}</div>
+        <div style="flex: 1; text-align: right">
           <strong>{{ order.totalPrice }} грн.</strong>
         </div>
       </div>
@@ -15,6 +15,8 @@
           Статус:
           <h5 class="d-inline">{{ order.statusName }}</h5>
         </div>
+
+        <div>Метод оплати: {{ order.paymentMethodName }}</div>
       </div>
 
       <div style="margin: 10px 0">
@@ -36,8 +38,7 @@
             *ngFor="let position of order.positions"
             class="d-flex position-container"
           >
-            <!-- add modifications -->
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex align-items-center">
               <div>
                 {{ getPositionLabel(position) }}
               </div>
@@ -57,9 +58,27 @@
         </div>
       </div>
 
-      <div *ngIf="order.statusValue === orderStatusValues.new">
+      <div
+        *ngIf="order.statusValue === orderStatusValues.new"
+        class="d-flex justify-content-center"
+        style="margin-bottom: 10px;"
+      >
         <button class="btn btn-warning" (click)="toPayment(order.id)">
           Перейти до оплати
+        </button>
+      </div>
+
+      <div
+        *ngIf="
+          order.statusValue === orderStatusValues.new ||
+          order.statusValue === orderStatusValues.pendingStart ||
+          order.statusValue === orderStatusValues.onHold
+        "
+        class="d-flex justify-content-center"
+        style="margin-bottom: 10px;"
+      >
+        <button class="btn btn-danger" (click)="rejectOrder(order.id)">
+          Відмінити замовлення
         </button>
       </div>
     </div>

@@ -69,8 +69,6 @@ export class CartService {
   private isEqual(item1, item2) {
     item1.modificationIds = item1.modificationIds ? item1.modificationIds : [];
     item2.modificationIds = item2.modificationIds ? item2.modificationIds : [];
-    console.log(item1.modificationIds.sort())
-    console.log(item2.modificationIds.sort())
 
     return (
       item1.id === item2.id &&

@@ -1,7 +1,15 @@
 <h3>{{ catering.label }}</h3>
 
-<div style="position: relative">
-  <p>{{ catering.services }}</p>
+<div style="position: relative; margin-bottom: 10px">
+  <label (click)="showServices = !showServices">
+    <span style="width: 30px">
+      <i *ngIf="showServices" class="fas fa-chevron-down"></i>
+      <i *ngIf="!showServices" class="fas fa-chevron-right"></i>
+    </span>
+    Про заклад
+  </label>
+  <p *ngIf="showServices">{{ catering.services }}</p>
+
   <span style="position: absolute; right: 0; top: -35px">{{
     catering.fullDay ? "Цілодобово" : getTime()
   }}</span>

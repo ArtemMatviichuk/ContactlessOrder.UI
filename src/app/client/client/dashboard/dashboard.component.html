@@ -1,8 +1,8 @@
 <div class="d-flex align-items-center">
   <mat-form-field style="position: relative;">
-    <input matInput placeholder="Пошук" [(ngModel)]="searchCriteria" />
+    <input matInput placeholder="Пошук" [(ngModel)]="searchValue" />
 
-    <button class="x-button" *ngIf="searchCriteria" (click)="clearSearch()">
+    <button class="x-button" *ngIf="searchValue" (click)="clearSearch()">
       <span><i class="fa-solid fa-x"></i></span>
     </button>
   </mat-form-field>

@@ -19,6 +19,7 @@ export class PreviewCateringComponent implements OnChanges {
   @Input() catering: any;
 
   public menu = [];
+  public showServices = false;
 
   constructor(
     private clientService: ClientService,
@@ -28,6 +29,7 @@ export class PreviewCateringComponent implements OnChanges {
   ) {}
 
   public ngOnChanges(changes: SimpleChanges): void {
+    this.showServices = false;
     this.getMenu();
   }
 
