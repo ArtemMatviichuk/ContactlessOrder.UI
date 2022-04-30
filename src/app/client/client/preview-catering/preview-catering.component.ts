@@ -92,11 +92,13 @@ export class PreviewCateringComponent implements OnChanges {
     try {
       const menu = await this.clientService.getMenu(this.catering.id);
       menu.forEach((e) => {
+        e.modifications.forEach(m => m.disabled = m.available);
         e.firstPictureUrl = e.firstPictureId
           ? this.clientService.getMenuItemPictureUrl(e.firstPictureId)
           : PLACEHOLDER_IMAGE;
 
         this.setMenuItemDefaultState(e);
+        e.collapsed = true;
       });
 
       this.menu = menu;

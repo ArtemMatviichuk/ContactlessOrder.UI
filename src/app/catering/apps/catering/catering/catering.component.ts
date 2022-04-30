@@ -5,6 +5,7 @@ import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import { Subject } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CateringService } from '../catering.service';
+import { CATERING_MODIFICATIONS_INFO, CATERING_OPTIONS_INFO } from '../constants';
 import { ManageMenuItemComponent } from './manage-menu-item/manage-menu-item.component';
 import { ManageModificationComponent } from './manage-modification/manage-modification.component';
 
@@ -18,6 +19,9 @@ export class CateringComponent implements OnInit, OnDestroy {
   public menuModifications = [];
   public selectedMenuItem = null;
   public selectedMenuModification = null;
+
+  public menuOptionsInfo = CATERING_OPTIONS_INFO;
+  public menuModificationsInfo = CATERING_MODIFICATIONS_INFO;
 
   public menuGridOptions: GridOptions = {
     columnDefs: [

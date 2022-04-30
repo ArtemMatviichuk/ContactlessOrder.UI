@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
   public isOauthLogin = false;
+  
+  public moreActions = false;
 
   private returnUrl: string;
   private externalUser: SocialUser;

@@ -21,6 +21,13 @@
   .position-container {
     column-gap: 20px;
   }
+
+  .preview-catering-position {
+    align-self: center;
+    width: 30px;
+    font-size: 25px;
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 768px) {

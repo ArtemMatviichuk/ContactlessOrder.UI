@@ -20,6 +20,8 @@ export class CateringLoginComponent implements OnInit {
   @ViewChild('container') container: ElementRef<HTMLDivElement>;
 
   public loginForm: FormGroup;
+  
+  public moreActions = false;
 
   constructor(
     fb: FormBuilder,

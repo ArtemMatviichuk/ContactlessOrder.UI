@@ -14,18 +14,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import {
-  GoogleLoginProvider,
-  SocialAuthService,
-  SocialUser,
-} from 'angularx-social-login';
+import { ActivatedRoute } from '@angular/router';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { StorageService } from 'src/app/shared/services/storage.service';
-import { LoginSharedService } from '../login-shared.service';
 
 @Component({
   selector: 'app-register-company',
@@ -37,6 +29,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
   @ViewChild('container') container: ElementRef<HTMLDivElement>;
 
   public registerForm: FormGroup;
+  public moreActions = false;
 
   private returnUrl: string;
   private onDestroy$ = new Subject<void>();

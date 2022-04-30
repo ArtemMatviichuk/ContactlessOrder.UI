@@ -16,6 +16,9 @@ export class CateringNotificationService extends SignalrService {
   
   private orderRejected = new Subject<any>();
   public onOrderRejected = (): Observable<any> => this.orderRejected;
+  
+  private orderCompleted = new Subject<any>();
+  public onOrderCompleted = (): Observable<any> => this.orderCompleted;
 
   constructor(
     protected readonly _router: Router,
@@ -27,6 +30,7 @@ export class CateringNotificationService extends SignalrService {
   protected registerMethods(): void {
     this.connection.on('OrderUpdated', (order) => this.orderUpdated.next(order));
     this.connection.on('OrderPaid', (order) => this.orderPaid.next(order));
-    this.connection.on('OrderRejected', (id) => this.orderRejected.next(id));
+    this.connection.on('OrderRejected', (order) => this.orderRejected.next(order));
+    this.connection.on('OrderCompleted', (order) => this.orderCompleted.next(order));
   }
 }

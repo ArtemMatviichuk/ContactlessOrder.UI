@@ -3,11 +3,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { PAYMENT_METHODS } from 'src/app/client/client/constants';
 import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
 import { SelectCellEditorComponent } from 'src/app/shared/select-cell-editor/select-cell-editor.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CateringNotificationService } from '../../catering-notification.service';
 import { CateringService } from '../../catering.service';
+import { CATERING_ORDERS_INFO } from '../../constants';
 import { PreviewOrderComponent } from './preview-order/preview-order.component';
 
 @Component({
@@ -18,6 +20,9 @@ import { PreviewOrderComponent } from './preview-order/preview-order.component';
 export class OrdersComponent implements OnInit, OnDestroy {
   public orders = [];
   public selectedOrder = null;
+
+  public normalMode = true;
+  public ordersInfo = CATERING_ORDERS_INFO;
 
   public ordersGridOptions: GridOptions = {
     columnDefs: [
@@ -34,10 +39,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
         headerName: 'Статус',
         field: 'statusId',
         cellEditor: 'selectEditor',
-        cellEditorParams: () => ({
+        cellEditorParams: (params) => ({
           bindValue: 'id',
           bindLabel: 'name',
-          values: this.orderStatuses,
+          values:
+            params.data.statusValue === ORDER_STATUS_VALUES.ready
+              ? this.allOrderStatuses.filter(
+                  (e) => e.value === ORDER_STATUS_VALUES.done
+                )
+              : this.orderStatuses,
           onSelect: () => this.ordersGridOptions.api.stopEditing(),
         }),
         valueFormatter: (params) => params.data.statusName,
@@ -45,9 +55,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
         getQuickFilterText: (params) => params.data.statusName,
         filterValueGetter: (params) => params.data.statusName,
         editable: (params) =>
-          params.data.statusValue !== ORDER_STATUS_VALUES.done &&
-          params.data.statusValue !== ORDER_STATUS_VALUES.ready &&
-          params.data.statusValue !== ORDER_STATUS_VALUES.rejected,
+          (params.data.statusValue !== ORDER_STATUS_VALUES.done &&
+            params.data.statusValue !== ORDER_STATUS_VALUES.ready &&
+            params.data.statusValue !== ORDER_STATUS_VALUES.rejected) ||
+          (params.data.statusValue === ORDER_STATUS_VALUES.ready &&
+            params.data.paymentMethodValue === PAYMENT_METHODS.cash),
       },
       {
         headerName: 'Деталі замовлення',
@@ -92,6 +104,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       event.api.getModel().getRow(event.rowIndex).setSelected(true, true),
   };
 
+  private allOrderStatuses = [];
   private orderStatuses = [];
 
   private onDestroy$ = new Subject<void>();
@@ -116,9 +129,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
+  public toggleOrders() {
+    this.normalMode = !this.normalMode;
+    this.getMenu();
+  }
+
   private async getMenu() {
     try {
-      this.orders = await this.cateringService.getOrders();
+      this.orders = this.normalMode
+        ? await this.cateringService.getOrders()
+        : await this.cateringService.getEndedOrder();
 
       if (this.selectedOrder) {
         this.selectedOrder = this.orders.find(
@@ -134,8 +154,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   private async getStatuses() {
     try {
-      const orderStatuses = await this.cateringService.getOrderStatuses();
-      this.orderStatuses = orderStatuses.filter(
+      this.allOrderStatuses = await this.cateringService.getOrderStatuses();
+      this.orderStatuses = this.allOrderStatuses.filter(
         (e) =>
           e.value === ORDER_STATUS_VALUES.inProgress ||
           e.value === ORDER_STATUS_VALUES.ready ||
@@ -157,6 +177,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   private async updateOrderStatus(event) {
+    if (event.oldValue === event.newValue) {
+      return;
+    }
+
     try {
       await this.cateringService.updateOrderStatus(event.data.id, event.value);
       this.getMenu();
@@ -187,18 +211,47 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.toastrService.success(dto.number, 'Нове замовлення');
         this.sharedService.playNotificationSound();
 
-        this.orders = [dto, ...this.orders.filter((e) => e.id !== dto.id)];
-        this.cdr.markForCheck();
+        if (this.normalMode) {
+          this.orders = [dto, ...this.orders.filter((e) => e.id !== dto.id)];
+          this.cdr.markForCheck();
+        }
       }
     });
 
-    this.notificationService.onOrderRejected().subscribe((id) => {
-      const order = this.orders.find((e) => e.id === id);
+    this.notificationService.onOrderRejected().subscribe((dto) => {
+      const order = this.orders.find((e) => e.id === dto.id);
       if (order) {
         this.toastrService.error(order.number, 'Замовлення відмінене');
         this.sharedService.playNotificationSound();
 
-        this.orders = this.orders.filter((e) => e.id !== id);
+        if (this.normalMode) {
+          this.orders = this.orders.filter((e) => e.id !== dto.id);
+          this.cdr.markForCheck();
+        }
+      } else if (!this.normalMode) {
+        this.toastrService.error(order.number, 'Замовлення відмінене');
+        this.sharedService.playNotificationSound();
+        
+        this.orders = [dto, ...this.orders];
+        this.cdr.markForCheck();
+      }
+    });
+
+    this.notificationService.onOrderCompleted().subscribe((dto) => {
+      const order = this.orders.find((e) => e.id === dto.id);
+      if (order) {
+        this.toastrService.success(order.number, 'Замовлення завершене');
+        this.sharedService.playNotificationSound();
+
+        if (this.normalMode) {
+          this.orders = this.orders.filter((e) => e.id !== dto.id);
+          this.cdr.markForCheck();
+        }
+      } else if (!this.normalMode) {
+        this.toastrService.success(order.number, 'Замовлення завершене');
+        this.sharedService.playNotificationSound();
+
+        this.orders = [dto, ...this.orders];
         this.cdr.markForCheck();
       }
     });

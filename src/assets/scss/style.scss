@@ -22,17 +22,46 @@
   justify-content: center;
 }
 
-.register-company-btn {
-  padding: 20px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border-radius: 20px;
-  transition: 0.5s;
+.more-actions-container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
 
-  &:hover {
-    background: #ffffff8c;
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.514);
+  .more-actions-toggler {
+    cursor: pointer;
+    padding: 5px 0px 3px 10px;
+    background: white;
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .more-actions-buttons {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 10px;
+
+    a {
+      text-decoration: none;
+      margin-bottom: 10px;
+
+      .register-company-btn {
+        padding: 20px;
+        border-radius: 20px;
+        transition: 0.5s;
+        text-align: center;
+        background: #eeeeee;
+        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.514);
+
+        &:hover {
+          background: #c5c5c5;
+        }
+
+        &:active {
+          background: #adadad;
+        }
+      }
+    }
   }
 }
 
@@ -91,7 +120,7 @@
     .mat-form-field-underline,
     .mat-form-field-ripple {
       height: 1px !important;
-      background-color: rgba(0,0,0,.42) !important;
+      background-color: rgba(0, 0, 0, 0.42) !important;
     }
   }
 

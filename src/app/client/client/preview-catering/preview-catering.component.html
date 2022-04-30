@@ -17,17 +17,37 @@
 
 <div class="options">
   <div *ngFor="let item of menu; let i = index" class="option-container">
-    <div class="option-image-container">
+    <div
+      (click)="item.collapsed = !item.collapsed"
+      class="option-name-container"
+    >
+      <h5 class="option-name">
+        <i
+          *ngIf="!item.collapsed"
+          class="fas fa-chevron-down"
+          style="padding-right: 10px"
+        ></i>
+        <i
+          *ngIf="item.collapsed"
+          class="fas fa-chevron-right"
+          style="padding-right: 10px"
+        ></i>
+        {{ item.name }}
+      </h5>
+    </div>
+
+    <div *ngIf="!item.collapsed" class="option-image-container">
       <img class="option-image" [src]="item.firstPictureUrl" />
     </div>
 
     <div class="option-data-container">
       <div class="option-text-container">
-        <h5 class="option-name">{{ item.name }}</h5>
-        <p class="option-description">{{ item.description }}</p>
+        <p *ngIf="!item.collapsed" class="option-description">
+          {{ item.description }}
+        </p>
       </div>
 
-      <div class="full-selectable-container">
+      <div *ngIf="!item.collapsed" class="full-selectable-container">
         <div class="option-selectable-container">
           <div class="change-qty-btn">
             <button

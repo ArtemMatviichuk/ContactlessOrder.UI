@@ -26,12 +26,25 @@
     }
   }
 
+  .option-name-container {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
   .option-data-container {
     display: flex;
     flex: 1;
 
     & > div {
       flex: 1;
+    }
+
+    .option-text-container {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
     }
 
     .full-selectable-container {
@@ -75,7 +88,6 @@
         .qty-price-container {
           flex-direction: column;
           text-align: center;
-
         }
       }
 
@@ -99,6 +111,14 @@
     .option-data-container {
       width: 100%;
       flex-direction: column;
+    }
+
+    .option-name-container {
+      width: 100%;
+
+      .option-name {
+        width: 100%;
+      }
     }
   }
 }

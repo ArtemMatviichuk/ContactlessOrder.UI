@@ -4,6 +4,7 @@
   <div>
     <div *ngFor="let order of orders" class="order-container">
       <div class="d-flex justify-content-between">
+        <i class="fa fa-map-marker preview-catering-position" (click)="viewCateringPosition(order.id)"></i>
         <div style="flex: 1">Номер замовлення: {{ order.number }}</div>
         <div style="flex: 1; text-align: right">
           <strong>{{ order.totalPrice }} грн.</strong>
@@ -81,6 +82,18 @@
           Відмінити замовлення
         </button>
       </div>
+
+      <div
+      *ngIf="
+        order.statusValue === orderStatusValues.ready
+      "
+      class="d-flex justify-content-center"
+      style="margin-bottom: 10px;"
+    >
+      <button class="btn btn-primary" (click)="completeOrder(order.id)">
+        Я забрав замовлення
+      </button>
+    </div>
     </div>
   </div>
 </div>

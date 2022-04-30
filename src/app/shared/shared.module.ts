@@ -27,10 +27,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CateringPositionComponent } from './catering-position/catering-position.component';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer/checkbox-cell-renderer.component';
 import { DialogTextComponent } from './dialog-text/dialog-text.component';
 import { ImageCellRendererComponent } from './image-cell-renderer/image-cell-renderer.component';
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
+import { InfoButtonComponent } from './info-btn/info-btn.component';
 import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 import { ModalTemplateComponent } from './modal-template/modal-template.component';
 import { ModalWarningComponent } from './modal-warning/modal-warning.component';
@@ -56,6 +58,8 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     DialogTextComponent,
     SelectItemsComponent,
     SelectCellEditorComponent,
+    InfoButtonComponent,
+    CateringPositionComponent,
   ],
   imports: [
     CommonModule,
@@ -130,6 +134,8 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     DialogTextComponent,
     SelectItemsComponent,
     SelectCellEditorComponent,
+    InfoButtonComponent,
+    CateringPositionComponent,
   ],
 })
 export class SharedModule {}

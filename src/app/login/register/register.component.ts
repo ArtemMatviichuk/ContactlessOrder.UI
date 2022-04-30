@@ -39,6 +39,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public registerForm: FormGroup;
   public isOauthLogin = false;
 
+  public moreActions = false
+
   private returnUrl: string;
   private externalUser: SocialUser;
 

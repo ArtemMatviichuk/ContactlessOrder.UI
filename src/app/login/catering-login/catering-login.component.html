@@ -27,7 +27,28 @@
     </form>
   </div>
 
-  <a [routerLink]="'/auth/register-company'"
-    ><div class="register-company-btn">Зареєструвати компанію</div></a
-  >
+  <div class="more-actions-container">
+    <span class="more-actions-toggler" (click)="moreActions = !moreActions">
+      <i
+        *ngIf="moreActions"
+        class="fas fa-chevron-down"
+        style="padding-right: 10px"
+      ></i>
+      <i
+        *ngIf="!moreActions"
+        class="fas fa-chevron-up"
+        style="padding-right: 10px"
+      ></i>
+    </span>
+
+    <div *ngIf="moreActions" class="more-actions-buttons">
+      <a [routerLink]="'/auth/register-company'"
+        ><div class="register-company-btn">Зареєструвати компанію</div></a
+      >
+
+      <a [routerLink]="'/auth/login'"
+        ><div class="register-company-btn">Увійти</div></a
+      >
+    </div>
+  </div>
 </div>

@@ -27,6 +27,12 @@ export class ClientService extends AuthService {
       .toPromise();
   }
 
+  public getCatering(orderId: any) {
+    return this._http
+      .get<any[]>(`${this.url}/api/Client/Caterings/${orderId}`)
+      .toPromise();
+  }
+
   public getMenu(id: any): Promise<any[]> {
     return this._http
       .get<any[]>(`${this.url}/api/Client/Caterings/${id}/Menu`)
@@ -71,10 +77,16 @@ export class ClientService extends AuthService {
       .put<void>(`${this.url}/api/Client/Order`, data)
       .toPromise();
   }
-  
+
   public rejectOrder(id: any) {
     return this._http
       .put<void>(`${this.url}/api/Client/Order/${id}/Reject`, {})
+      .toPromise();
+  }
+  
+  public completeOrder(id: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Client/Order/${id}/Complete`, {})
       .toPromise();
   }
 

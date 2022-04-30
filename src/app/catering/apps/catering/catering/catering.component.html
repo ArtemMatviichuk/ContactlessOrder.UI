@@ -1,9 +1,10 @@
 <block-ui>
-  <div class="d-flex full-catering-container" style="height: calc(99vh - 100px); column-gap: 20px">
+  <div class="d-flex full-catering-container" style="height: calc(100vh - 80px); column-gap: 20px">
     <div
       class="d-flex flex-column"
       style="flex: 1; position: relative; row-gap: 10px"
     >
+      <app-info [text]="menuOptionsInfo"></app-info>
       <ag-grid-angular
         style="width: 100%; flex: 1"
         class="ag-theme-alpine"
@@ -12,6 +13,7 @@
       >
       </ag-grid-angular>
 
+      <app-info [text]="menuModificationsInfo"></app-info>
       <ag-grid-angular
         style="width: 100%; flex: 1"
         class="ag-theme-alpine"

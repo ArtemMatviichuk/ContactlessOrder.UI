@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
+import { CateringPositionComponent } from 'src/app/shared/catering-position/catering-position.component';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -64,14 +65,39 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   public async rejectOrder(id) {
-    const result = await this.sharedService.openConfirmActionDialog("Ви дійсно хочете ВІДМІНИТИ замовлення?");
-    if (result === "ok") {
+    const result = await this.sharedService.openConfirmActionDialog(
+      'Ви дійсно хочете ВІДМІНИТИ замовлення?'
+    );
+
+    if (result === 'ok') {
       try {
         await this.clientService.rejectOrder(id);
       } catch (error) {
         this.sharedService.showRequestError(error);
       }
     }
+  }
+
+  public async completeOrder(id) {
+    const result = await this.sharedService.openConfirmActionDialog(
+      'Ви підтверджуєте отримання замовлення?'
+    );
+
+    if (result === 'ok') {
+      try {
+        await this.clientService.completeOrder(id);
+      } catch (error) {
+        this.sharedService.showRequestError(error);
+      }
+    }
+  }
+
+  public viewCateringPosition(orderId) {
+    const config = new MatDialogConfig();
+    config.width = '600px';
+    config.data = { orderId };
+
+    this.dialog.open(CateringPositionComponent, config);
   }
 
   private async getOrders() {
