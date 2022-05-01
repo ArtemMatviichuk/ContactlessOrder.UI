@@ -16,6 +16,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NewModificationComponent } from './company-settings/modifications/new-modification/new-modification.component';
 import { ModificationsComponent } from './company-settings/modifications/modifications.component';
 import { ChangeModificationComponent } from './company-settings/modifications/change-modification/change-modification.component';
+import { ChangePaymentDataComponent } from './company-settings/change-payment-data/change-payment-data.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ChangeModificationComponent } from './company-settings/modifications/ch
     ModificationsComponent,
     NewModificationComponent,
     ChangeModificationComponent,
+    ChangePaymentDataComponent,
   ],
   imports: [
     CommonModule,

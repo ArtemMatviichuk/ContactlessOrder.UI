@@ -6,6 +6,7 @@ import { ImageCellRendererComponent } from 'src/app/shared/image-cell-renderer/i
 import { ImageGalleryComponent } from 'src/app/shared/image-gallery/image-gallery.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../company-settings.service';
+import { COMPANY_MENU_INFO } from '../../constants';
 import { NewMenuItemComponent } from './new-menu-item/new-menu-item.component';
 
 @Component({
@@ -16,6 +17,8 @@ import { NewMenuItemComponent } from './new-menu-item/new-menu-item.component';
 export class MenuComponent implements OnInit {
   public menuItems = [];
   public selectedMenuItem = null;
+  
+  public infoText = COMPANY_MENU_INFO;
 
   public menuGridOptions: GridOptions = {
     columnDefs: [

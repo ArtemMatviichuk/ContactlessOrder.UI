@@ -5,11 +5,13 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../company-settings.service';
+import { ChangePaymentDataComponent } from './change-payment-data/change-payment-data.component';
 
 @Component({
   selector: 'app-company-settings',
@@ -24,13 +26,14 @@ export class CompanySettingsComponent implements OnInit, OnDestroy {
 
   public editMode = false;
 
-  private company: any;
+  public company: any;
   private newLogo: any;
 
   private onDestroy$ = new Subject<void>();
 
   constructor(
     fb: FormBuilder,
+    private dialog: MatDialog,
     private companySettingsService: CompanySettingsService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
@@ -82,6 +85,21 @@ export class CompanySettingsComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
+  public changePaymentData() {
+    const config = new MatDialogConfig();
+    config.width = '500px';
+    config.data = { ...this.company };
+
+    this.dialog
+      .open(ChangePaymentDataComponent, config)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.success) {
+          this.getCompany();
+        }
+      });
+  }
+
   public startEdit() {
     this.editMode = true;
     this.cdr.markForCheck();
@@ -95,7 +113,7 @@ export class CompanySettingsComponent implements OnInit, OnDestroy {
         URL.createObjectURL(file)
       );
 
-      this.newLogo = file
+      this.newLogo = file;
       this.cdr.markForCheck();
     }
   }
@@ -109,7 +127,7 @@ export class CompanySettingsComponent implements OnInit, OnDestroy {
 
   public async saveChanges() {
     this.editMode = false;
-    
+
     const data = {
       ...this.form.value,
       removeLogo: this.logo === this.defaultLogo,

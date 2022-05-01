@@ -10,6 +10,7 @@ import {
 import { CheckboxCellRendererComponent } from 'src/app/shared/checkbox-cell-renderer/checkbox-cell-renderer.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../company-settings.service';
+import { COMPANY_CATERINGS_INFO } from '../../constants';
 import { ManageCateringComponent } from './manage-catering/manage-catering.component';
 import { NewCateringComponent } from './new-catering/new-catering.component';
 
@@ -21,6 +22,8 @@ import { NewCateringComponent } from './new-catering/new-catering.component';
 export class CateringsComponent implements OnInit, OnDestroy {
   public caterings = [];
   public selectedCatering = null;
+
+  public infoText = COMPANY_CATERINGS_INFO;
 
   public cateringsGridOptions: GridOptions = {
     columnDefs: [

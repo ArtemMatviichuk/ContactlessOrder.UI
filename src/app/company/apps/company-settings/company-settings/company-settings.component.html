@@ -1,6 +1,6 @@
 <block-ui>
   <div class="full-company-container">
-    <form [formGroup]="form" style="flex: 1;">
+    <form [formGroup]="form" style="flex: 1">
       <div class="main-company-info">
         <div class="logo-container">
           <img [src]="logo" class="company-logo" />
@@ -104,6 +104,20 @@
               Невірний номер телефону
             </mat-error>
           </mat-form-field>
+
+          <div class="d-flex align-items-center">
+            <div *ngIf="company && !company.paymentDataId" style="flex: 1;color:red">
+              <h4>Відсутні дані для оплати</h4>
+            </div>
+
+            <button class="btn btn-primary" (click)="changePaymentData()">
+              {{
+                company?.paymentDataId
+                  ? "Змінити реквізити"
+                  : "Додати реквізити"
+              }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -112,7 +126,7 @@
           matInput
           placeholder="Опис"
           formControlName="description"
-          rows="25"
+          rows="27"
           style="resize: none"
           [readonly]="!editMode"
         ></textarea>
@@ -120,11 +134,11 @@
     </form>
 
     <div class="company-grids-container">
-      <app-caterings></app-caterings>
+      <app-caterings style="flex: 1"></app-caterings>
 
-      <div class="d-flex" style="column-gap: 20px;">
-        <app-menu style="flex:1"></app-menu>
-        <app-modifications style="flex:1"></app-modifications>
+      <div class="d-flex" style="column-gap: 10px; flex: 1">
+        <app-menu style="flex: 1"></app-menu>
+        <app-modifications style="flex: 1"></app-modifications>
       </div>
     </div>
   </div>

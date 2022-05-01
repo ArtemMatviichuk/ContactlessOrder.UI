@@ -229,7 +229,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         }
       } else if (!this.normalMode) {
-        this.toastrService.error(order.number, 'Замовлення відмінене');
+        this.toastrService.error(dto.number, 'Замовлення відмінене');
         this.sharedService.playNotificationSound();
         
         this.orders = [dto, ...this.orders];
@@ -248,7 +248,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         }
       } else if (!this.normalMode) {
-        this.toastrService.success(order.number, 'Замовлення завершене');
+        this.toastrService.success(dto.number, 'Замовлення завершене');
         this.sharedService.playNotificationSound();
 
         this.orders = [dto, ...this.orders];

@@ -30,6 +30,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: calc(100vh - 80px);
+  row-gap: 10px;
 }
 
 @media screen and (max-width: 600px) {

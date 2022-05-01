@@ -137,7 +137,9 @@ export class CompanySettingsService extends AuthService {
 
   public createModifications(modifications: any[]) {
     return this._http
-      .post<void>(`${this.url}/api/Companies/Modifications`, { value: modifications })
+      .post<void>(`${this.url}/api/Companies/Modifications`, {
+        value: modifications,
+      })
       .toPromise();
   }
 
@@ -150,6 +152,18 @@ export class CompanySettingsService extends AuthService {
   public deleteModification(id: any) {
     return this._http
       .delete<void>(`${this.url}/api/Companies/Modifications/${id}`)
+      .toPromise();
+  }
+
+  public getPaymentData() {
+    return this._http
+      .get<any>(`${this.url}/api/Companies/PaymentData`)
+      .toPromise();
+  }
+
+  public updatePaymentData(data: any) {
+    return this._http
+      .put<void>(`${this.url}/api/Companies/PaymentData`, data)
       .toPromise();
   }
 }

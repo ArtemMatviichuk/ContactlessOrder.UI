@@ -4,6 +4,7 @@ import { GridOptions, RowSelectedEvent } from 'ag-grid-community';
 import { ImageCellRendererComponent } from 'src/app/shared/image-cell-renderer/image-cell-renderer.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../../company-settings.service';
+import { COMPANY_MODIFICATIONS_INFO } from '../../constants';
 import { ChangeModificationComponent } from './change-modification/change-modification.component';
 import { NewModificationComponent } from './new-modification/new-modification.component';
 
@@ -15,6 +16,8 @@ import { NewModificationComponent } from './new-modification/new-modification.co
 export class ModificationsComponent implements OnInit {
   public modifications = [];
   public selectedModification = null;
+
+  public infoText = COMPANY_MODIFICATIONS_INFO;
 
   public modificationsGridOptions: GridOptions = {
     columnDefs: [
