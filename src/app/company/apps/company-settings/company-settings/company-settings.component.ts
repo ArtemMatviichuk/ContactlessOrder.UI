@@ -11,7 +11,7 @@ import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CompanySettingsService } from '../company-settings.service';
-import { ChangePaymentDataComponent } from './change-payment-data/change-payment-data.component';
+import { ChangePaymentDataComponent } from '../../../../shared/change-payment-data/change-payment-data.component';
 
 @Component({
   selector: 'app-company-settings',
@@ -85,10 +85,20 @@ export class CompanySettingsComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
-  public changePaymentData() {
+  public async changePaymentData() {
     const config = new MatDialogConfig();
     config.width = '500px';
     config.data = { ...this.company };
+
+    if (this.company.paymentDataId) {
+      try {
+        config.data.paymentData =
+          await this.companySettingsService.getPaymentData();
+      } catch (error) {
+        this.sharedService.showRequestError(error);
+        return;
+      }
+    }
 
     this.dialog
       .open(ChangePaymentDataComponent, config)

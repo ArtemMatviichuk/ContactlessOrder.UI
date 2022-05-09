@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ClientGuardService implements CanActivate {
+export class SupportGuardService implements CanActivate {
   constructor(private router: Router, private authService: AuthService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -22,25 +22,25 @@ export class ClientGuardService implements CanActivate {
       return false;
     }
 
-    if (this.authService.isCompany()) {
-      this.router.navigate(['/business']);
+    if (!this.authService.isSupport()) {
+      if (this.authService.isCatering) {
+        this.router.navigate(['/catering']);
 
-      return false;
-    } else if (this.authService.isCatering()) {
-      this.router.navigate(['/catering']);
+        return false;
+      } else if (this.authService.isAdmin()) {
+        this.router.navigate(['/admin']);
+  
+        return false;
+      } else if (this.authService.isCompany()) {
+        this.router.navigate(['/business']);
+  
+        return false;
+      } else {
+        this.router.navigate(['/dashboard']);
 
-      return false;
-    } else if (this.authService.isAdmin()) {
-      this.router.navigate(['/admin']);
-
-      return false;
-    } else if (this.authService.isSupport()) {
-      this.router.navigate(['/support']);
-
-      return false;
+        return false;
+      }
     }
-
-
 
     return true;
   }

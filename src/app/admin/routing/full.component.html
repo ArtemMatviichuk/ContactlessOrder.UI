@@ -1,0 +1,23 @@
+<div
+  id="main-wrapper"
+  data-layout="vertical"
+  data-sidebartype="full"
+  class="show-sidebar"
+>
+  <header class="topbar" style="margin-bottom: 10px">
+    <app-navbar class="w-100"></app-navbar>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+
+      <div class="preloader app-load" *ngIf="sharedService.appsPreload">
+        <div class="lds-ripple">
+          <div class="lds-pos"></div>
+          <div class="lds-pos"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

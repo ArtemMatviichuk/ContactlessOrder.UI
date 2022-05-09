@@ -92,10 +92,17 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
   }
 
-  public viewCateringPosition(orderId) {
+  public async viewCateringPosition(orderId) {
     const config = new MatDialogConfig();
     config.width = '600px';
-    config.data = { orderId };
+    config.data = {};
+
+    try {
+      config.data.catering = await this.clientService.getCatering(orderId);
+    } catch (error) {
+      this.sharedService.showRequestError(error);
+      return;
+    }
 
     this.dialog.open(CateringPositionComponent, config);
   }

@@ -28,6 +28,7 @@ import { RouterModule } from '@angular/router';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CateringPositionComponent } from './catering-position/catering-position.component';
+import { ChangePaymentDataComponent } from './change-payment-data/change-payment-data.component';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer/checkbox-cell-renderer.component';
 import { DialogTextComponent } from './dialog-text/dialog-text.component';
 import { ImageCellRendererComponent } from './image-cell-renderer/image-cell-renderer.component';
@@ -60,6 +61,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     SelectCellEditorComponent,
     InfoButtonComponent,
     CateringPositionComponent,
+    ChangePaymentDataComponent,
   ],
   imports: [
     CommonModule,
@@ -136,6 +138,7 @@ import { WarningDeletedComponent } from './warning-deleted/warning-deleted.compo
     SelectCellEditorComponent,
     InfoButtonComponent,
     CateringPositionComponent,
+    ChangePaymentDataComponent,
   ],
 })
 export class SharedModule {}

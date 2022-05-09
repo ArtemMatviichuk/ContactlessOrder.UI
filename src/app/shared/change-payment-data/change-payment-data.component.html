@@ -12,6 +12,10 @@
 
     <mat-form-field>
       <input matInput placeholder="МФО" formControlName="mfo" />
+
+      <mat-error *ngIf="form.controls.mfo.hasError('wrong')">
+        {{ form.controls.mfo.errors.wrong }}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -20,6 +24,10 @@
         placeholder="Код ЄДРПОУ"
         formControlName="legalEntityCode"
       />
+      
+      <mat-error *ngIf="form.controls.legalEntityCode.hasError('wrong')">
+        {{ form.controls.legalEntityCode.errors.wrong }}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -28,6 +36,10 @@
         placeholder="Р/Р"
         formControlName="currentAccount"
       />
+      
+      <mat-error *ngIf="form.controls.currentAccount.hasError('wrong')">
+        {{ form.controls.currentAccount.errors.wrong }}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -36,6 +48,10 @@
         placeholder="ІПН"
         formControlName="taxNumber"
       />
+      
+      <mat-error *ngIf="form.controls.taxNumber.hasError('wrong')">
+        {{ form.controls.taxNumber.errors.wrong }}
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>

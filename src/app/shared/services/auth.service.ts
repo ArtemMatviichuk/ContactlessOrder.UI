@@ -11,6 +11,14 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   public url = environment.apiURL;
 
+  private roleValues = {
+    catering: -1,
+    admin: 1,
+    support: 2,
+    company: 3,
+    client: 4,
+  };
+
   constructor(
     protected readonly _router: Router,
     private readonly _httpClient: HttpClient
@@ -98,29 +106,19 @@ export class AuthService {
   }
 
   public isCompany(): boolean {
-    const jwtHelper = new JwtHelperService();
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      return false;
-    }
-
-    const user = jwtHelper.decodeToken(token);
-
-    return user.CompanyId && user.CompanyId !== '';
+    return this.isRole(this.roleValues.company);
   }
 
   public isCatering(): boolean {
-    const jwtHelper = new JwtHelperService();
-    const token = localStorage.getItem('token');
+    return this.isRole(this.roleValues.catering);
+  }
 
-    if (!token) {
-      return false;
-    }
-
-    const user = jwtHelper.decodeToken(token);
-
-    return user.CateringId;
+  public isAdmin(): boolean {
+    return this.isRole(this.roleValues.admin);
+  }
+  
+  public isSupport(): boolean {
+    return this.isRole(this.roleValues.support);
   }
 
   public logout(returnUrl?: string) {
@@ -174,5 +172,18 @@ export class AuthService {
         value: name,
       }
     );
+  }
+
+  private isRole(value) {
+    const jwtHelper = new JwtHelperService();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return false;
+    }
+
+    const user = jwtHelper.decodeToken(token);
+
+    return user.RoleValue == value;
   }
 }

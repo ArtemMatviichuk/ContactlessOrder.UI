@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  Inject,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ClientService } from 'src/app/client/client/client.service';
 import { SharedService } from '../services/shared.service';
@@ -21,26 +16,14 @@ export class CateringPositionComponent implements AfterViewInit {
   private catering;
 
   constructor(
-    private clientService: ClientService,
     private sharedService: SharedService,
     @Inject(MAT_DIALOG_DATA) public dialogData: any
   ) {}
 
   ngAfterViewInit() {
-    setTimeout(async () => {
-      await this.getCatering();
-      this.setUpMap();
-    });
-  }
+    this.catering = this.dialogData.catering;
 
-  private async getCatering() {
-    try {
-      this.catering = await this.clientService.getCatering(
-        this.dialogData.orderId
-      );
-    } catch (error) {
-      this.sharedService.showRequestError(error);
-    }
+    setTimeout(async () => this.setUpMap());
   }
 
   private setUpMap() {
