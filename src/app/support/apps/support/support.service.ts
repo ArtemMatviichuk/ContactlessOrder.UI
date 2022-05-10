@@ -13,4 +13,18 @@ export class SupportService extends AuthService {
   ) {
     super(_router, _http);
   }
+
+  public getComplains(status: number): Promise<any[]> {
+    return this._http
+      .get<any[]>(`${this.url}/api/Support/Complains/${status}`)
+      .toPromise();
+  }
+
+  public changeComplainStatus(id: any, status: number) {
+    return this._http
+      .put<void>(`${this.url}/api/Support/Complains/${id}/Status`, {
+        value: status,
+      })
+      .toPromise();
+  }
 }

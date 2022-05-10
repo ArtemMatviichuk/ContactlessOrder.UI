@@ -92,6 +92,14 @@ export class SharedService {
     };
   }
 
+  getDateString(value): any {
+    if (!value) {
+      return null;
+    }
+
+    return formatDate(value, 'dd/MM/yyyy', 'en-US');
+  }
+
   public getDateTimeString(value) {
     if (!value) {
       return null;
@@ -176,5 +184,10 @@ export class SharedService {
 
   public playNotificationSound() {
     this.sound.play();
+  }
+  
+  public copyValue(value) {
+    navigator.clipboard.writeText(value);
+    this.toastr.success('Скопійовано до буферу обміну');
   }
 }

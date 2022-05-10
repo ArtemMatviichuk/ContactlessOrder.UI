@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {
     this.loginForm = fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', Validators.required],
       password: ['', Validators.required],
     });
   }

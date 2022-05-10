@@ -7,12 +7,22 @@ import { AdminService } from './admin.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
-import { PreviewCompanyComponent } from './admin/preview-company/preview-company.component';
+import { CompaniesComponent } from './admin/companies/companies.component';
+import { PreviewCompanyComponent } from './admin/companies/preview-company/preview-company.component';
+import { UsersComponent } from './admin/users/users.component';
+import { TeamComponent } from './admin/team/team.component';
+import { ManageUserComponent } from './admin/team/manage-user/manage-user.component';
+import { NewUserComponent } from './admin/team/new-user/new-user.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     PreviewCompanyComponent,
+    CompaniesComponent,
+    UsersComponent,
+    TeamComponent,
+    ManageUserComponent,
+    NewUserComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,114 @@
+<div class="info-container">
+  <form [formGroup]="form" style="position: relative">
+    <ng-select
+      class="status-select"
+      bindValue="value"
+      bindLabel="name"
+      [items]="statuses"
+      placeholder="Статус"
+      appendTo="body"
+      formControlName="status"
+      [clearable]="false"
+    >
+    </ng-select>
+
+    <h5>Користувач</h5>
+
+    <mat-form-field>
+      <input matInput placeholder="" formControlName="userName" readonly />
+    </mat-form-field>
+
+    <div class="copy-value-container">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Електронна пошта"
+          formControlName="userEmail"
+          readonly
+        />
+      </mat-form-field>
+      <button class="btn" (click)="copyValue(dialogData.userEmail)">
+        <span><i class="fas fa-copy"></i></span>
+      </button>
+    </div>
+
+    <div class="copy-value-container">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Телефон"
+          formControlName="userPhoneNumber"
+          readonly
+        />
+      </mat-form-field>
+
+      <button class="btn" (click)="copyValue(dialogData.userPhoneNumber)">
+        <span><i class="fas fa-copy"></i></span>
+      </button>
+    </div>
+
+    <h5>Підприємство</h5>
+
+    <mat-form-field>
+      <input matInput placeholder="" formControlName="companyName" readonly />
+    </mat-form-field>
+
+    <div class="copy-value-container">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Електронна пошта"
+          formControlName="companyEmail"
+          readonly
+        />
+      </mat-form-field>
+      <button class="btn" (click)="copyValue(dialogData.companyEmail)">
+        <span><i class="fas fa-copy"></i></span>
+      </button>
+    </div>
+
+    <div class="copy-value-container">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Телефон"
+          formControlName="companyPhoneNumber"
+          readonly
+        />
+      </mat-form-field>
+
+      <button class="btn" (click)="copyValue(dialogData.companyPhoneNumber)">
+        <span><i class="fas fa-copy"></i></span>
+      </button>
+    </div>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Заклад"
+        formControlName="cateringName"
+        readonly
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Номер замовлення"
+        formControlName="orderNumber"
+        readonly
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Коментар"
+        formControlName="content"
+        rows="8"
+        style="resize: none"
+        readonly
+      ></textarea>
+    </mat-form-field>
+  </form>
+</div>

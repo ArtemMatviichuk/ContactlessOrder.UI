@@ -7,10 +7,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SupportService } from './support.service';
 import { SupportComponent } from './support/support.component';
 import { SupportRoutingModule } from './support-routing.module';
+import { PreviewComplainComponent } from './support/preview-complain/preview-complain.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
     SupportComponent,
+    PreviewComplainComponent,
   ],
   imports: [
     CommonModule,
@@ -19,6 +22,7 @@ import { SupportRoutingModule } from './support-routing.module';
     AgGridModule,
     BlockUIModule,
     NgbModule,
+    NgSelectModule,
   ],
   providers: [SupportService],
 })

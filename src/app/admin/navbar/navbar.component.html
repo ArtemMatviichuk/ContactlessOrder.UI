@@ -1,8 +1,26 @@
 <nav class="navbar navbar-light bg-dark" style="padding: 10px 20px">
-  <a class="navbar-brand" [routerLink]="'/admin'" style="color: white;">
-    <img [src]="logoPath" width="30" height="30" class="d-inline-block align-top" alt="">
+  <a class="navbar-brand" [routerLink]="'/admin'" style="color: white">
+    <img
+      [src]="logoPath"
+      width="30"
+      height="30"
+      class="d-inline-block align-top"
+      alt=""
+    />
     CONTACTLESS ORDER
   </a>
+
+  <ng-select
+    class="page-select"
+    bindValue="value"
+    bindLabel="name"
+    [items]="pages"
+    appendTo="body"
+    [(ngModel)]="adminSharedService.pageValue"
+    (change)="adminSharedService.onPageValueChange()"
+    [clearable]="false"
+  >
+  </ng-select>
 
   <button class="btn btn-danger" (click)="logout()">Вийти</button>
 </nav>

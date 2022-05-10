@@ -6,5 +6,19 @@
 }
 
 .navbar-title {
-    text-decoration: none !important;
+  text-decoration: none !important;
+}
+
+::ng-deep .page-select {
+  color: white !important;
+  width: 200px;
+
+  .ng-arrow,
+  .ng-value-label {
+    color: white !important;
+  }
+
+  .ng-select-container:after {
+    border-color: white !important;
+  }
 }

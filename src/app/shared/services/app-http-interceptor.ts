@@ -47,7 +47,10 @@ export class AppHttpInterceptor implements HttpInterceptor {
       return throwError(null);
     }
 
-    if (url.indexOf('/auth/confirm-email') === -1) {
+    if (
+      this.authService.isLoggedIn() &&
+      url.indexOf('/auth/confirm-email') === -1
+    ) {
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${this.authService.tokenGetter()}`,

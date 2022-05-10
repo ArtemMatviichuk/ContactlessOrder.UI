@@ -1,4 +1,3 @@
 export const APP_ROUTES = {
-    MAIN: 'admin',
-  };
-  
+  MAIN: 'admin',
+};

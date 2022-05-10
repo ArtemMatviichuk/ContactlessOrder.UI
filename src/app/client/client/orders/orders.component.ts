@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { CateringPositionComponent } from 'src/app/shared/catering-position/catering-position.component';
 import { PLACEHOLDER_IMAGE } from 'src/app/shared/constants/images';
 import { ORDER_STATUS_VALUES } from 'src/app/shared/constants/values';
+import { DialogTextComponent } from 'src/app/shared/dialog-text/dialog-text.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { ClientNotificationService } from '../client-notification.service';
 import { ClientSharedService } from '../client-shared.service';
@@ -22,6 +24,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
+    private toastr: ToastrService,
     private clientService: ClientService,
     private clientSharedService: ClientSharedService,
     private notificationService: ClientNotificationService,
@@ -105,6 +108,31 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     this.dialog.open(CateringPositionComponent, config);
+  }
+
+  public async complain(orderId) {
+    const config = new MatDialogConfig();
+    config.width = '600px';
+    config.data = { placeholder: 'Коментар (мінімум 20 символів)', rows: 10 };
+
+    this.dialog
+      .open(DialogTextComponent, config)
+      .afterClosed()
+      .subscribe(async (result) => {
+        const res = await this.sharedService.openConfirmActionDialog("Ви дійсно хочете поскаржитися на заклад?");
+        if (res !== "ok") {
+          return;
+        }
+
+        if (result?.success) {
+          try {
+            await this.clientService.complainOrder(orderId, result.value);
+            this.toastr.success("Скарга прийнята");
+          } catch (error) {
+            this.sharedService.showRequestError(error);
+          }
+        }
+      });
   }
 
   private async getOrders() {

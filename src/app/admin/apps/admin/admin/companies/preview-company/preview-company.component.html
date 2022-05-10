@@ -1,0 +1,115 @@
+<div class="info-container">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Назва компанії"
+        formControlName="name"
+        readonly
+      />
+    </mat-form-field>
+
+    <div class="copy-value-container">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Електронна пошта"
+          formControlName="email"
+          readonly
+        />
+      </mat-form-field>
+      <button class="btn" (click)="copyValue(form.controls.email.value)">
+        <span><i class="fas fa-copy"></i></span>
+      </button>
+    </div>
+
+    <div class="copy-value-container">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Телефон"
+          formControlName="phoneNumber"
+          readonly
+        />
+      </mat-form-field>
+
+      <button class="btn" (click)="copyValue(form.controls.phoneNumber)">
+        <span><i class="fas fa-copy"></i></span>
+      </button>
+    </div>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Адресса"
+        formControlName="address"
+        readonly
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Дата реєстрації"
+        formControlName="registeredDate"
+        readonly
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Опис"
+        formControlName="description"
+        rows="8"
+        style="resize: none"
+        readonly
+      ></textarea>
+    </mat-form-field>
+  </form>
+</div>
+
+<div class="caterings-container">
+  <span (click)="showCaterings = !showCaterings" class="cursor-pointer"
+    ><i *ngIf="!showCaterings" class="fa fa-chevron-right"></i
+    ><i *ngIf="showCaterings" class="fa fa-chevron-down"></i>
+    <h5 style="display: inline; margin-left: 10px">Заклади</h5></span
+  >
+
+  <div *ngIf="showCaterings">
+    <div *ngFor="let catering of caterings">
+      <div
+        class="d-flex cursor-pointer align-items-center"
+        (click)="viewCateringPosition(catering)"
+      >
+        <i class="fa fa-map-marker preview-catering-position"></i>
+
+        <div style="margin: 10px 10px">
+          <h6 style="margin: 0">{{ catering.name }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-around" style="margin-top: 10px">
+  <button class="btn btn-primary" (click)="openPaymnetData()">Реквізити</button>
+
+  <button
+    *ngIf="!dialogData.approvedDate"
+    class="btn btn-warning"
+    (click)="approve()"
+  >
+    Схвалити
+  </button>
+
+  <button
+    *ngIf="dialogData.approvedDate"
+    class="btn btn-danger"
+    (click)="reject()"
+  >
+    Зробити недоступним
+  </button>
+
+  <button class="btn" (click)="close()">Закрити</button>
+</div>

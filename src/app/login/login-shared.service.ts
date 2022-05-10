@@ -18,9 +18,7 @@ export class LoginSharedService {
       this.storageService.setString('token', token);
       this.storageService.setString('email', user.Email);
 
-      this.router.navigateByUrl(
-        returnUrl ?? user.CompanyId === '' ? '/dashboard' : '/business'
-      );
+      this.router.navigateByUrl(returnUrl ?? '');
     } else {
       this.sharedService.showRequestError('Not valid token');
     }

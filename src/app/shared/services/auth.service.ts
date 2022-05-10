@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   public url = environment.apiURL;
 
-  private roleValues = {
+  public roleValues = {
     catering: -1,
     admin: 1,
     support: 2,

@@ -1,0 +1,26 @@
+<h4 mat-dialog-title style="text-align: center">{{ dialogData.label }}</h4>
+
+<form [formGroup]="form">
+  <mat-form-field>
+    <input matInput placeholder="Ім'я" formControlName="firstName" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Прізвище" formControlName="lastName" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Номер телефону"
+      formControlName="phoneNumber"
+    />
+  </mat-form-field>
+</form>
+
+<div class="d-flex justify-content-around">
+  <button mat-raised-button [disabled]="!form.valid" (click)="save()">
+    Зберегти
+  </button>
+  <button mat-raised-button (click)="close()">Закрити</button>
+</div>

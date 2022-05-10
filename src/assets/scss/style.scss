@@ -152,3 +152,15 @@
 .cdk-overlay-pane {
   max-height: 90vh !important;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.copy-value-container {
+  display: flex;
+  & > button {
+    width: 50px;
+    margin-left: 10px;
+  }
+}

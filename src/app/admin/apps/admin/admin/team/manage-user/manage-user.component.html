@@ -1,0 +1,20 @@
+<h4 mat-dialog-title style="text-align: center">
+  {{
+    dialogData.firstName +
+      " " +
+      dialogData.lastName +
+      " (" +
+      dialogData.email +
+      ")"
+  }}
+</h4>
+
+<div class="d-flex justify-content-around">
+  <button class="btn btn-warning" (click)="generatePassword()">
+    Згенерувати новий пароль
+  </button>
+
+  <button class="btn btn-danger" (click)="deleteUser()">
+    Видалити обліковий запис
+  </button>
+</div>

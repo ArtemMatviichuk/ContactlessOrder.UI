@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedService } from '../services/shared.service';
 
@@ -9,11 +9,15 @@ import { SharedService } from '../services/shared.service';
   styleUrls: ['./dialog-text.component.scss'],
 })
 export class DialogTextComponent {
-  public commentCtrl = new FormControl(null);
+  public commentCtrl = new FormControl(null, [
+    Validators.required,
+    Validators.minLength(20),
+  ]);
 
   constructor(
     private dialogRef: MatDialogRef<DialogTextComponent>,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    @Inject(MAT_DIALOG_DATA) public dialogData: any
   ) {}
 
   public save() {
