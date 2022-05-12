@@ -5,7 +5,6 @@ import { LoginGuardService } from '../shared/services/login-guard.sevice';
 import { RegisterComponent } from './register/register.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { RegisterCompanyComponent } from './register-company/register-company.component';
-import { CateringLoginComponent } from './catering-login/catering-login.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, canActivate: [LoginGuardService] },
@@ -23,11 +22,6 @@ const routes: Routes = [
   {
     path: 'register-company',
     component: RegisterCompanyComponent,
-    canActivate: [LoginGuardService],
-  },
-  {
-    path: 'catering',
-    component: CateringLoginComponent,
     canActivate: [LoginGuardService],
   },
   { path: 'confirm-email', component: ConfirmEmailComponent },

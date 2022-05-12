@@ -7,7 +7,6 @@ import { RegisterComponent } from './register/register.component';
 import { LoginSharedService } from './login-shared.service';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { RegisterCompanyComponent } from './register-company/register-company.component';
-import { CateringLoginComponent } from './catering-login/catering-login.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import { CateringLoginComponent } from './catering-login/catering-login.componen
     RegisterComponent,
     ConfirmEmailComponent,
     RegisterCompanyComponent,
-    CateringLoginComponent,
   ],
   imports: [CommonModule, LoginRoutingModule, SharedModule],
   providers: [LoginSharedService],
