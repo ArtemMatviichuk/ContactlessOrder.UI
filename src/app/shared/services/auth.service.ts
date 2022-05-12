@@ -12,11 +12,11 @@ export class AuthService {
   public url = environment.apiURL;
 
   public roleValues = {
-    catering: -1,
     admin: 1,
     support: 2,
     company: 3,
     client: 4,
+    catering: 5,
   };
 
   constructor(
