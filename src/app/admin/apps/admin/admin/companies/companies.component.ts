@@ -47,11 +47,18 @@ export class CompaniesComponent implements OnInit, OnDestroy {
         width: 50,
         cellRenderer: () => `<i class="fa fa-file"></i>`,
         onCellClicked: (params) => this.previewCompany(params.data),
+        filter: false,
+        floatingFilter: false,
+        suppressMenu: false,
       },
     ],
 
     defaultColDef: {
       flex: 1,
+      
+      filter: true,
+      floatingFilter: true,
+      suppressMenu: true,
     },
 
     rowSelection: 'single',

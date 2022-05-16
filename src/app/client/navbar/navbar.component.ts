@@ -37,7 +37,7 @@ export class ClientNavbarComponent implements OnInit, OnDestroy {
 
   private subscribeToChanges() {
     this.notificationService.onOrderReady().subscribe((number) => {
-      this.toastrService.success(number, 'Нове замовлення');
+      this.toastrService.success(number, 'Замовлення готове');
       this.sharedService.playNotificationSound();
     });
   }

@@ -28,7 +28,7 @@ export class CateringsComponent implements OnInit, OnDestroy {
   public cateringsGridOptions: GridOptions = {
     columnDefs: [
       {
-        headerName: 'ТОЧКИ',
+        headerName: 'ЗАКЛАДИ',
         field: 'name',
       },
       {

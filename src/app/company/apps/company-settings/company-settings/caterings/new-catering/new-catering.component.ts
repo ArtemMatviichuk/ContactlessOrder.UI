@@ -75,9 +75,9 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public getTitle() {
     if (this.dialogData.add) {
-      return 'Додати точку громадського харчування';
+      return 'Додати заклад громадського харчування';
     } else {
-      return 'Змінити точку громадського харчування';
+      return 'Змінити заклад громадського харчування';
     }
   }
 
@@ -248,7 +248,7 @@ export class NewCateringComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getPasswordTemplate(loginData) {
     return `<p>ЗАПИШІТЬ ЦЮ ІНФОРМАЦІЮ</p>
-    <p>Для входу під аккаунтом цієї точки:</p>
+    <p>Для входу в обліковий запис цього закладу:</p>
     <p>Логін: ${loginData.email}</p>
     <p>Пароль: ${loginData.password}</p>
     `;
